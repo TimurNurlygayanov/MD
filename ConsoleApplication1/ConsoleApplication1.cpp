@@ -1,11 +1,11 @@
 /*
-TO DO:
- 1. не трогать функции работы с очередью событий, не оптимизировать.
-    они отлажены и должны быть именно такими.
- 2. image
-*/
 
-/*
+  не трогать функции работы с очередью событий, не оптимизировать.
+    они отлажены и должны быть именно такими.
+
+TO DO:
+ 1. virtual particles
+
     »ћѕќ–“»–”≈ћџ≈ ћќƒ”Ћ»
 */
 #include <time.h>
@@ -219,49 +219,50 @@ void create_virt_particle(short &i, double &Y, double &Z)
 void retime(short &i) 
 {
 	particle p1 = particles[i];
-	short jm;
+	short jm, bx, by, bz;
 	double dt, dt2;
+	Box box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
 
 	if (p1.vx < 0.0) 
 	{
-		dt2 = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].x1 - p1.x) / p1.vx;
+		dt2 = (box.x1 - p1.x) / p1.vx;
 		jm = -2;
 		if (p1.x_box == 1) 
 		{
-			dt2 = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].x1 + 1.0 - p1.x) / p1.vx;
+			dt2 = (box.x1 + 1.0 - p1.x) / p1.vx;
 			jm = -1;
 		}
 	}
 	else 
 	{
-		dt2 = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].x2 - p1.x) / p1.vx;
+		dt2 = (box.x2 - p1.x) / p1.vx;
 		jm = -4;
 		if (p1.x_box == K2-1) 
 		{
-			dt2 = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].x2 - 1.0 - p1.x) / p1.vx;
+			dt2 = (box.x2 - 1.0 - p1.x) / p1.vx;
 			jm = -1;
 		}
 	}
 
 	if (p1.vy < 0.0) 
 	{
-		dt = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1 - p1.y) / p1.vy;
+		dt = (box.y1 - p1.y) / p1.vy;
 		if (dt < dt2) { dt2 = dt; jm = -5; }
 	}
 	else 
 	{
-		dt = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].y2 - p1.y) / p1.vy;
+		dt = (box.y2 - p1.y) / p1.vy;
 		if (dt < dt2) { dt2 = dt; jm = -6; }
 	}
 
 	if (p1.vz < 0.0) 
 	{
-		dt = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1 - p1.z) / p1.vz;
+		dt = (box.z1 - p1.z) / p1.vz;
 		if (dt < dt2) { dt2 = dt; jm = -7; }
 	}
 	else 
 	{
-		dt = (boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2 - p1.z) / p1.vz;
+		dt = (box.z2 - p1.z) / p1.vz;
 		if (dt < dt2) { dt2 = dt; jm = -8; }
 	}
 
@@ -310,8 +311,11 @@ void retime(short &i)
 	if (jm >= 0) 
 	{
 		dt = p1.t - particles[jm].t;
-		particles[jm].t = p1.t; particles[jm].dt = dt2;
-		particles[jm].x += particles[jm].vx * dt; particles[jm].y += particles[jm].vy * dt; particles[jm].z += particles[jm].vz * dt;
+		particles[jm].t = p1.t; 
+		particles[jm].dt = dt2;
+		particles[jm].x += particles[jm].vx * dt; 
+		particles[jm].y += particles[jm].vy * dt; 
+		particles[jm].z += particles[jm].vz * dt;
 
 		if (time_queue[particles[jm].ti].jm >= 0)
 		{
@@ -440,13 +444,6 @@ void load_seed() {
 	for (short i = 0; i < NP; ++i) retime(i);
 }
 
-void log(char s[255])
-{
-	FILE *log_file = fopen("log.txt", "w");
-    fprintf(log_file, "%s\n", s);
-	fclose(log_file);
-}
-
 /*
  функци€ изменени€ состо€ни€ частиц в соответвии с наступившим
  в системе событием.
@@ -457,6 +454,9 @@ void reform(short &im, short &jm)
 {
 	particle p1 = particles[im];
 	double dx, dy, dz, q1, q2, z;
+    short bx, by, bz;
+
+	bx = p1.x_box; by = p1.y_box; bz = p1.z_box;
 
 	if (jm >= 0)
 	{
@@ -481,44 +481,44 @@ void reform(short &im, short &jm)
 	{
 		if (jm != -100)
 		{
-			short end = boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
-			boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[p1.box_i] = boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[end];
-			particles[boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[end]].box_i = p1.box_i;
-			--boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
+			short end = boxes_yz[by][bz][bx].end;
+			boxes_yz[by][bz][bx].particles[p1.box_i] = boxes_yz[by][bz][bx].particles[end];
+			particles[boxes_yz[by][bz][bx].particles[end]].box_i = p1.box_i;
+			--boxes_yz[by][bz][bx].end;
 
 			if (jm == -2)
 			{
 				--p1.x_box;
-				p1.x = boxes_yz[p1.y_box][p1.z_box][p1.x_box].x2;
+				p1.x = boxes_yz[by][bz][p1.x_box].x2;
 			}
 			if (jm == -4)
 			{
 				++p1.x_box;
-				p1.x = boxes_yz[p1.y_box][p1.z_box][p1.x_box].x1;
+				p1.x = boxes_yz[by][bz][p1.x_box].x1;
 			}
 			if (jm == -5)
 			{
 				--p1.y_box;
-				if (p1.y_box < 0) p1.y_box = K-1;
-				p1.y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y2;
+				if (by < 0) p1.y_box = K-1;
+				p1.y = boxes_yz[p1.y_box][bz][bx].y2;
 			}
 			if (jm == -6)
 			{
 				++p1.y_box;
 				if (p1.y_box == K) p1.y_box = 0;
-				p1.y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1;
+				p1.y = boxes_yz[p1.y_box][bz][bx].y1;
 			}
 			if (jm == -7)
 			{			
 				--p1.z_box;
 				if (p1.z_box < 0) p1.z_box = K-1;
-				p1.z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2;
+				p1.z = boxes_yz[by][p1.z_box][bx].z2;
 			}
 			if (jm == -8)
 			{
 				++p1.z_box;
 				if (p1.z_box == K) p1.z_box = 0;
-				p1.z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1;
+				p1.z = boxes_yz[by][p1.z_box][bx].z1;
 			}
 			p1.box_i = ++boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
 			boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[p1.box_i] = im;
@@ -586,9 +586,6 @@ void save(char f[255])
 		z = A + particles[i].z - particles[i].vz * particles[i].t;
 		fprintf(save_file, "%.15le %.15le %.15le %.15le %.15le \n", x, y, z, particles[i].t, particles[i].dt);
 		fprintf(save_file, "%.15le %.15le %.15le \n", particles[i].vx, particles[i].vy, particles[i].vz);
-
-        if (-particles[i].t > particles[i].dt)
-            printf("asA\n");
     }
 	fclose(save_file);
 }
