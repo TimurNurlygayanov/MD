@@ -1,10 +1,13 @@
 /*
-
   не трогать функции работы с очередью событий, не оптимизировать.
     они отлажены и должны быть именно такими.
 
 TO DO:
  1. virtual particles
+        сделано: retime
+		надо сделать: reform
+
+
 
     »ћѕќ–“»–”≈ћџ≈ ћќƒ”Ћ»
 */
@@ -219,7 +222,7 @@ void create_virt_particle(short &i, double &Y, double &Z)
 void retime(short &i) 
 {
 	particle p1 = particles[i];
-	short jm, bx, by, bz;
+	short jm, jm_temp;
 	double dt, dt2;
 	Box box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
 
@@ -233,7 +236,7 @@ void retime(short &i)
 			jm = -1;
 		}
 	}
-	else 
+	else
 	{
 		dt2 = (box.x2 - p1.x) / p1.vx;
 		jm = -4;
@@ -244,26 +247,118 @@ void retime(short &i)
 		}
 	}
 
-	if (p1.vy < 0.0) 
+	if (p1.vy < 0.0)
 	{
 		dt = (box.y1 - p1.y) / p1.vy;
-		if (dt < dt2) { dt2 = dt; jm = -5; }
+		jm_temp = -5;
+
+		if (p1.y_box == 0)
+		{
+			if (p1.y < 1.0-A)
+			{
+				jm_temp = -11;	// преобразование образа в частицу
+			}
+			else
+			{
+				dt = (1.0 - A - p1.y) / p1.vy;
+				jm_temp = -10;	// по€вление образа
+			}
+		}
+		else if (p1.y_box == K-1)
+		{
+			if (p1.y > A-1.0)
+			{
+				dt = (A - 1.0 - p1.y) / p1.vy;
+				jm_temp = -12;	// удаление образа
+			}
+		}
+
+		if (dt < dt2) { dt2 = dt; jm = jm_temp; }
 	}
-	else 
+	else
 	{
 		dt = (box.y2 - p1.y) / p1.vy;
-		if (dt < dt2) { dt2 = dt; jm = -6; }
+		jm_temp = -6;
+
+		if (p1.y_box == K-1)
+		{
+			if (p1.y > A-1.0)
+			{
+				jm_temp = -11;
+			}
+			else
+			{
+				dt = (A - 1.0 - p1.y) / p1.vy;
+				jm_temp = -10;
+			}
+		}
+		else if (p1.y_box == 0)
+		{
+			if (p1.y < 1.0-A)
+			{
+				dt = (A + 1.0 - p1.y) / p1.vy;
+				jm_temp = -12;
+			}
+		}
+
+		if (dt < dt2) { dt2 = dt; jm = jm_temp; }
 	}
 
 	if (p1.vz < 0.0) 
 	{
 		dt = (box.z1 - p1.z) / p1.vz;
-		if (dt < dt2) { dt2 = dt; jm = -7; }
+		jm_temp = -7;
+
+		if (p1.z_box == 0)
+		{
+			if (p1.z < 1.0-A)
+			{
+				jm_temp = -11;	// преобразование образа в частицу
+			}
+			else
+			{
+				dt = (1.0 - A - p1.z) / p1.vz;
+				jm_temp = -10;	// по€вление образа
+			}
+		}
+		else if (p1.z_box == K-1)
+		{
+			if (p1.z > A-1.0)
+			{
+				dt = (A - 1.0 - p1.z) / p1.vz;
+				jm_temp = -12;	// удаление образа
+			}
+		}
+
+		if (dt < dt2) { dt2 = dt; jm = jm_temp; }
 	}
-	else 
+	else
 	{
 		dt = (box.z2 - p1.z) / p1.vz;
-		if (dt < dt2) { dt2 = dt; jm = -8; }
+		jm_temp = -8;
+
+		if (p1.z_box == K-1)
+		{
+			if (p1.z > A-1.0)
+			{
+				jm_temp = -11;
+			}
+			else
+			{
+				dt = (A - 1.0 - p1.z) / p1.vz;
+				jm_temp = -10;
+			}
+		}
+		else if (p1.z_box == 0)
+		{
+			if (p1.z < 1.0-A)
+			{
+				dt = (A + 1.0 - p1.z) / p1.vz;
+				jm_temp = -12;
+			}
+		}
+
+		if (dt < dt2) { dt2 = dt; jm = jm_temp; }
 	}
 
 	double temp, dx, dy, dz, dvx, dvy, dvz, d, dv, bij;
@@ -454,9 +549,6 @@ void reform(short &im, short &jm)
 {
 	particle p1 = particles[im];
 	double dx, dy, dz, q1, q2, z;
-    short bx, by, bz;
-
-	bx = p1.x_box; by = p1.y_box; bz = p1.z_box;
 
 	if (jm >= 0)
 	{
@@ -481,47 +573,52 @@ void reform(short &im, short &jm)
 	{
 		if (jm != -100)
 		{
-			short end = boxes_yz[by][bz][bx].end;
-			boxes_yz[by][bz][bx].particles[p1.box_i] = boxes_yz[by][bz][bx].particles[end];
-			particles[boxes_yz[by][bz][bx].particles[end]].box_i = p1.box_i;
-			--boxes_yz[by][bz][bx].end;
+			Box box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
+			short end = boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
+
+			boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[p1.box_i] = box.particles[end];
+			particles[box.particles[end]].box_i = p1.box_i;
+			--boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
 
 			if (jm == -2)
 			{
 				--p1.x_box;
-				p1.x = boxes_yz[by][bz][p1.x_box].x2;
 			}
 			if (jm == -4)
 			{
 				++p1.x_box;
-				p1.x = boxes_yz[by][bz][p1.x_box].x1;
 			}
 			if (jm == -5)
 			{
 				--p1.y_box;
-				if (by < 0) p1.y_box = K-1;
-				p1.y = boxes_yz[p1.y_box][bz][bx].y2;
 			}
 			if (jm == -6)
 			{
 				++p1.y_box;
-				if (p1.y_box == K) p1.y_box = 0;
-				p1.y = boxes_yz[p1.y_box][bz][bx].y1;
 			}
 			if (jm == -7)
 			{			
 				--p1.z_box;
-				if (p1.z_box < 0) p1.z_box = K-1;
-				p1.z = boxes_yz[by][p1.z_box][bx].z2;
 			}
 			if (jm == -8)
 			{
 				++p1.z_box;
-				if (p1.z_box == K) p1.z_box = 0;
-				p1.z = boxes_yz[by][p1.z_box][bx].z1;
 			}
 			p1.box_i = ++boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
 			boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[p1.box_i] = im;
+
+			if (jm == -10)
+			{
+				// по€вление образа
+			}
+			if (jm == -11)
+			{
+				// преобразование образа
+			}
+			if (jm == -12)
+			{
+				// удаление образа
+			}
 		}
 	}
 	particles[im] = p1;
