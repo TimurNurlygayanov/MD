@@ -1,0 +1,1494 @@
+
+ search...  check collision: 0 21 2.217414372767209e-001
+ search...  check collision: 16 28 6.998284349077546e-001
+ search...  check collision: 4 21 3.820194481354879e-001
+ search...  check collision: 5 21 5.489091372550715e-002
+ search...  check collision: 5 28 1.165127927497510e+000
+ search...  check collision: 4 21 3.820194481354865e-001
+ search...  check collision: 5 21 5.489091372550570e-002
+ search...  check collision: 5 28 1.165127927497510e+000
+ search...  check collision: 18 24 8.856608739411158e-002
+ Event #21: 21 -8 3.028641034230033e-015 
+   21 BOX: x 3 | y 2 | z 1
+   -8 BOX: x 0 | y 0 | z 0 
+
+12  21  
+    retime: 21 
+ search...  check collision: 21 3 1.898088329493535e-001
+ search...  check collision: 21 8 3.883997546163154e-001
+ search...  check collision: 21 0 2.217414372767182e-001
+ search...  check collision: 21 4 3.820194481354857e-001
+ search...  check collision: 21 13 7.629711825983407e-002! 
+
+ search...  check collision: 21 5 5.489091372550509e-002! 
+    retime result: 21 5 5.489091372550509e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 2 
+13  5  
+
+ Event #21: 21 5 5.489091372550509e-002 
+   21 BOX: x 3 | y 2 | z 2
+   5 BOX: x 3 | y 2 | z 2 
+
+13  5  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 13 3.944380605207975e-002! 
+    retime result: 21 13 3.944380605207975e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 2 
+13  5  
+
+ search...  check collision: 20 28 5.144985803805461e-003! 
+    retime result: 20 28 5.144985803805461e-003 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+23  28  54  
+
+ Event #20: 20 28 5.144985803805461e-003 
+   20 BOX: x 3 | y 1 | z 1
+   28 BOX: x 4 | y 1 | z 1 
+
+56  28  
+Trying to create virt particle 92... 
+    retime: 28     retime result: 28 -17 1.099792871574278e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  28  
+
+ search...  check collision: 3 21 2.932463176383671e-001
+ search...  check collision: 18 24 5.310635378129411e-003! 
+    retime result: 18 24 5.310635378129411e-003 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  24  
+
+ Event #18: 18 24 5.310635378129411e-003 
+   18 BOX: x 1 | y 1 | z 2
+   24 BOX: x 1 | y 1 | z 1 
+
+14  24  
+Trying to create virt particle 88... 
+    retime: 24     retime result: 24 -17 3.733351423232741e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  24  
+
+ Event #21: 21 13 3.944380605207975e-002 
+   21 BOX: x 3 | y 2 | z 2
+   13 BOX: x 3 | y 2 | z 2 
+
+13  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 3 4.931243793069860e-001    retime result: 21 -7 6.207060385702768e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 2 
+13  
+
+ Event #21: 21 -7 6.207060385702768e-003 
+   21 BOX: x 3 | y 2 | z 2
+   -7 BOX: x 0 | y 0 | z 0 
+
+13  
+    retime: 21 
+ search...  check collision: 21 3 4.869173189212829e-001    retime result: 21 -16 6.135865839890387e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ Event #24: 24 -17 3.733351423232741e-002 
+   24 BOX: x 1 | y 1 | z 1
+   -17 BOX: x 0 | y 0 | z 0 
+
+14  24  
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 24     retime result: 24 -15 1.941907335288973e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  22  
+    retime: 88 
+ search...  check collision: 88 7 1.273724286200550e-001! 
+
+ search...  check collision: 88 1 2.620425149364246e-002! 
+
+ search...  check collision: 88 11 2.787200287834200e-001    retime result: 88 1 2.620425149364246e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  22  
+
+ search...  check collision: 11 88 2.407465598265923e-001
+ search...  check collision: 0 24 1.130327694746026e+000
+ STEPS:: 1 
+
+ particle 21, x, y, z: -3.61121e+000, 1.73995e+000, 0.00000e+000 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, -16, 6.135865839890387e-002 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -1.32542e+000, -1.67541e+000, -1.67125e+000 
+ particle x_box, y_box, z_box: 4, 1, 1 
+ particle event: 28, -17, 1.099792871574278e-001 
+ -1 i_copy 
+ 
+ particle 24, x, y, z: -1.14330e+001, -1.82982e+000, -1.95178e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -15, 1.941907335288973e-001 
+ 88 i_copy 
+  particle 88, x, y, z: -6.56576e+000, -8.37018e-001, 3.95178e+000 
+ particle x_box, y_box, z_box: 2, 1, 3 
+ particle event: 88, 1, 2.620425149364246e-002 
+
+
+
+ Event #88: 88 1 2.620425149364246e-002 
+   88 BOX: x 2 | y 1 | z 3
+   1 BOX: x 2 | y 2 | z 2 
+
+14  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+    retime: 24     retime result: 24 -15 3.516736122512666e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+
+ search...  check collision: 13 21 4.913952229411597e-002
+ Event #21: 21 -16 6.135865839890387e-002 
+   21 BOX: x 3 | y 2 | z 1
+   -16 BOX: x 0 | y 0 | z 0 
+
+12  16  
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 3 4.255586605223786e-001
+ search...  check collision: 21 13 4.339323521206757e-002! 
+    retime result: 21 13 4.339323521206757e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+    retime: 85 
+ search...  check collision: 85 17 6.937900802347236e-001
+ search...  check collision: 85 29 3.220416292845668e-001
+ search...  check collision: 85 120 2.781957104898122e-001    retime result: 85 -6 2.896623116099271e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ search...  check collision: 121 85 4.473839236680641e-001
+ Event #28: 28 -17 1.099792871574278e-001 
+   28 BOX: x 4 | y 1 | z 1
+   -17 BOX: x 0 | y 0 | z 0 
+
+56  
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+    retime: 28     retime result: 28 -7 3.920414790720691e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+    retime: 92 
+ search...  check collision: 92 17 7.617161024252238e-001
+ search...  check collision: 92 20 5.891357063352213e-001
+ search...  check collision: 92 85 7.703249945061267e-001
+ search...  check collision: 92 85 7.703249945061267e-001
+ search...  check collision: 92 29 2.332644626094942e-001    retime result: 92 -6 3.910447717000668e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 20 92 5.803707465553882e-001
+ Event #24: 24 -15 3.516736122512666e-002 
+   24 BOX: x 1 | y 1 | z 1
+   -15 BOX: x 0 | y 0 | z 0 
+
+14  
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 24     retime result: 24 -5 3.333375420127619e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+    retime: 88 
+ search...  check collision: 88 40 6.287220078078701e-001
+ search...  check collision: 88 44 8.847963845578563e-002
+ search...  check collision: 88 53 2.250873113145867e-001
+ search...  check collision: 88 48 8.307398129037387e-001    retime result: 88 -5 3.333375420127619e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+
+ search...  check collision: 29 92 2.132336609607331e-001
+ search...  check collision: 29 85 2.923732194902368e-001
+ search...  check collision: 40 88 3.434082752464680e-001
+ search...  check collision: 104 85 3.155455385664228e-001
+ search...  check collision: 53 88 1.354132359499896e-001
+ Event #21: 21 13 4.339323521206757e-002 
+   21 BOX: x 3 | y 2 | z 1
+   13 BOX: x 3 | y 2 | z 2 
+
+12  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ SEARCH TRUE 85 -1
+    retime: 21 
+ search...  check collision: 21 12 4.788350204762914e-002! 
+    retime result: 21 12 4.788350204762914e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+    retime: 85 
+ search...  check collision: 85 7 2.884594532113406e-001
+ search...  check collision: 85 1 2.071263432554997e-001
+ search...  check collision: 85 11 2.306853735506708e-002
+ search...  check collision: 85 66 2.047177752411889e-001    retime result: 85 -2 1.220901386358157e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ search...  check collision: 90 92 7.982042566767794e-003! 
+    retime result: 90 92 7.982042566767794e-003 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 11 85 1.447701959380985e-002! 
+    retime result: 11 85 1.447701959380985e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ search...  check collision: 40 88 3.219401442222999e-001
+ Event #90: 90 92 7.982042566767794e-003 
+   90 BOX: x 3 | y 0 | z 2
+   92 BOX: x 3 | y 0 | z 3 
+
+56  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 92 
+ search...  check collision: 92 38 4.472771216181042e-001    retime result: 92 -6 4.761888860102559e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+    retime: 28     retime result: 28 -7 4.761888860102559e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 122 28 1.094615283001490e-001! 
+    retime result: 122 28 1.094615283001490e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 50 92 2.167369749955114e-001
+ search...  check collision: 114 21 1.838717266003904e-001
+ search...  check collision: 56 28 1.912002405669255e-001
+ search...  check collision: 120 92 6.102581514701820e-001
+ Event #11: 11 85 1.447701959380985e-002 
+   11 BOX: x 3 | y 1 | z 2
+   85 BOX: x 3 | y 1 | z 3 
+
+12  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ SEARCH TRUE 85 -1
+
+ search...  check collision: 11 85 1.252066744384848e-003    retime: 85 
+ search...  check collision: 85 7 2.900289040341847e-001
+ search...  check collision: 85 4 2.893751285593135e-001
+ search...  check collision: 85 5 1.216804317149772e-001! 
+
+ search...  check collision: 85 11 1.252066744384848e-003! 
+    retime result: 85 11 1.252066744384848e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+    retime: 21 
+ search...  check collision: 21 82 5.147680682397501e-002! 
+    retime result: 21 82 5.147680682397501e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ Event #85: 85 11 1.252066744384848e-003 
+   85 BOX: x 3 | y 0 | z 2
+   11 BOX: x 3 | y 1 | z 2 
+
+12  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 99 3.452871397076077e-001
+ search...  check collision: 21 12 1.392102143613877e-002! 
+
+ search...  check collision: 21 16 1.851927357577712e-001    retime result: 21 12 1.392102143613877e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ STEPS:: 2 
+
+ particle 21, x, y, z: -3.99522e+000, 2.20053e+000, -2.97076e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, 12, 1.392102143613877e-002 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -1.21982e+000, -1.56048e+000, -2.08051e+000 
+ particle x_box, y_box, z_box: 4, 1, 1 
+ particle event: 28, -100, 1.094615283001490e-001 
+ 92 i_copy 
+  particle 92, x, y, z: 3.38773e+000, -3.83077e+000, 2.16632e+000 
+ particle x_box, y_box, z_box: 5, 0, 2 
+ particle event: 92, -6, 4.761888860102559e-001 
+
+ particle 24, x, y, z: -1.14268e+001, -1.95178e+000, -2.04204e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -5, 3.333375420127619e-001 
+ 88 i_copy 
+  particle 88, x, y, z: 7.72796e+000, 3.95178e+000, -2.46726e+000 
+ particle x_box, y_box, z_box: 6, 3, 1 
+ particle event: 88, -5, 3.333375420127619e-001 
+
+
+
+ search...  check collision: 117 92 4.036432764723131e-001
+ search...  check collision: 50 92 2.387767413896146e-001
+ search...  check collision: 96 88 6.995683949766647e-001
+ Event #21: 21 12 1.392102143613877e-002 
+   21 BOX: x 3 | y 2 | z 1
+   12 BOX: x 3 | y 2 | z 1 
+
+12  16  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 99 4.049539162787814e-001
+ search...  check collision: 21 16 1.921776459007114e-001    retime result: 21 -17 6.650637573956788e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+12  16  
+
+ search...  check collision: 75 92 1.019523582127322e-001! 
+
+ search...  check collision: 44 88 2.624588484622618e-002
+ search...  check collision: 44 88 9.859693098342644e-003! 
+    retime result: 44 88 9.859693098342644e-003 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+
+ Event #44: 44 88 9.859693098342644e-003 
+   44 BOX: x 6 | y 2 | z 1
+   88 BOX: x 6 | y 3 | z 1 
+
+14  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+    retime: 88 
+ search...  check collision: 88 24 2.481560744655542e+000
+ search...  check collision: 88 18 5.353435828429428e-002! 
+    retime result: 88 18 5.353435828429428e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+    retime: 24 
+ search...  check collision: 24 88 2.481560744655542e+000
+ search...  check collision: 24 71 2.742536489128800e-001    retime result: 24 -7 1.392093163871792e+000 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+14  
+
+ search...  check collision: 121 24 7.473230075602380e-001
+ search...  check collision: 117 92 4.935495804611881e-001
+ search...  check collision: 40 28 2.616843098409548e+000
+ search...  check collision: 30 21 2.799578086573100e-001
+ search...  check collision: 15 24 1.427736342449245e+000
+ search...  check collision: 56 28 5.018661495695469e-002
+ Event #88: 88 18 5.353435828429428e-002 
+   88 BOX: x 1 | y 0 | z 2
+   18 BOX: x 1 | y 1 | z 2 
+
+
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+    retime: 88 
+ search...  check collision: 88 73 2.414627995383212e-001
+ search...  check collision: 88 8 2.753346385975781e-001
+ search...  check collision: 88 3 8.193664615965757e-002! 
+    retime result: 88 3 8.193664615965757e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+    retime: 24 
+ search...  check collision: 24 121 7.899908806484555e-001    retime result: 24 -5 6.870497313393238e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ Event #28: 28 -100 1.094615283001490e-001 
+   28 BOX: x 4 | y 1 | z 1
+   -100 BOX: x 0 | y 0 | z 0 
+
+56  
+    retime: 28 
+ search...  check collision: 28 56 4.466905242847563e-002    retime result: 28 -7 3.640320808507108e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 42 92 2.358312755819675e+000
+ search...  check collision: 56 21 7.412883311535878e-001
+ search...  check collision: 56 28 3.414602075718448e-002! 
+    retime result: 56 28 3.414602075718448e-002 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 38 92 3.182505689421868e-001! 
+    retime result: 38 92 3.182505689421868e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 9 88 2.201101460384191e-001
+ search...  check collision: 9 88 2.201101460384191e-001
+ STEPS:: 3 
+
+ particle 21, x, y, z: -4.02733e+000, 2.17725e+000, -3.74998e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, -17, 6.650637573956788e-001 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -1.16401e+000, -1.43960e+000, -2.30664e+000 
+ particle x_box, y_box, z_box: 4, 1, 1 
+ particle event: 56, 28, 3.414602075718448e-002 
+ 92 i_copy 
+  particle 92, x, y, z: 3.49767e+000, -3.59260e+000, 1.72080e+000 
+ particle x_box, y_box, z_box: 5, 0, 2 
+ particle event: 38, 92, 3.182505689421868e-001 
+
+ particle 24, x, y, z: -1.14348e+001, -2.18995e+000, -2.05896e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -5, 6.870497313393238e-001 
+ 88 i_copy 
+  particle 88, x, y, z: -8.54044e+000, 3.71361e+000, -5.68698e-001 
+ particle x_box, y_box, z_box: 2, 3, 1 
+ particle event: 88, -100, 8.193664615965757e-002 
+
+
+
+ Event #56: 56 28 3.414602075718448e-002 
+   56 BOX: x 4 | y 1 | z 1
+   28 BOX: x 4 | y 1 | z 1 
+
+56  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28     retime result: 28 -2 1.664640601097012e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+    retime: 92     retime result: 92 -1 1.305191744441019e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 19 88 2.624388082631860e-001
+ search...  check collision: 3 88 5.025336692313018e-002
+ search...  check collision: 20 21 9.612719418541194e-001
+ search...  check collision: 20 28 4.751317988333004e-001
+ search...  check collision: 16 21 5.375003312882752e-002! 
+    retime result: 16 21 5.375003312882752e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 1 21 5.472646566310980e-001
+ search...  check collision: 12 21 4.916192432533956e-002
+ search...  check collision: 12 21 2.386373427507006e-002! 
+
+ Event #88: 88 -100 8.193664615965757e-002 
+   88 BOX: x 2 | y 3 | z 1
+   -100 BOX: x 0 | y 0 | z 0 
+
+
+    retime: 88 
+ search...  check collision: 88 19 2.354486748799968e-001! 
+
+ search...  check collision: 88 3 2.443308145574142e-002! 
+    retime result: 88 3 2.443308145574142e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 121 24 3.516956412688963e-002! 
+    retime result: 121 24 3.516956412688963e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 12 21 2.243539116281667e-002
+ search...  check collision: 91 21 7.491486547554451e-001
+ search...  check collision: 91 28 1.847455507670775e-001
+ Event #88: 88 3 2.443308145574142e-002 
+   88 BOX: x 2 | y 3 | z 1
+   3 BOX: x 2 | y 2 | z 1 
+
+
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 88 
+ search...  check collision: 88 11 1.440582127627343e-001    retime result: 88 -7 9.937426077027304e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+    retime: 24 
+ search...  check collision: 24 121 3.690012897251820e-002    retime result: 24 -1 1.317588785690912e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ Event #16: 16 21 5.375003312882752e-002 
+   16 BOX: x 3 | y 2 | z 1
+   21 BOX: x 3 | y 2 | z 1 
+
+21  16  
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ search...  check collision: 16 28 1.719967393738772e-001    retime: 21 
+ search...  check collision: 21 1 4.694419694880204e-001
+ search...  check collision: 21 12 1.116365028394294e-002! 
+
+ search...  check collision: 21 30 2.877526783814972e-001    retime result: 21 12 1.116365028394294e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+    retime: 85 
+ search...  check collision: 85 17 6.817360809905738e-001    retime result: 85 -6 1.583124654217617e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ Event #85: 85 -6 1.583124654217617e-003 
+   85 BOX: x 4 | y 0 | z 3
+   -6 BOX: x 0 | y 0 | z 0 
+
+21  16  
+    retime: 85 
+ search...  check collision: 85 17 6.801529563363563e-001
+ search...  check collision: 85 23 1.838225390564909e+000
+ search...  check collision: 85 51 1.782466009206611e+000    retime result: 85 -7 6.495100221199877e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 10 28 1.879759398866714e-001
+ STEPS:: 4 
+
+ particle 21, x, y, z: -3.99641e+000, 2.02516e+000, -8.30628e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, 12, 1.116365028394294e-002 
+ 85 i_copy 
+  particle 85, x, y, z: -8.26113e-001, -2.95178e+000, 3.87615e+000 
+ particle x_box, y_box, z_box: 4, 1, 3 
+ particle event: 85, -7, 6.495100221199877e-001 
+
+ particle 28, x, y, z: -1.14846e+000, -1.40591e+000, -2.36967e+000 
+ particle x_box, y_box, z_box: 4, 1, 1 
+ particle event: 28, -2, 1.664640601097012e-001 
+ 92 i_copy 
+  particle 92, x, y, z: -1.07289e+001, -3.53390e+000, 1.96636e+000 
+ particle x_box, y_box, z_box: 1, 0, 2 
+ particle event: 92, -1, 1.305191744441019e-001 
+
+ particle 24, x, y, z: -1.14915e+001, -2.30562e+000, -2.08816e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -1, 1.317588785690912e-001 
+ 88 i_copy 
+  particle 88, x, y, z: -2.75748e+000, -2.11316e+000, 3.81541e+000 
+ particle x_box, y_box, z_box: 3, 1, 3 
+ particle event: 88, -7, 9.937426077027304e-001 
+
+
+
+ Event #21: 21 12 1.116365028394294e-002 
+   21 BOX: x 3 | y 2 | z 1
+   12 BOX: x 3 | y 2 | z 1 
+
+21  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ SEARCH TRUE 85 -1
+    retime: 21 
+ search...  check collision: 21 3 1.033845923137015e+000
+ search...  check collision: 21 1 5.332295838835748e-001
+ search...  check collision: 21 76 2.213339497298759e-001
+ search...  check collision: 21 30 7.745773723859257e-001    retime result: 21 -6 5.772671157363344e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+    retime: 85 
+ search...  check collision: 85 67 3.148360620074389e-001
+ search...  check collision: 85 5 2.237136352240381e-001    retime result: 85 -6 5.772671157363344e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 12 28 1.082604641685904e+000
+ search...  check collision: 76 21 2.213339497298759e-001! 
+
+ search...  check collision: 5 85 2.237136352240381e-001
+ search...  check collision: 11 88 9.305143860027243e-002! 
+    retime result: 11 88 9.305143860027243e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 121 24 2.113747666369883e-002! 
+    retime result: 121 24 2.113747666369883e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 122 21 1.223981835323457e+000
+ search...  check collision: 58 21 1.223981835323457e+000
+ search...  check collision: 7 85 1.352105904552467e-001
+ Event #121: 121 24 2.113747666369883e-002 
+   121 BOX: x 1 | y 0 | z 1
+   24 BOX: x 1 | y 1 | z 1 
+
+
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 24     retime result: 24 -5 2.188807248395858e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+    retime: 88 
+ search...  check collision: 88 44 4.978897596386617e-002
+ search...  check collision: 88 95 2.847960037522239e-002! 
+
+ search...  check collision: 88 62 1.446541977452231e-001    retime result: 88 95 2.847960037522239e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 10 28 7.237961167500573e-002
+ search...  check collision: 10 28 1.033893097061165e-001
+ search...  check collision: 111 21 6.608379890964830e-002! 
+    retime result: 111 21 6.608379890964830e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 44 88 7.266817611385279e-002
+ search...  check collision: 16 21 1.085546086383556e-001
+ search...  check collision: 3 21 1.543216672147883e+000
+ Event #88: 88 -100 2.847960037522239e-002 
+   88 BOX: x 6 | y 3 | z 1
+   -100 BOX: x 0 | y 0 | z 0 
+
+
+    retime: 88 
+ search...  check collision: 88 62 1.191560322666039e-001    retime result: 88 -5 1.933825593609663e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+
+
+ search...  check collision: 3 21 6.255601629454741e-001
+ search...  check collision: 5 85 2.559650464847487e-001! 
+
+ Event #92: 92 -1 1.305191744441019e-001 
+   92 BOX: x 1 | y 0 | z 2
+   -1 BOX: x 0 | y 0 | z 0 
+
+56  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 92 
+ search...  check collision: 92 95 2.415479034959638e-001
+ search...  check collision: 92 38 2.496408153237321e-001
+ search...  check collision: 92 50 1.263153607890013e-001
+ search...  check collision: 92 36 2.587682673153056e-001    retime result: 92 -4 6.669068631051051e-002 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+    retime: 28 
+ search...  check collision: 28 56 8.306332916580639e-002! 
+
+ search...  check collision: 28 91 1.370077284994203e-002! 
+    retime result: 28 91 1.370077284994203e-002 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 9 88 5.285752296693309e-001
+ search...  check collision: 9 88 5.285752296693309e-001
+ Event #28: 28 91 1.370077284994203e-002 
+   28 BOX: x 4 | y 1 | z 1
+   91 BOX: x 4 | y 2 | z 0 
+
+56  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 89
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28 
+ search...  check collision: 28 10 2.658400154440258e-001    retime result: 28 -2 5.287396022022316e-002 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+    retime: 92 
+ search...  check collision: 92 3 3.008346098421732e-001
+ search...  check collision: 92 13 5.729492615313296e-001    retime result: 92 -5 2.283094499866738e-001 
+    particle data 28: x_box, y_box, z_box: 4 1 1 
+56  
+
+ search...  check collision: 7 85 7.341368406368863e-002! 
+    retime result: 7 85 7.341368406368863e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ Event #21: 21 -100 6.608379890964830e-002 
+   21 BOX: x 3 | y 2 | z 1
+   -100 BOX: x 0 | y 0 | z 0 
+
+21  16  
+    retime: 21 
+ search...  check collision: 21 58 1.146748919866415e+000
+ search...  check collision: 21 1 4.424888478494833e-001
+ search...  check collision: 21 16 4.972517423594732e-002    retime result: 21 -6 4.865263797022403e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 10 28 2.468972702928289e-001
+ search...  check collision: 74 92 3.700149805577517e-001
+ search...  check collision: 98 88 1.998432687585051e-001
+ search...  check collision: 62 88 6.440877104229031e-002! 
+    retime result: 62 88 6.440877104229031e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ search...  check collision: 126 28 9.183544694617714e-002
+ search...  check collision: 16 21 4.146985434082984e-002! 
+    retime result: 16 21 4.146985434082984e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ STEPS:: 5 
+
+ particle 21, x, y, z: -4.04105e+000, 2.20518e+000, -8.95966e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 16, 21, 4.146985434082984e-002 
+ 85 i_copy 
+  particle 85, x, y, z: -6.51546e+000, -3.73331e+000, 9.24469e-001 
+ particle x_box, y_box, z_box: 2, 0, 2 
+ particle event: 7, 85, 7.341368406368863e-002 
+
+ particle 28, x, y, z: -1.62774e+000, -1.25298e+000, -2.68128e+000 
+ particle x_box, y_box, z_box: 4, 1, 1 
+ particle event: 28, -2, 5.287396022022316e-002 
+ 92 i_copy 
+  particle 92, x, y, z: -6.81346e+000, 3.22228e+000, 2.53521e+000 
+ particle x_box, y_box, z_box: 2, 3, 2 
+ particle event: 92, -5, 2.283094499866738e-001 
+
+ particle 24, x, y, z: -1.15835e+001, -2.30667e+000, -2.12023e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -5, 2.188807248395858e-001 
+ 88 i_copy 
+  particle 88, x, y, z: 9.11910e+000, 3.36039e+000, -1.79323e+000 
+ particle x_box, y_box, z_box: 6, 3, 1 
+ particle event: 62, 88, 6.440877104229031e-002 
+
+
+
+ search...  check collision: 112 85 1.103413234588331e-001
+ Event #28: 28 -2 5.287396022022316e-002 
+   28 BOX: x 4 | y 1 | z 1
+   -2 BOX: x 0 | y 0 | z 0 
+
+56  
+    retime: 28 
+ search...  check collision: 28 2 6.213720577631323e-001
+ search...  check collision: 28 8 6.819390916028740e-001
+ search...  check collision: 28 126 6.416853061826126e-002
+ search...  check collision: 28 10 2.129660552238032e-001    retime result: 28 -7 1.754354897664505e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 1 
+10  
+
+ search...  check collision: 10 28 8.136739719959159e-002! 
+    retime result: 10 28 8.136739719959159e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 1 
+10  
+
+ search...  check collision: 82 92 6.924754515200750e-001
+ search...  check collision: 82 21 1.352721639987063e-001
+ search...  check collision: 106 21 1.177203732886178e-002
+ search...  check collision: 3 21 7.365583794916192e-001
+ search...  check collision: 126 28 5.073866362980880e-002
+ search...  check collision: 13 21 6.544306764837016e-002
+ search...  check collision: 17 85 5.238427420651882e-001
+ Event #16: 16 21 4.146985434082984e-002 
+   16 BOX: x 3 | y 2 | z 1
+   21 BOX: x 3 | y 2 | z 1 
+
+21  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ SEARCH TRUE 85 -1
+    retime: 21 
+ search...  check collision: 21 3 4.238162697886728e-001
+ search...  check collision: 21 13 6.196790257633505e-002
+ search...  check collision: 21 82 1.052820192709267e-001
+ search...  check collision: 21 106 2.966019656546954e-003! 
+    retime result: 21 106 2.966019656546954e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+    retime: 85 
+ search...  check collision: 85 17 3.746446202473721e-001    retime result: 85 -6 2.715091502944041e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ Event #21: 21 106 2.966019656546954e-003 
+   21 BOX: x 3 | y 2 | z 1
+   106 BOX: x 3 | y 3 | z 1 
+
+21  16  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 126 2.765406336380143e-001
+ search...  check collision: 21 10 5.572192666056066e-001
+ search...  check collision: 21 16 4.347339540050673e-004! 
+
+ search...  check collision: 21 30 2.878874528672452e-001    retime result: 21 16 4.347339540050673e-004 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ Event #21: 21 16 4.347339540050673e-004 
+   21 BOX: x 3 | y 2 | z 1
+   16 BOX: x 3 | y 2 | z 1 
+
+21  16  
+Trying to create virt particle 85... 
+Starting to create virt particle 85... 
+
+ SEARCH TRUE 85 -1
+    retime: 21 
+ search...  check collision: 21 58 1.510730377747309e+000
+ search...  check collision: 21 13 9.712663131285976e-002
+ search...  check collision: 21 82 1.002599035521137e-001    retime result: 21 -6 3.175414965067213e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+    retime: 85 
+ search...  check collision: 85 43 5.894213848717113e-001
+ search...  check collision: 85 66 5.289990738093883e-002! 
+    retime result: 85 66 5.289990738093883e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 16 28 1.066501522588874e-001
+ search...  check collision: 6 28 1.512122605442926e+000
+ search...  check collision: 73 85 1.954465594864118e-002
+ search...  check collision: 2 28 6.007030158284771e-001
+ search...  check collision: 35 88 7.645888620313938e-001
+ Event #62: 62 88 6.440877104229031e-002 
+   62 BOX: x 7 | y 2 | z 1
+   88 BOX: x 6 | y 3 | z 1 
+
+24  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 88 
+ search...  check collision: 88 56 6.994284247679576e-001
+ search...  check collision: 88 38 8.108624024863367e-002! 
+    retime result: 88 38 8.108624024863367e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+    retime: 24     retime result: 24 -1 5.550748823407868e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ search...  check collision: 89 88 2.614166390795845e-001
+ search...  check collision: 25 88 1.457659908222121e-001
+ search...  check collision: 25 88 1.457659908222121e-001
+ search...  check collision: 104 92 1.405295902408523e-001
+ search...  check collision: 104 21 2.465579335766815e-001! 
+    retime result: 104 21 2.465579335766815e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ search...  check collision: 25 88 1.250255827093153e-001
+ STEPS:: 6 
+
+ particle 21, x, y, z: -4.05166e+000, 2.33924e+000, -9.63071e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 104, 21, 2.465579335766815e-001 
+ 85 i_copy 
+  particle 85, x, y, z: 1.05431e+001, -3.62737e+000, 3.29190e+000 
+ particle x_box, y_box, z_box: 7, 0, 3 
+ particle event: 85, 66, 5.289990738093883e-002 
+
+ particle 28, x, y, z: -1.83175e+000, -1.30680e+000, -2.74403e+000 
+ particle x_box, y_box, z_box: 3, 1, 1 
+ particle event: 28, -100, 8.136739719959159e-002 
+ 92 i_copy 
+  particle 92, x, y, z: -6.81346e+000, 3.22228e+000, 2.53521e+000 
+ particle x_box, y_box, z_box: 2, 3, 2 
+ particle event: 92, -5, 2.283094499866738e-001 
+
+ particle 24, x, y, z: -1.15815e+001, -2.73301e+000, -2.14483e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -1, 5.550748823407868e-002 
+ 88 i_copy 
+  particle 88, x, y, z: 4.77671e+000, -1.39211e+000, -3.17055e+000 
+ particle x_box, y_box, z_box: 5, 1, 0 
+ particle event: 88, 38, 8.108624024863367e-002 
+
+
+
+ search...  check collision: 10 28 3.293053948209378e-002! 
+    retime result: 10 28 3.293053948209378e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 1 
+10  
+
+ search...  check collision: 31 92 8.609539775214313e-001
+ search...  check collision: 13 21 5.974850794231969e-002! 
+
+ search...  check collision: 112 88 6.066680965675043e-001
+ search...  check collision: 13 21 7.135283286014796e-002! 
+    retime result: 13 21 7.135283286014796e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  16  
+
+ Event #85: 85 66 5.289990738093883e-002 
+   85 BOX: x 7 | y 0 | z 3
+   66 BOX: x 7 | y 1 | z 3 
+
+21  
+particle 85 was destroyed... 
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 8 6.360603073099862e-001
+ search...  check collision: 21 13 5.682105800330869e-002! 
+
+ search...  check collision: 21 82 1.734702831322846e-001    retime result: 21 13 5.682105800330869e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  
+
+ search...  check collision: 90 21 2.444964513211204e-001
+ search...  check collision: 66 28 1.805156122786982e-001
+ Event #10: 10 28 3.293053948209378e-002 
+   10 BOX: x 3 | y 1 | z 1
+   28 BOX: x 3 | y 1 | z 1 
+
+10  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28 
+ search...  check collision: 28 16 6.711588511284714e-002    retime result: 28 -7 3.466053322398880e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 1 
+10  
+    retime: 92 
+ search...  check collision: 92 7 5.665978904333681e-001
+ search...  check collision: 92 1 5.794096128053623e-001
+ search...  check collision: 92 104 2.365352570210235e-001
+ search...  check collision: 92 20 1.482786301391607e-001
+ search...  check collision: 92 17 1.482396833313800e-001
+ search...  check collision: 92 23 9.873639072976802e-001    retime result: 92 -7 3.466053322398880e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 1 
+10  
+
+ Event #24: 24 -1 5.550748823407868e-002 
+   24 BOX: x 1 | y 1 | z 1
+   -1 BOX: x 0 | y 0 | z 0 
+
+24  18  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 24 
+ search...  check collision: 24 6 2.440473781208201e-001! 
+
+ search...  check collision: 24 2 6.639980182124448e-001    retime result: 24 6 2.440473781208201e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  18  
+    retime: 88 
+ search...  check collision: 88 42 2.817318558825675e-001
+ search...  check collision: 88 32 3.154526612838028e-002! 
+    retime result: 88 32 3.154526612838028e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  18  
+
+ search...  check collision: 1 92 5.582708968178052e-001
+ search...  check collision: 7 92 5.383437128794810e-001
+ search...  check collision: 16 28 3.767995198663388e-002
+ search...  check collision: 5 92 3.970520408278597e-001
+ search...  check collision: 82 21 1.339433087566138e-001
+ Event #28: 28 -7 3.466053322398880e-002 
+   28 BOX: x 3 | y 1 | z 1
+   -7 BOX: x 0 | y 0 | z 0 
+
+10  28  
+particle 92 was destroyed... 
+    retime: 28 
+ search...  check collision: 28 20 1.136180969151719e-001
+ search...  check collision: 28 17 1.135791501073911e-001
+ search...  check collision: 28 5 3.922427047569601e-001
+ search...  check collision: 28 1 5.447490795813733e-001
+ search...  check collision: 28 23 9.527033740736917e-001    retime result: 28 -7 -0.000000000000000e+000 
+    particle data 28: x_box, y_box, z_box: 3 1 3 
+
+
+ Event #28: 28 -7 -0.000000000000000e+000 
+   28 BOX: x 3 | y 1 | z 3
+   -7 BOX: x 0 | y 0 | z 0 
+
+
+    retime: 28 
+ search...  check collision: 28 20 1.136180969151719e-001! 
+
+ search...  check collision: 28 17 1.135791501073911e-001
+ search...  check collision: 28 5 3.922427047569601e-001
+ search...  check collision: 28 1 5.447490795813733e-001
+ search...  check collision: 28 56 1.138727665248534e+000
+ search...  check collision: 28 23 9.527033740736917e-001    retime result: 28 20 1.136180969151719e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  5  11  
+
+ search...  check collision: 34 88 1.102634614138619e+000
+ Event #88: 88 32 3.154526612838028e-002 
+   88 BOX: x 5 | y 1 | z 0
+   32 BOX: x 6 | y 1 | z 1 
+
+24  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 88 
+ search...  check collision: 88 19 1.452705889249892e-002! 
+
+ search...  check collision: 88 27 1.108286260961968e-001    retime result: 88 19 1.452705889249892e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+    retime: 24     retime result: 24 -5 5.285862699437316e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ STEPS:: 7 
+
+ particle 21, x, y, z: -4.04845e+000, 2.38874e+000, -9.98374e-001 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, 13, 5.682105800330869e-002 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -2.69299e+000, -1.89780e+000, 2.95178e+000 
+ particle x_box, y_box, z_box: 3, 1, 2 
+ particle event: 28, 20, 1.136180969151719e-001 
+ -1 i_copy 
+ 
+ particle 24, x, y, z: -1.16844e+001, -2.77042e+000, -2.11621e+000 
+ particle x_box, y_box, z_box: 1, 1, 1 
+ particle event: 24, -5, 5.285862699437316e-002 
+ 88 i_copy 
+  particle 88, x, y, z: -8.34674e+000, 3.13314e+000, 7.23269e-001 
+ particle x_box, y_box, z_box: 2, 3, 2 
+ particle event: 88, 19, 1.452705889249892e-002 
+
+
+
+ Event #21: 21 13 5.682105800330869e-002 
+   21 BOX: x 3 | y 2 | z 1
+   13 BOX: x 3 | y 2 | z 2 
+
+
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 90 1.598947429049344e-001! 
+    retime result: 21 90 1.598947429049344e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 13 28 1.312981161389353e+000
+ Event #88: 88 19 1.452705889249892e-002 
+   88 BOX: x 2 | y 3 | z 2
+   19 BOX: x 1 | y 2 | z 2 
+
+24  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 88 
+ search...  check collision: 88 27 3.788524205660716e-002! 
+    retime result: 88 27 3.788524205660716e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+    retime: 24     retime result: 24 -5 5.416433187636072e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ search...  check collision: 17 28 4.339128875808195e-002! 
+    retime result: 17 28 4.339128875808195e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  5  11  
+
+ search...  check collision: 12 21 4.669378923090218e-002
+ search...  check collision: 8 88 5.485536859831218e-001
+ search...  check collision: 12 21 4.391110382390319e-002! 
+    retime result: 12 21 4.391110382390319e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 1 28 3.166595437989322e-001
+ search...  check collision: 13 28 5.577133191657366e-001
+ Event #88: 88 27 3.788524205660716e-002 
+   88 BOX: x 2 | y 3 | z 2
+   27 BOX: x 1 | y 2 | z 2 
+
+24  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 88 
+ search...  check collision: 88 15 1.944811625613120e-001    retime result: 88 -7 1.761625759702369e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+    retime: 24 
+ search...  check collision: 24 6 2.577717130211709e-001    retime result: 24 -5 1.761625759702389e-002 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ search...  check collision: 73 28 8.033031352978731e-002
+ Event #17: 17 28 4.339128875808195e-002 
+   17 BOX: x 3 | y 1 | z 2
+   28 BOX: x 3 | y 1 | z 2 
+
+20  17  5  11  
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28 
+ search...  check collision: 28 97 1.138289937888175e-001
+ search...  check collision: 28 20 9.913728552049989e-002    retime result: 28 -15 2.876502184604748e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  5  11  
+    retime: 92 
+ search...  check collision: 92 94 2.665554823287816e+000
+ search...  check collision: 92 127 4.039896544081637e-002    retime result: 92 -5 3.288391384903923e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  5  11  
+
+ Event #88: 88 -7 1.761625759702369e-002 
+   88 BOX: x 1 | y 2 | z 3
+   -7 BOX: x 0 | y 0 | z 0 
+
+24  
+    retime: 88 
+ search...  check collision: 88 15 1.768649049642880e-001! 
+    retime result: 88 15 1.768649049642880e-001 
+    particle data 24: x_box, y_box, z_box: 1 1 1 
+24  
+
+ Event #24: 24 -5 1.761625759702389e-002 
+   24 BOX: x 1 | y 1 | z 1
+   -5 BOX: x 0 | y 0 | z 0 
+
+24  
+particle 88 was destroyed... 
+    retime: 24 
+ search...  check collision: 24 14 5.778697292720213e-001
+ search...  check collision: 24 15 9.413745854469181e-002! 
+
+ search...  check collision: 24 58 4.702346517609961e-001    retime result: 24 15 9.413745854469181e-002 
+    particle data 24: x_box, y_box, z_box: 1 2 2 
+19  27  
+
+ Event #12: 12 21 4.391110382390319e-002 
+   12 BOX: x 2 | y 2 | z 1
+   21 BOX: x 3 | y 2 | z 1 
+
+
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 90 1.160541971172871e-001
+ search...  check collision: 21 82 2.252483686240929e-002! 
+
+ search...  check collision: 21 30 3.512029576716058e-001    retime result: 21 82 2.252483686240929e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ STEPS:: 8 
+
+ particle 21, x, y, z: -3.97806e+000, 2.30661e+000, -1.37196e+000 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, 82, 2.252483686240929e-002 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -2.74184e+000, -1.87745e+000, 2.71992e+000 
+ particle x_box, y_box, z_box: 3, 1, 2 
+ particle event: 28, -15, 2.876502184604748e-002 
+ 92 i_copy 
+  particle 92, x, y, z: 5.61093e+000, 3.18365e+000, 1.33894e+000 
+ particle x_box, y_box, z_box: 6, 3, 2 
+ particle event: 92, -5, 3.288391384903923e-001 
+
+ particle 24, x, y, z: -1.10266e+001, 1.08003e+000, 2.95178e+000 
+ particle x_box, y_box, z_box: 1, 2, 2 
+ particle event: 24, 15, 9.413745854469181e-002 
+ -1 i_copy 
+ 
+
+
+ search...  check collision: 29 28 7.985214476820883e-002
+ search...  check collision: 14 24 4.823595331949801e-001
+ search...  check collision: 127 92 2.879491789615221e-002! 
+    retime result: 127 92 2.879491789615221e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  28  
+
+ search...  check collision: 45 92 6.359200074794718e-001
+ Event #28: 28 -15 2.876502184604748e-002 
+   28 BOX: x 3 | y 1 | z 2
+   -15 BOX: x 0 | y 0 | z 0 
+
+20  17  28  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28 
+ search...  check collision: 28 97 8.506397194277028e-002! 
+
+ search...  check collision: 28 29 5.999938728766979e-002! 
+    retime result: 28 29 5.999938728766979e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  11  
+    retime: 92 
+ search...  check collision: 92 74 1.106169600383182e-001! 
+    retime result: 92 74 1.106169600383182e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  11  
+
+ Event #21: 21 82 2.252483686240929e-002 
+   21 BOX: x 3 | y 2 | z 1
+   82 BOX: x 3 | y 3 | z 1 
+
+
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 90 7.632581395045490e-002
+ search...  check collision: 21 30 5.511287242615633e-001    retime result: 21 -17 1.974781102843326e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 4 24 1.921846334950629e-001
+ search...  check collision: 4 24 1.943938607587822e-001
+ search...  check collision: 30 21 1.772561788925890e-001! 
+    retime result: 30 21 1.772561788925890e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 1 92 2.523475054152603e-001
+ search...  check collision: 90 92 1.761649672232126e-001
+ Event #28: 28 29 5.999938728766979e-002 
+   28 BOX: x 3 | y 1 | z 2
+   29 BOX: x 4 | y 1 | z 2 
+
+20  17  11  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 28     retime result: 28 -5 2.323438628541711e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  11  
+    retime: 92 
+ search...  check collision: 92 59 2.454005925042037e-001
+ search...  check collision: 92 31 1.863901510472510e-001! 
+
+ search...  check collision: 92 125 2.182346742797688e-001
+ search...  check collision: 92 51 3.993123441640807e-001    retime result: 92 31 1.863901510472510e-001 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+20  17  11  
+
+ search...  check collision: 47 92 4.320272040648420e-001
+ Event #24: 24 15 9.413745854469181e-002 
+   24 BOX: x 1 | y 2 | z 2
+   15 BOX: x 1 | y 1 | z 2 
+
+19  43  
+Trying to create virt particle 88... 
+Starting to create virt particle 88... 
+
+ SEARCH TRUE 88 -1
+    retime: 24 
+ search...  check collision: 24 104 9.223645318479878e-002! 
+
+ search...  check collision: 24 95 2.256616544116892e-001    retime result: 24 104 9.223645318479878e-002 
+    particle data 24: x_box, y_box, z_box: 1 2 2 
+19  43  
+    retime: 88     retime result: 88 -6 2.052854729456440e-001 
+    particle data 24: x_box, y_box, z_box: 1 2 2 
+19  43  
+
+ search...  check collision: 69 21 1.705110434128350e-002! 
+    retime result: 69 21 1.705110434128350e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ STEPS:: 9 
+
+ particle 21, x, y, z: -3.75204e+000, 2.17997e+000, -1.66305e+000 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 69, 21, 1.705110434128350e-002 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -2.64013e+000, -2.10683e+000, 2.78251e+000 
+ particle x_box, y_box, z_box: 3, 1, 2 
+ particle event: 28, -5, 2.323438628541711e-001 
+ 92 i_copy 
+  particle 92, x, y, z: 6.24630e-001, 3.79674e+000, 1.78378e+000 
+ particle x_box, y_box, z_box: 4, 3, 2 
+ particle event: 92, -100, 1.863901510472510e-001 
+
+ particle 24, x, y, z: -1.06467e+001, 8.68804e-001, 2.67957e+000 
+ particle x_box, y_box, z_box: 1, 2, 2 
+ particle event: 24, 104, 9.223645318479878e-002 
+ 88 i_copy 
+  particle 88, x, y, z: -3.96649e+000, -3.22399e+000, 9.17548e-001 
+ particle x_box, y_box, z_box: 3, 0, 2 
+ particle event: 88, -6, 2.052854729456440e-001 
+
+
+
+ search...  check collision: 95 24 1.991099484494979e-001
+ search...  check collision: 12 21 2.083858642795475e-001
+ Event #69: 69 21 1.705110434128350e-002 
+   69 BOX: x 3 | y 3 | z 0
+   21 BOX: x 3 | y 2 | z 1 
+
+
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 0 5.769206105384910e-002
+ search...  check collision: 21 17 2.016394166369426e-001
+ search...  check collision: 21 54 2.815297517613917e-001! 
+
+ search...  check collision: 21 30 6.454440461585656e-002
+ search...  check collision: 21 23 2.308280988716237e-001    retime result: 21 54 2.815297517613917e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 0 21 4.796693217688369e-002
+ search...  check collision: 23 92 5.610549727483453e-001
+ search...  check collision: 30 21 4.317459975525697e-002! 
+    retime result: 30 21 4.317459975525697e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 30 21 3.100204021652939e-002! 
+
+ search...  check collision: 30 92 1.082719939388167e+000
+ search...  check collision: 4 88 7.299331774587946e-001
+ search...  check collision: 30 21 2.492806865110475e-002! 
+
+ search...  check collision: 30 92 1.932811821889866e+000    retime result: 30 21 2.492806865110475e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+
+
+ search...  check collision: 23 92 3.709920099203141e-001
+ search...  check collision: 31 92 8.853823021857349e-002
+ search...  check collision: 95 24 3.028735415746687e-001
+ Event #24: 24 104 9.223645318479878e-002 
+   24 BOX: x 1 | y 2 | z 2
+   104 BOX: x 1 | y 2 | z 3 
+
+19  43  
+particle 88 was destroyed... 
+Trying to create virt particle 88... 
+    retime: 24 
+ search...  check collision: 24 1 6.338599823556594e-001
+ search...  check collision: 24 95 3.253893882231241e-001! 
+    retime result: 24 95 3.253893882231241e-001 
+    particle data 24: x_box, y_box, z_box: 1 2 2 
+19  43  
+
+ search...  check collision: 0 21 1.175489082962522e-002
+ search...  check collision: 1 24 4.041194975712196e-001
+ search...  check collision: 0 21 1.027348259612835e-002! 
+    retime result: 0 21 1.027348259612835e-002 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  
+
+ search...  check collision: 76 28 1.291288479318568e-001
+ search...  check collision: 19 24 3.143081699676518e-001
+ Event #0: 0 21 1.027348259612835e-002 
+   0 BOX: x 3 | y 2 | z 1
+   21 BOX: x 3 | y 2 | z 1 
+
+21  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 17 1.318164450411135e-001
+ search...  check collision: 21 54 1.727426832845180e-001! 
+
+ search...  check collision: 21 30 2.510268697278093e-003! 
+    retime result: 21 30 2.510268697278093e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  
+
+ Event #21: 21 30 2.510268697278093e-003 
+   21 BOX: x 3 | y 2 | z 1
+   30 BOX: x 4 | y 2 | z 1 
+
+21  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 17 1.913285249227731e-001
+ search...  check collision: 21 0 4.230983500300072e-003! 
+
+ search...  check collision: 21 13 8.943376584380013e-002
+ search...  check collision: 21 54 4.640668081609451e-001    retime result: 21 0 4.230983500300072e-003 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  
+
+ STEPS:: 10 
+
+ particle 21, x, y, z: -3.61213e+000, 1.72178e+000, -1.56970e+000 
+ particle x_box, y_box, z_box: 3, 2, 1 
+ particle event: 21, 0, 4.230983500300072e-003 
+ -1 i_copy 
+ 
+ particle 28, x, y, z: -2.64013e+000, -2.10683e+000, 2.78251e+000 
+ particle x_box, y_box, z_box: 3, 1, 2 
+ particle event: 28, -5, 2.323438628541711e-001 
+ 92 i_copy 
+  particle 92, x, y, z: 6.24630e-001, 3.79674e+000, 1.78378e+000 
+ particle x_box, y_box, z_box: 4, 3, 2 
+ particle event: 92, -100, 1.863901510472510e-001 
+
+ particle 24, x, y, z: -1.04105e+001, 1.15289e+000, 2.80188e+000 
+ particle x_box, y_box, z_box: 1, 2, 2 
+ particle event: 24, -100, 3.253893882231241e-001 
+ -1 i_copy 
+ 
+
+
+ Event #21: 21 0 4.230983500300072e-003 
+   21 BOX: x 3 | y 2 | z 1
+   0 BOX: x 3 | y 2 | z 1 
+
+21  
+Trying to create virt particle 85... 
+    retime: 21 
+ search...  check collision: 21 17 1.593251351297605e-001
+ search...  check collision: 21 13 1.458766787867540e-001! 
+
+ search...  check collision: 21 54 3.151685394667247e-001
+ search...  check collision: 21 92 1.628410867232341e+000
+ search...  check collision: 21 92 1.628410867232341e+000    retime result: 21 13 1.458766787867540e-001 
+    particle data 21: x_box, y_box, z_box: 3 2 1 
+21  
+
+ search...  check collision: 0 24 7.511785605104270e-001
+ search...  check collision: 23 92 3.299800749587706e-001
+ search...  check collision: 59 92 6.147674774676477e-002

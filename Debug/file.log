@@ -1,0 +1,920 @@
+2.951782e+000 3.662863e+000
+ x, y, z: -6.410010e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 2 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -6.410010e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 2 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -6.410010e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 2 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -6.410010e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 2 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -8.139124e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 2 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -4.680896e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 3 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -8.139124e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 2 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -8.139124e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 2 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -8.139124e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 2 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -8.139124e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 2 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -4.680896e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 3 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -4.680896e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 3 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -4.680896e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 3 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -4.680896e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 3 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -9.868238e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 1 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -9.868238e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 1 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -2.951782e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 3 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -2.951782e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 3 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -9.868238e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 1 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -9.868238e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 1 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -2.951782e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 3 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -2.951782e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 3 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.159735e+001 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 1 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.222668e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 4 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.159735e+001 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 1 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.159735e+001 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 1 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -1.159735e+001 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 1 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.159735e+001 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 1 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -1.222668e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 4 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.222668e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 4 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: -1.222668e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 4 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: -1.222668e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 4 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 6.410010e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 6 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 6.410010e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 6 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 6.410010e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 6 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 6.410010e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 6 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 4.680896e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 5 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 8.139124e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 6 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 4.680896e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 5 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 4.680896e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 5 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 4.680896e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 5 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 4.680896e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 5 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 8.139124e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 6 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 8.139124e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 6 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 8.139124e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 6 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 8.139124e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 6 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 2.951782e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 5 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 2.951782e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 5 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 9.868238e+000 -4.440892e-016 -1.729114e+000 
+ x_box, y_box, z_box: 7 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 9.868238e+000 -4.440892e-016 1.729114e+000 
+ x_box, y_box, z_box: 7 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 2.951782e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 5 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 2.951782e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 5 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 9.868238e+000 -1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 7 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 9.868238e+000 1.729114e+000 -4.440892e-016 
+ x_box, y_box, z_box: 7 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.222668e+000 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 4 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.159735e+001 -4.440892e-016 -4.440892e-016 
+ x_box, y_box, z_box: 7 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.222668e+000 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 4 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.222668e+000 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 4 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 1.222668e+000 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 4 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.222668e+000 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 4 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 1.159735e+001 -1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 7 1 1 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.159735e+001 -1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 7 1 2 
+ Y: [-2.951782e+000 ; 0.000000e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] 
+ x, y, z: 1.159735e+001 1.729114e+000 -1.729114e+000 
+ x_box, y_box, z_box: 7 2 1 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [-2.951782e+000 ; 0.000000e+000] 
+ x, y, z: 1.159735e+001 1.729114e+000 1.729114e+000 
+ x_box, y_box, z_box: 7 2 2 
+ Y: [0.000000e+000 ; 2.951782e+000] 
+ Z: [0.000000e+000 ; 2.951782e+000] global_E = 9.215607548454764e+002global_E = 9.215607548454764e+002global_E = 9.215607548454764e+002
+ Next event: 0 -6 4.030688e-016
+
+time_queue[k].im = 8  time_queue[k].jm = 3  3
+
+ Next event: 1 -6 4.030688e-016
+
+ Next event: 32 -6 4.030688e-016
+
+time_queue[k].im = 40  time_queue[k].jm = 35  35
+
+ Next event: 33 -6 4.030688e-016
+
+ Next event: 47 -6 5.341262e-016
+
+ Next event: 48 -6 5.341262e-016
+
+ Next event: 15 -6 5.341262e-016
+
+ Next event: 16 -6 5.341262e-016
+
+ Next event: 36 -8 9.247338e-016
+
+ Next event: 37 -8 9.247338e-016
+
+ Next event: 4 -8 9.247338e-016
+
+ Next event: 5 -8 9.247338e-016
+
+ Next event: 36 -6 1.456031e-015
+
+ Next event: 37 -6 1.456031e-015
+
+ Next event: 4 -6 1.456031e-015
+
+ Next event: 5 -6 1.456031e-015
+
+ Next event: 18 -8 3.028641e-015
+
+ Next event: 21 -8 3.028641e-015
+
+ Next event: 50 -8 3.028641e-015
+
+ Next event: 53 -8 3.028641e-015
+
+time_queue[k].im = 40  time_queue[k].jm = 40  37
+
+ Next event: 21 5 5.489091e-002
+
+ Next event: 53 37 5.489091e-002
+
+ Next event: 55 52 5.641377e-002
+
+time_queue[k].im = 42  time_queue[k].jm = 42  60
+
+ Next event: 23 20 5.641377e-002
+
+ Next event: 5 -5 1.723301e-003
+
+ Next event: 37 -5 1.723301e-003
+
+ Next event: 55 -6 1.822667e-003
+
+ Next event: 23 -6 1.822667e-003
+
+ Next event: 19 9 6.081512e-002
+
+ Next event: 51 41 6.081512e-002
+
+ Next event: 52 60 5.144986e-003
+
+ Next event: 20 28 5.144986e-003
+
+ Next event: 52 -8 2.534906e-003
+
+ Next event: 20 -8 2.534906e-003
+
+time_queue[k].im = 57  time_queue[k].jm = 29  29
+
+ Next event: 19 -16 1.899704e-002
+... Create virt particle destroy ...Trying to create virt particle 83...Starting to create virt particle 83...
+time_queue[k].im = 16  time_queue[k].jm = 8  8
+
+ Next event: 51 -16 1.899704e-002
+... Create virt particle destroy ...Trying to create virt particle 115...Starting to create virt particle 115...
+ SEARCH!!! 115 83 
+
+ Next event: 33 -18 7.984394e-002
+... Create virt particle destroy ...Trying to create virt particle 97...Starting to create virt particle 97...
+ Next event: 1 -18 7.984394e-002
+... Create virt particle destroy ...Trying to create virt particle 65...Starting to create virt particle 65...
+ Next event: 19 8 2.399720e-003
+... Create virt particle destroy ...particle 83 was destroyed...Trying to create virt particle 83...Starting to create virt particle 83...
+ Next event: 51 40 2.399720e-003
+... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 33  time_queue[k].jm = 115  i = 115
+particle 115 was destroyed...Trying to create virt particle 115...Starting to create virt particle 115...
+ Next event: 0 3 8.315793e-002
+
+ Next event: 32 35 8.315793e-002
+
+ Next event: 50 -15 8.325545e-002
+... Create virt particle destroy ...Trying to create virt particle 114...Starting to create virt particle 114...
+ Next event: 18 -15 8.325545e-002
+... Create virt particle destroy ...Trying to create virt particle 82...Starting to create virt particle 82...
+ SEARCH!!! 82 114 
+
+ Next event: 50 56 5.310635e-003
+... Create virt particle destroy ...particle 114 was destroyed...Trying to create virt particle 114...Starting to create virt particle 114...
+ Next event: 18 24 5.310635e-003
+... Create virt particle destroy ...particle 82 was destroyed...Trying to create virt particle 82...Starting to create virt particle 82...
+ SEARCH!!! 82 114 
+
+ Next event: 21 13 3.944381e-002
+
+ Next event: 53 45 3.944381e-002
+
+ Next event: 33 -100 1.506560e-002
+
+time: 9.433471977758914e-002  p1.t: 7.984393988900770e-002  p1.dt: 1.506560415650089e-002
+
+ Next event: 55 -1 4.187404e-002
+
+ Next event: 21 -7 6.207060e-003
+
+ IM = 21, z+box = 1 
+
+ Next event: 53 -7 6.207060e-003
+
+ IM = 53, z+box = 1 
+
+ Next event: 52 61 3.710300e-002
+
+ Next event: 20 29 3.710300e-002
+
+ Next event: 50 115 1.455580e-002
+... Create virt particle destroy ...particle 115 was destroyed...Trying to create virt particle 115...... Create virt particle destroy ...particle 114 was destroyed...Trying to create virt particle 114...
+time_queue[k].im = 23  time_queue[k].jm = 54  54
+
+ Next event: 18 83 1.455580e-002
+... Create virt particle destroy ...particle 83 was destroyed...Trying to create virt particle 83...... Create virt particle destroy ...particle 82 was destroyed...Trying to create virt particle 82...
+ Next event: 32 -5 3.160617e-002
+
+ Next event: 0 -5 3.160617e-002
+
+ Next event: 61 -1 1.367897e-002
+
+ Next event: 53 -2 1.679671e-002
+
+ Next event: 9 -18 6.169520e-002
+... Create virt particle destroy ...Trying to create virt particle 73...Starting to create virt particle 73...
+ Next event: 41 -18 6.169520e-002
+... Create virt particle destroy ...Trying to create virt particle 105...Starting to create virt particle 105...
+ Next event: 29 57 2.273257e-002
+
+ Next event: 50 54 2.242289e-002
+
+ Next event: 18 22 2.242289e-002
+
+ Next event: 56 -17 3.733351e-002
+... Create virt particle destroy ...Trying to create virt particle 120...Starting to create virt particle 120...
+ 120 xbox = 4, ybox = 1, zbox = 3
+
+ 56 xbox = 4, ybox = 1, zbox = 1
+
+ Next event: 24 -17 3.733351e-002
+... Create virt particle destroy ...Trying to create virt particle 88...Starting to create virt particle 88...
+ SEARCH!!! 88 120 
+
+ Next event: 54 -6 3.491858e-003
+
+ Next event: 22 -6 3.491858e-003
+
+ Next event: 5 11 7.652379e-002
+
+time_queue[k].im = 2  time_queue[k].jm = 2  0
+
+ Next event: 37 43 7.652379e-002
+
+time_queue[k].im = 34  time_queue[k].jm = 34  32
+
+ Next event: 62 -1 1.334023e-001
+
+ Next event: 26 -1 1.334023e-001
+
+ Next event: 25 -1 1.334023e-001
+
+ Next event: 50 57 1.020777e-002
+
+ Next event: 8 -100 4.893882e-002
+
+time: 1.357525475703599e-001  p1.t: 8.856608739411460e-002  p1.dt: 4.893881605713902e-002
+
+ Next event: 54 23 1.146607e-002
+
+ Next event: 58 30 1.436565e-001
+
+ Next event: 61 52 2.910152e-002
+
+ Next event: 25 18 1.368540e-002
+
+ Next event: 37 32 1.545565e-002
+
+ Next event: 5 0 1.545565e-002
+
+ Next event: 13 -18 5.468760e-002
+... Create virt particle destroy ...Trying to create virt particle 77...Starting to create virt particle 77...
+ Next event: 45 -18 5.468760e-002
+... Create virt particle destroy ...Trying to create virt particle 109...Starting to create virt particle 109...
+ Next event: 8 -17 1.619428e-002
+... Create virt particle destroy ...Trying to create virt particle 72...Starting to create virt particle 72...
+ Next event: 40 -17 6.973494e-002
+... Create virt particle destroy ...Trying to create virt particle 104...Starting to create virt particle 104...
+ SEARCH!!! 104 72 
+
+ Next event: 88 1 2.620425e-002
+... Create virt particle destroy ...particle 65 was destroyed...Trying to create virt particle 65...... Create virt particle destroy ...particle 88 was destroyed...Trying to create virt particle 88...
+ Next event: 8 77 4.207327e-003
+... Create virt particle destroy ...particle 77 was destroyed...Trying to create virt particle 77...... Create virt particle destroy ...particle 72 was destroyed...Trying to create virt particle 72...
+ Next event: 40 109 4.207327e-003
+... Create virt particle destroy ...particle 109 was destroyed...Trying to create virt particle 109...... Create virt particle destroy ...particle 104 was destroyed...Trying to create virt particle 104...
+ Next event: 37 34 7.703373e-003
+
+ Next event: 5 2 7.703373e-003
+
+ Next event: 21 -16 6.135866e-002
+... Create virt particle destroy ...Trying to create virt particle 85...Starting to create virt particle 85...
+ Next event: 53 -16 4.456195e-002
+... Create virt particle destroy ...Trying to create virt particle 117...Starting to create virt particle 117...
+ SEARCH!!! 117 85 
+
+ Next event: 57 -18 2.781341e-002
+... Create virt particle destroy ...Trying to create virt particle 121...Starting to create virt particle 121...
+ Next event: 40 35 7.414675e-003
+
+ Next event: 8 3 7.414675e-003
+
+ Next event: 47 59 1.642688e-001
+
+ Next event: 15 27 1.642688e-001
+
+ Next event: 40 -17 4.504316e-003
+... Create virt particle destroy ...Trying to create virt particle 104...Starting to create virt particle 104...
+ Next event: 8 -17 4.504316e-003
+... Create virt particle destroy ...Trying to create virt particle 72...Starting to create virt particle 72...
+ Next event: 57 120 4.664959e-003
+... Create virt particle destroy ...particle 120 was destroyed...Trying to create virt particle 120...... Create virt particle destroy ...particle 121 was destroyed...Trying to create virt particle 121...
+ Next event: 60 -17 1.099793e-001
+... Create virt particle destroy ...Trying to create virt particle 124...Starting to create virt particle 124...
+ Next event: 28 -17 1.099793e-001
+... Create virt particle destroy ...Trying to create virt particle 92...Starting to create virt particle 92...
+ Next event: 19 4 6.893461e-002
+
+ Next event: 51 36 6.893461e-002
+
+ Next event: 30 23 3.146819e-002
+
+ Next event: 14 6 1.768899e-001
+
+ Next event: 46 38 1.768899e-001
+
+ Next event: 34 -15 2.188679e-002
+... Create virt particle destroy ...Trying to create virt particle 98...Starting to create virt particle 98...
+ Next event: 2 -15 2.188679e-002
+... Create virt particle destroy ...Trying to create virt particle 66...Starting to create virt particle 66...
+ Next event: 20 -15 7.910634e-002
+... Create virt particle destroy ...Trying to create virt particle 84...Starting to create virt particle 84...
+ Next event: 52 -15 3.649074e-002
+... Create virt particle destroy ...Trying to create virt particle 116...Starting to create virt particle 116...
+ Next event: 25 -18 3.499529e-002
+... Create virt particle destroy ...Trying to create virt particle 89...Starting to create virt particle 89...
+ Next event: 41 -100 3.060555e-002
+
+time: 3.348928127348212e-002  p1.t: 3.353164655153160e-003  p1.dt: 3.060554950279691e-002
+
+ Next event: 36 -5 1.117176e-002
+
+ Next event: 4 -5 1.117176e-002
+
+ Next event: 51 -8 1.168520e-002
+
+ Next event: 19 -8 1.168520e-002
+
+ Next event: 30 -17 1.146207e-002
+... Create virt particle destroy ...Trying to create virt particle 94...Starting to create virt particle 94...
+ Next event: 57 50 1.880056e-002
+
+ Next event: 24 -15 3.516736e-002
+... Create virt particle destroy ...Trying to create virt particle 88...Starting to create virt particle 88...
+ SEARCH!!! 88 72 
+
+ Next event: 3 -16 2.381438e-002
+... Create virt particle destroy ...Trying to create virt particle 67...Starting to create virt particle 67...
+ Next event: 35 -16 2.381438e-002
+... Create virt particle destroy ...Trying to create virt particle 99...Starting to create virt particle 99...
+ SEARCH!!! 99 97 
+
+ Next event: 29 -15 6.763961e-002
+... Create virt particle destroy ...Trying to create virt particle 93...Starting to create virt particle 93...
+ Next event: 22 -1 6.393557e-002
+
+ Next event: 62 55 6.067806e-002
+
+ Next event: 40 32 2.630980e-002
+... Create virt particle destroy ...particle 104 was destroyed...Trying to create virt particle 104...Starting to create virt particle 104...
+ Next event: 8 0 2.630980e-002
+... Create virt particle destroy ...particle 72 was destroyed...Trying to create virt particle 72...Starting to create virt particle 72...
+ SEARCH!!! 72 92 
+
+ SEARCH!!! 72 104 
+
+ Next event: 99 28 1.058660e-002
+... Create virt particle destroy ...particle 92 was destroyed...Trying to create virt particle 92...... Create virt particle destroy ...particle 99 was destroyed...Trying to create virt particle 99...Starting to create virt particle 99...
+ Next event: 22 26 8.245578e-003
+
+time_queue[k].im = 19  time_queue[k].jm = 27  27
+
+ Next event: 50 -15 1.653625e-002
+... Create virt particle destroy ...Trying to create virt particle 114...Starting to create virt particle 114...
+ SEARCH!!! 114 94 
+
+ Next event: 50 -7 2.383087e-004
+
+ IM = 50, z+box = 1 
+
+ Next event: 53 45 4.339324e-002
+... Create virt particle destroy ...particle 117 was destroyed...Trying to create virt particle 117...Starting to create virt particle 117...
+ Next event: 21 13 4.339324e-002
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ SEARCH!!! 85 104 
+
+time_queue[k].im = 8  time_queue[k].jm = 12  12
+
+ Next event: 3 -8 1.986606e-002
+
+ Next event: 62 -17 1.654267e-002
+... Create virt particle destroy ...Trying to create virt particle 126...Starting to create virt particle 126...
+ Next event: 26 -16 9.780369e-003
+... Create virt particle destroy ...Trying to create virt particle 90...Starting to create virt particle 90...
+time_queue[k].im = 104  time_queue[k].jm = 29  29
+
+ Next event: 38 97 3.442736e-002
+... Create virt particle destroy ...particle 97 was destroyed...Trying to create virt particle 97...Starting to create virt particle 97...
+ SEARCH!!! 97 2 
+
+ clear to -100: time_queue[k].im = 98  time_queue[k].jm = 33  i = 33
+
+ Next event: 11 -15 8.074719e-002
+... Create virt particle destroy ...Trying to create virt particle 75...Starting to create virt particle 75...
+ Next event: 43 -15 8.074719e-002
+... Create virt particle destroy ...Trying to create virt particle 107...Starting to create virt particle 107...
+ Next event: 22 27 1.455508e-002
+
+ Next event: 40 -4 2.146813e-002
+
+ Next event: 23 -8 4.277846e-002
+
+ Next event: 18 -15 7.543742e-002
+... Create virt particle destroy ...Trying to create virt particle 82...Starting to create virt particle 82...
+time_queue[k].im = 1  time_queue[k].jm = 1  3
+
+ Next event: 58 -16 7.950518e-002
+... Create virt particle destroy ...Trying to create virt particle 122...Starting to create virt particle 122...
+time_queue[k].im = 59  time_queue[k].jm = 54  54
+
+ Next event: 50 56 1.952990e-002
+... Create virt particle destroy ...particle 114 was destroyed...Trying to create virt particle 114...Starting to create virt particle 114...
+ Next event: 72 39 3.026263e-002
+... Create virt particle destroy ...particle 72 was destroyed...Trying to create virt particle 72...
+ Next event: 11 85 1.360396e-002
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ SEARCH!!! 85 90 
+
+ SEARCH!!! 85 29 
+... Create virt particle destroy ...particle 75 was destroyed...Trying to create virt particle 75...Starting to create virt particle 75...
+time_queue[k].im = 3  time_queue[k].jm = 3  82
+
+ Next event: 117 61 2.244931e-002
+... Create virt particle destroy ...particle 117 was destroyed...Trying to create virt particle 117...Starting to create virt particle 117...
+ Next event: 61 -15 4.482058e-004
+... Create virt particle destroy ...Trying to create virt particle 125...Starting to create virt particle 125...
+ SEARCH!!! 125 94 
+
+ SEARCH!!! 125 126 
+
+time_queue[k].im = 42  time_queue[k].jm = 42  52
+
+ Next event: 58 54 8.017910e-003
+... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 56  time_queue[k].jm = 122  i = 122
+particle 122 was destroyed...Trying to create virt particle 122...Starting to create virt particle 122...
+ SEARCH!!! 122 117 
+
+ Next event: 54 59 4.727976e-006
+
+ Next event: 54 51 8.697826e-004
+
+ Next event: 31 -18 2.368964e-001
+... Create virt particle destroy ...Trying to create virt particle 95...Starting to create virt particle 95...
+ Next event: 63 -18 2.368964e-001
+... Create virt particle destroy ...Trying to create virt particle 127...Starting to create virt particle 127...
+ SEARCH!!! 127 95 
+
+ Next event: 85 43 9.978781e-003
+... Create virt particle destroy ...particle 107 was destroyed...Trying to create virt particle 107...... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ Next event: 89 -8 5.659160e-002
+
+ Next event: 117 50 1.304304e-002
+... Create virt particle destroy ...particle 114 was destroyed...Trying to create virt particle 114...... Create virt particle destroy ...particle 117 was destroyed...Trying to create virt particle 117...Starting to create virt particle 117...
+time_queue[k].im = 61  time_queue[k].jm = 52  52
+
+ Next event: 43 -18 5.024033e-003
+... Create virt particle destroy ...Trying to create virt particle 107...Starting to create virt particle 107...
+ SEARCH!!! 107 95 
+
+ Next event: 57 -18 5.547949e-002
+... Create virt particle destroy ...Trying to create virt particle 121...Starting to create virt particle 121...
+ Next event: 32 -17 4.843848e-002
+... Create virt particle destroy ...Trying to create virt particle 96...Starting to create virt particle 96...
+ Next event: 0 -17 4.843848e-002
+... Create virt particle destroy ...Trying to create virt particle 64...Starting to create virt particle 64...
+ SEARCH!!! 64 82 
+
+ Next event: 44 -100 4.788350e-002
+
+time: 1.076733709885715e-002  p1.t: -2.676041022535052e-002  p1.dt: 4.788350204763373e-002
+
+ Next event: 31 -16 1.834420e-002
+... Create virt particle destroy ...particle 95 was destroyed...Trying to create virt particle 95...Starting to create virt particle 95...
+ Next event: 63 -16 1.834420e-002
+... Create virt particle destroy ...particle 127 was destroyed...Trying to create virt particle 127...Starting to create virt particle 127...
+ SEARCH!!! 127 95 
+
+ Next event: 93 105 6.554753e-002
+... Create virt particle destroy ...particle 105 was destroyed...Trying to create virt particle 105...Starting to create virt particle 105...
+ clear to -100: time_queue[k].im = 90  time_queue[k].jm = 29  i = 29
+... Create virt particle destroy ...particle 93 was destroyed...Trying to create virt particle 93...
+ clear to -100: time_queue[k].im = 126  time_queue[k].jm = 41  i = 41
+
+ Next event: 0 67 1.866091e-002
+... Create virt particle destroy ...particle 67 was destroyed...Trying to create virt particle 67...Starting to create virt particle 67...
+ SEARCH!!! 67 66 
+
+ SEARCH!!! 67 85 
+... Create virt particle destroy ...particle 64 was destroyed...Trying to create virt particle 64...
+time_queue[k].im = 127  time_queue[k].jm = 2  2
+
+time_queue[k].im = 45  time_queue[k].jm = 45  63
+
+ Next event: 6 -17 8.471918e-002
+... Create virt particle destroy ...Trying to create virt particle 70...Starting to create virt particle 70...
+ SEARCH!!! 70 82 
+
+ Next event: 41 126 5.832142e-003
+... Create virt particle destroy ...particle 126 was destroyed...Trying to create virt particle 126...Starting to create virt particle 126...
+ SEARCH!!! 126 67 
+... Create virt particle destroy ...particle 105 was destroyed...Trying to create virt particle 105...Starting to create virt particle 105...
+ Next event: 44 40 2.155678e-002
+... Create virt particle destroy ...particle 104 was destroyed...Trying to create virt particle 104...Starting to create virt particle 104...
+ SEARCH!!! 104 94 
+
+ SEARCH!!! 104 126 
+
+ Next event: 21 12 3.264599e-002
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ SEARCH!!! 85 29 
+
+ !!!!! -2.412004e-003 12 8!!!! 
+
+ 12 ti = 0 
+
+ im jm = -1 0 
+
+ 8 ti = 41 
+
+ 12 x_box, y_box, z_box: 3 2 1
+ 8 x_box, y_box, z_box: 2 2 1
+ !!!!! -2.412004e-003 12 8!!!! 
+QQQQQQQQQQQQQQ
+ Next event: 12 8 -2.412004e-003
+
+ !!!!! -5.173411e-003 12 21!!!! 
+
+ 12 ti = 0 
+
+ im jm = -1 0 
+
+ 21 ti = 38 
+
+ 12 x_box, y_box, z_box: 3 2 1
+ 21 x_box, y_box, z_box: 3 2 1
+ !!!!! -5.173411e-003 12 21!!!! 
+QQQQQQQQQQQQQQ
+ Next event: 12 21 -5.173411e-003
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ SEARCH!!! 85 90 
+
+ Next event: 12 -17 6.644385e-003
+... Create virt particle destroy ...Trying to create virt particle 76...Starting to create virt particle 76...
+ Next event: 29 90 1.318722e-002
+... Create virt particle destroy ...particle 90 was destroyed...Trying to create virt particle 90...Starting to create virt particle 90...
+ SEARCH!!! 90 104 
+
+ Next event: 7 -18 2.731315e-001
+... Create virt particle destroy ...Trying to create virt particle 71...Starting to create virt particle 71...
+time_queue[k].im = 97  time_queue[k].jm = 4  4
+
+ Next event: 104 -4 9.760155e-003
+
+ Next event: 44 88 9.859693e-003
+... Create virt particle destroy ...particle 88 was destroyed...Trying to create virt particle 88...Starting to create virt particle 88...
+time_queue[k].im = 62  time_queue[k].jm = 48  48
+
+ Next event: 121 -1 3.341371e-002
+... Create virt particle destroy ...particle 121 was destroyed...Trying to create virt particle 121...Starting to create virt particle 121...
+ Next event: 76 9 7.679967e-003
+... Create virt particle destroy ...particle 73 was destroyed...Trying to create virt particle 73...Starting to create virt particle 73...... Create virt particle destroy ...particle 76 was destroyed...Trying to create virt particle 76...
+time_queue[k].im = 82  time_queue[k].jm = 82  21
+
+ Next event: 0 2 1.757899e-002
+... Create virt particle destroy ...particle 66 was destroyed...Trying to create virt particle 66...Starting to create virt particle 66...
+ SEARCH!!! 66 21 
+
+ SEARCH!!! 66 82 
+
+ Next event: 12 21 3.775177e-003
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...Starting to create virt particle 85...
+ SEARCH!!! 85 127 
+
+ Next event: 59 116 5.184516e-002
+... Create virt particle destroy ...particle 116 was destroyed...Trying to create virt particle 116...
+ clear to -100: time_queue[k].im = 117  time_queue[k].jm = 52  i = 52
+
+ Next event: 31 23 3.103704e-002
+... Create virt particle destroy ...particle 95 was destroyed...Trying to create virt particle 95...Starting to create virt particle 95...
+time_queue[k].im = 13  time_queue[k].jm = 13  75
+
+ Next event: 53 35 4.699200e-002
+... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 39  time_queue[k].jm = 99  i = 99
+particle 99 was destroyed...Trying to create virt particle 99...Starting to create virt particle 99...
+ SEARCH!!! 99 50 
+... Create virt particle destroy ...particle 117 was destroyed...Trying to create virt particle 117...Starting to create virt particle 117...
+ Next event: 117 39 3.557044e-003
+... Create virt particle destroy ...particle 117 was destroyed...Trying to create virt particle 117...Starting to create virt particle 117...
+ SEARCH!!! 117 41 
+
+ SEARCH!!! 117 33 
+
+ Next event: 47 -5 1.273684e-001
+
+ Next event: 15 -5 1.273684e-001
+
+time_queue[k].im = 125  time_queue[k].jm = 125  104
+
+ Next event: 40 -2 3.423328e-002
+
+ Next event: 27 -16 8.334788e-002
+... Create virt particle destroy ...Trying to create virt particle 91...Starting to create virt particle 91...
+ SEARCH!!! 91 89 
+
+ Next event: 29 -18 3.305791e-002
+... Create virt particle destroy ...Trying to create virt particle 93...Starting to create virt particle 93...
+ SEARCH!!! 93 20 
+
+ Next event: 55 -8 1.095093e-001
+
+time_queue[k].im = 53  time_queue[k].jm = 66  66
+
+ Next event: 31 75 2.380389e-002
+... Create virt particle destroy ...particle 75 was destroyed...Trying to create virt particle 75...... Create virt particle destroy ...particle 95 was destroyed...Trying to create virt particle 95...Starting to create virt particle 95...
+ SEARCH!!! 95 31 
+
+time_queue[k].im = 4  time_queue[k].jm = 4  7
+
+ Next event: 6 -15 4.976520e-002
+... Create virt particle destroy ...particle 70 was destroyed...Trying to create virt particle 70...Starting to create virt particle 70...
+ SEARCH!!! 70 3 
+
+ SEARCH!!! 70 73 
+
+ SEARCH!!! 70 82 
+
+ Next event: 59 94 2.847392e-002
+... Create virt particle destroy ...particle 94 was destroyed...Trying to create virt particle 94...
+ Next event: 22 19 9.787990e-002
+
+ Next event: 14 -6 1.392549e-001
+
+ Next event: 46 -6 1.392549e-001
+
+ Next event: 32 34 7.955097e-002
+... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 33  time_queue[k].jm = 98  i = 98
+particle 98 was destroyed...Trying to create virt particle 98...Starting to create virt particle 98...... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 35  time_queue[k].jm = 96  i = 96
+particle 96 was destroyed...Trying to create virt particle 96...Starting to create virt particle 96...
+time_queue[k].im = 32  time_queue[k].jm = 85  85
+
+ Next event: 15 104 3.336838e-002
+... Create virt particle destroy ...particle 104 was destroyed...Trying to create virt particle 104...
+ Next event: 56 -100 3.934179e-002
+
+time: 9.295150884680964e-002  p1.t: 5.422356445069626e-002  p1.dt: 3.934179099988100e-002
+
+ Next event: 34 85 4.613755e-003
+... Create virt particle destroy ...particle 85 was destroyed...Trying to create virt particle 85...... Create virt particle destroy ...particle 98 was destroyed...Trying to create virt particle 98...
+ Next event: 3 -7 6.573413e-002
+
+ IM = 3, z+box = 1 
+
+time_queue[k].im = 14  time_queue[k].jm = 8  8
+
+ Next event: 88 18 5.353436e-002
+... Create virt particle destroy ...particle 82 was destroyed...Trying to create virt particle 82...... Create virt particle destroy ...particle 88 was destroyed...Trying to create virt particle 88...Starting to create virt particle 88...
+ Next event: 55 66 2.425971e-002
+... Create virt particle destroy ...particle 66 was destroyed...Trying to create virt particle 66...
+time_queue[k].im = 44  time_queue[k].jm = 48  48
+
+ Next event: 35 -100 4.559775e-002
+
+time: 9.579527918361180e-002  p1.t: 5.572393550013501e-002  p1.dt: 4.559775371520294e-002
+
+ Next event: 96 -7 1.169914e-002
+
+ IM = 96, z+box = 2 
+
+ Next event: 39 -4 4.360474e-002
+
+ Next event: 105 51 7.248438e-002
+
+ clear to -100: time_queue[k].im = 126  time_queue[k].jm = 41  i = 41
+... Create virt particle destroy ...particle 105 was destroyed...Trying to create virt particle 105...Starting to create virt particle 105...
+ SEARCH!!! 105 46 
+
+ Next event: 52 42 5.245305e-002
+
+ Next event: 107 -6 9.533651e-002
+
+ Next event: 41 126 3.167788e-003
+... Create virt particle destroy ...particle 126 was destroyed...Trying to create virt particle 126...Starting to create virt particle 126...
+ SEARCH!!! 126 33 
+... Create virt particle destroy ...particle 105 was destroyed...Trying to create virt particle 105...Starting to create virt particle 105...
+ SEARCH!!! 105 46 
+
+ Next event: 11 7 2.936154e-002
+... Create virt particle destroy ...particle 71 was destroyed...Trying to create virt particle 71...Starting to create virt particle 71...
+ SEARCH!!! 71 20 
+
+time_queue[k].im = 37  time_queue[k].jm = 37  93
+
+ Next event: 26 -17 7.095400e-002
+... Create virt particle destroy ...
+ clear to -100: time_queue[k].im = 29  time_queue[k].jm = 90  i = 90
+particle 90 was destroyed...Trying to create virt particle 90...Starting to create virt particle 90...
+ SEARCH!!! 90 125 
+
+ Next event: 121 -1 6.682741e-002
+
+ clear to -100: time_queue[k].im = 47  time_queue[k].jm = 57  i = 57
+... Create virt particle destroy ...particle 121 was destroyed...Trying to create virt particle 121...Starting to create virt particle 121...
+ Next event: 58 -100 7.382778e-003
+
+ti
