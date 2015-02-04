@@ -1492,3 +1492,66 @@ Trying to create virt particle 85...
  search...  check collision: 0 24 7.511785605104270e-001
  search...  check collision: 23 92 3.299800749587706e-001
  search...  check collision: 59 92 6.147674774676477e-002
+ search...  check collision: 23 92 1.774699843967274e-001
+ search...  check collision: 17 21 1.782740861430602e-001
+ Event #92: 92 -100 1.863901510472510e-001 
+   92 BOX: x 4 | y 3 | z 2
+   -100 BOX: x 0 | y 0 | z 0 
+
+9  17  
+    retime: 92 
+ search...  check collision: 92 21 1.567255708065402e+000
+ search...  check collision: 92 21 1.567255708065402e+000
+ search...  check collision: 92 59 2.528876741396456e-002! 
+
+ search...  check collision: 92 31 4.806223868323878e-004! 
+
+ search...  check collision: 92 23 1.556833469021812e-001    retime result: 92 31 4.806223868323878e-004 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+9  17  
+
+ Event #92: 92 31 4.806223868323878e-004 
+   92 BOX: x 4 | y 3 | z 2
+   31 BOX: x 4 | y 2 | z 2 
+
+9  17  
+particle 92 was destroyed... 
+Trying to create virt particle 92... 
+Starting to create virt particle 92... 
+
+ SEARCH TRUE 92 -1
+    retime: 92 
+ search...  check collision: 92 11 4.485307977900369e-002    retime result: 92 -5 1.708513259259055e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+9  17  
+    retime: 28 
+ search...  check collision: 28 54 5.563642985896528e-001
+ search...  check collision: 28 29 2.046497213368067e-001
+ search...  check collision: 28 20 2.520712195040847e-001    retime result: 28 -5 7.132018354067479e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+9  17  
+
+ search...  check collision: 70 24 2.518459579974505e-001
+ search...  check collision: 4 21 1.948797700273060e+000
+ Event #92: 92 -5 1.708513259259055e-002 
+   92 BOX: x 6 | y 2 | z 3
+   -5 BOX: x 0 | y 0 | z 0 
+
+9  17  
+    retime: 92 
+ search...  check collision: 92 11 2.776794718641314e-002    retime result: 92 -4 1.292168161853257e-003 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+9  17  
+
+ Event #92: 92 -4 1.292168161853257e-003 
+   92 BOX: x 6 | y 1 | z 3
+   -4 BOX: x 0 | y 0 | z 0 
+
+9  17  
+    retime: 92 
+ search...  check collision: 92 11 2.647577902455989e-002! 
+    retime result: 92 11 2.647577902455989e-002 
+    particle data 28: x_box, y_box, z_box: 3 1 2 
+9  17  
+
+ search...  check collision: 19 24 2.472897740298654e-001

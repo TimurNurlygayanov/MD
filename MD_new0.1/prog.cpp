@@ -7,7 +7,6 @@
     ИМПОРТИРУЕМЫЕ МОДУЛИ
  */
 #include "stdafx.h"
-//#include "stdlib.h"
 #include <time.h>
 #include <fstream>
 #include <math.h>
@@ -328,7 +327,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -5;
         }
-        if (p1.y_box == 1) {
+		if ((p1.y_box == 1) && (i < NP)) {
             dt = (p1_box.y1 + 1.0 - p1.y) / p1.vy;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -341,7 +340,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -6;
         }
-        if (p1.y_box == K-1) {
+		if ((p1.y_box == K - 1) && (i < NP)) {
             dt = (p1_box.y2 - 1.0 - p1.y) / p1.vy;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -356,7 +355,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -7;
         }
-        if (p1.z_box == 1) {
+        if ((p1.z_box == 1) && (i < NP)) {
             dt = (p1_box.z1 + 1.0 - p1.z) / p1.vz;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -369,7 +368,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -8;
         }
-        if (p1.z_box == K-1) {
+		if ((p1.z_box == K - 1) && (i < NP)) {
             dt = (p1_box.z2 - 1.0 - p1.z) / p1.vz;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -969,7 +968,7 @@ void create_virt_particle(int &i) {
 			particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[new_i].vz*t02;
 
 			t_min = t22;
-			printf("\n %d Rozdenie 3go roda \n", i);
+			printf("\n %d Rozdenie 3go roda t_min = %.5le \n", i);
 		}
 		if (t11 < t_min) {
 			kv = abs(particles[i].vz / particles[i].vy);
@@ -985,7 +984,7 @@ void create_virt_particle(int &i) {
 			particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[new_i].vy*t02;
 			particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[new_i].vz*t02;
 
-			printf("\n %d Rozdenie 4go roda \n", i);
+			printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i);
 			printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
 		}
 
