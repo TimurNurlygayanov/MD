@@ -737,12 +737,16 @@ int find_place_for_particle(int &i) {
 void destroy_virt_particle(int &i) {
 	if (i >= NP) {
 		printf("\n %d particle \n", i);
-		printf(" i_copy = %d   particke icopy = %d \n", particles[i].i_copy, particles[i-NP].i_copy);
+		printf(" i_copy = %d   particle icopy = %d \n", particles[i].i_copy, particles[i-NP].i_copy);
 		printf(" x, y, z: %.5le %.5le %.5le", particles[i].x, particles[i].y, particles[i].z);
 
 		throw "AAAAAAAAAAA";
 	}
 	if (particles[i].i_copy == -1) return;
+
+	if (i == 26) {
+		printf("ffd");
+	}
 
     int new_i = i + NP;
     int x_box, y_box, z_box, box_i;
@@ -788,6 +792,10 @@ void change_with_virt_particles(int &im, int &jm) {
 	printf("\n| vx, vy, vz: %le, %le, %le \n", particles[im].vx, particles[im].vy, particles[im].vz);
 
 	printf("\n%d\n", particles[im].i_copy);
+
+	if (particles[im].i_copy < 0) {
+		printf("ddd");
+	}
 
 	printf("\n %d x, y, z: %.15le, %.15le, %.15le \n", f, particles[f].x, particles[f].y, particles[f].z);
 	printf("\n %d x_box, y_box, z_box: %d, %d, %d \n", f, particles[f].x_box, particles[f].y_box, particles[f].z_box);
@@ -883,12 +891,23 @@ void create_virt_particle(int &i) {
 		}
 	}
 
+	if (i == 26) {
+		printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
+		printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
+		printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
+		printf("wait...");
+	}
+
 	if (((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
 		((particles[i].y >= A - 1.0) && (particles[i].vy > 0.0)) ||
 		((particles[i].z <= 1.0 - A) && (particles[i].vz < 0.0)) ||
 		((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0))) {
 
 		printf("Starting to create virt particle %d...", new_i);
+
+		if (i == 26) {
+			printf("FD");
+		}
 
 		for (int t = 0; t < particles_for_check_count; t++) {
 			if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
@@ -902,7 +921,7 @@ void create_virt_particle(int &i) {
 		printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
 		printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
 
-		t_min = 1.0e+20;
+		dt_min = 1.0e+20;
 
 		y = A + particles[i].y;
 		z = A + particles[i].z;
@@ -926,26 +945,26 @@ void create_virt_particle(int &i) {
 			particles[new_i].vy = particles[i].vy;
 			particles[new_i].vz = particles[i].vz;
 
-			t1 = y / abs(particles[i].vy);
-			t11 = z / abs(particles[i].vz);
+			t01 = y / abs(particles[i].vy);
+			t02 = z / abs(particles[i].vz);
 
-			if (t1 < t11) {
-				t_min = t1;
+			if (t01 < t02) {
+				t_min = t01;
 
-				particles[new_i].x = particles[i].x - particles[i].vx*t1 - particles[i].vx*dt;
-				particles[new_i].y = particles[i].y - particles[i].vy*t1 - particles[i].vy*dt;
-				particles[new_i].z = particles[i].z - particles[i].vz*t1 - particles[i].vz*dt;
+				particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
+				particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
+				particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
 
 				printf("\n %d Rozdenie 1go roda \n", i);
 			}
 			else {
-				t_min = t11;
+				t_min = t02;
 
-				particles[new_i].x = particles[i].x - particles[i].vx*t11 - particles[new_i].vx*dt;
-				particles[new_i].y = particles[i].y - particles[i].vy*t11 - particles[new_i].vy*dt;
-				particles[new_i].z = particles[i].z - particles[i].vz*t11 - particles[new_i].vz*dt;
+				particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
+				particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
+				particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
 
-				printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, t01 + t02);
+				printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
 				printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
 			}
 
@@ -955,66 +974,36 @@ void create_virt_particle(int &i) {
 			dt = dz / abs(particles[i].vz);
 
 			if (dt < dt_min) {
+
 				particles[new_i].vx = particles[i].vx;
 				particles[new_i].vy = particles[i].vy;
 				particles[new_i].vz = particles[i].vz;
 
-				t2 = A2 / abs(particles[i].vz);
+				t01 = y / abs(particles[i].vy);
+				t02 = z / abs(particles[i].vz);
 
-				particles[new_i].x = particles[i].x - particles[i].vx*t2;
-				particles[new_i].y = particles[i].y - particles[i].vy*t2;
-				particles[new_i].z = particles[i].z - particles[i].vz*t2;
+				if (t01 < t02) {
+					t_min = t01;
+
+					particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
+					particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
+					particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
+
+					printf("\n %d Rozdenie 1go roda \n", i);
+				}
+				else {
+					t_min = t02;
+
+					particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
+					particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
+					particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
+
+					printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
+					printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+				}
 
 				dt_min = dt;
-				t_min = t2 - dt;
-				printf("\n %d Rozdenie 2go roda \n", i);
 			}
-		}
-
-		//t11 = y / abs(particles[i].vy) + dz / abs(particles[i].vz);
-		//t22 = z / abs(particles[i].vz) + dy / abs(particles[i].vy);
-		t11 = y / abs(particles[i].vy);
-		t22 = z / abs(particles[i].vz);
-
-		if (t22 < t_min) {   // частица выходит по y, образ заходит по z
-			kv = abs(particles[i].vy / particles[i].vz);
-
-			printf("\n kv = %.5le \n", kv);
-
-			particles[new_i].vx = kv*particles[i].vx;
-			particles[new_i].vy = kv*particles[i].vy;
-			particles[new_i].vz = kv*particles[i].vz;
-
-			printf("virtual vx, vy, vz: %.5le, %.5le, %.5le \n", particles[new_i].vx, particles[new_i].vy, particles[new_i].vz);
-
-			t01 = z / abs(particles[i].vz);
-			t02 = dy / abs(particles[new_i].vz);
-
-			particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[new_i].vx*t02;
-			particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[new_i].vy*t02;
-			particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[new_i].vz*t02;
-
-			t_min = t22;
-			printf("\n %d Rozdenie 3go roda t_min = %.5le \n", i, t_min);
-		}
-		if (t11 < t_min) {
-			kv = abs(particles[i].vz / particles[i].vy);
-
-			printf("\n kv = %.5le \n", kv);
-
-			particles[new_i].vx = kv*particles[i].vx;
-			particles[new_i].vy = kv*particles[i].vy;
-			particles[new_i].vz = kv*particles[i].vz;
-
-			t01 = y / abs(particles[i].vy);
-			t02 = dz / abs(particles[new_i].vy); // ?
-
-			particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[new_i].vx*t02;
-			particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[new_i].vy*t02;
-			particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[new_i].vz*t02;
-
-			printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i);
-			printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
 		}
 
 		int k = particles[new_i].x / (L - 1.0);
@@ -1027,7 +1016,8 @@ void create_virt_particle(int &i) {
 		y_box = short((A + dA + particles[new_i].y) / dA);
 		z_box = short((A + dA + particles[new_i].z) / dA);
 
-		printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+		printf("DT min = %.15le", dt_min);
+		printf("\n>>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
 
 		if (y_box < 0) y_box = 0;
 		if (y_box > K) y_box = K;
@@ -1712,6 +1702,12 @@ void reform(int &im, int &jm) {
                 --p1.z_box;
                 p1.z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2;
 
+				if (im == 26 && p1.i_copy < 0) {
+					printf("\nZBOX %d\n", p1.z_box);
+					printf("\nZBOX %d\n", p1.i_copy);
+
+				}
+
                 if ((p1.z_box == 0) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
@@ -1787,22 +1783,25 @@ void step() {
 		//fprintf(stderr, " particle 21 vx, vy, vz: %.15le %.15le %.15le\n", particles[21].vx, particles[21].vy, particles[21].vz);
 		
 		
-		//for (int t = 0; t < particles_for_check_count; t++) {
-		//	if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
-		FILE *save_file = fopen("history.txt", "a");
-		fprintf(save_file, "\n Event #%d: %d %d %.15le \n", im, time_queue[particles[im].ti].im, time_queue[particles[im].ti].jm, particles[im].dt);
-		//fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
-		//fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
+		for (int t = 0; t < particles_for_check_count; t++) {
+			if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
+		        FILE *save_file = fopen("history.txt", "a");
+		        fprintf(save_file, "\n Event #%d: %d %d %.15le \n", im, time_queue[particles[im].ti].im, time_queue[particles[im].ti].jm, particles[im].dt);
+		        fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
+		        fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
+
+				fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
+				fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
 		/*
 				for (int ty = 0; ty < boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].end; ty++) {
 					fprintf(save_file, "%d  ", boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].particles[ty]);
 				}
         */
-		fprintf(save_file, "\n");
+		        fprintf(save_file, "\n");
 
-		fclose(save_file);
-		//	}
-		//}
+		        fclose(save_file);
+			}
+		}
 		
 
     	delete_event(1);
@@ -2084,9 +2083,9 @@ int main(array<System::String ^> ^args)
 	FILE *save_file = fopen("history.txt", "w");
 	fclose(save_file);
 
-	particles_for_check_count = 3;
-	particles_for_check[0] = 21;
-	particles_for_check[1] = 28;
+	particles_for_check_count = 2;
+	particles_for_check[0] = 26;
+	particles_for_check[1] = 90;
 	particles_for_check[2] = 24;
 
 	int GGH = 0;
