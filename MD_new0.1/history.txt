@@ -958,3 +958,71 @@ particle 90 was destroyed...
    26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
  -1 i_copy 
 
+particle 26 Change with virt particle destroy ... 
+    retime: 26 
+ search...  check collision: 26 30 7.624435974519911e-002    retime result: 26 -7 1.375526622382299e-016 
+    particle data 26: x_box, y_box, z_box: 3 1 1 
+5  43  30  
+
+ After the reform: 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+
+ Event #26: 26 -7 1.375526622382299e-016 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+particle 26 Change with virt particle destroy ... 
+    retime: 26 
+ search...  check collision: 26 30 7.624435974519889e-002    retime result: 26 -7 -0.000000000000000e+000 
+    particle data 26: x_box, y_box, z_box: 3 1 1 
+5  43  30  
+
+ After the reform: 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+
+ Event #26: 26 -7 -0.000000000000000e+000 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+particle 26 Change with virt particle destroy ... 
+    retime: 26 
+ search...  check collision: 26 30 7.624435974519889e-002    retime result: 26 -7 -0.000000000000000e+000 
+    particle data 26: x_box, y_box, z_box: 3 1 1 
+5  43  30  
+
+ After the reform: 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+
+ Event #26: 26 -7 -0.000000000000000e+000 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+particle 26 Change with virt particle destroy ... 
+    retime: 26 
+ search...  check collision: 26 30 7.624435974519889e-002    retime result: 26 -7 -0.000000000000000e+000 
+    particle data 26: x_box, y_box, z_box: 3 1 1 
+5  43  30  
+
+ After the reform: 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+
+ Event #26: 26 -7 -0.000000000000000e+000 
+   26 particle: x -4.54551e+000 | y -2.28541e+000 | z -2.95178e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
