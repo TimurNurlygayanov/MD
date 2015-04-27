@@ -3,11 +3,9 @@
  search...  check collision: 22 26 7.567301008937712e-002
  search...  check collision: 22 26 7.218115194694118e-002
  Event #26: 26 -1 1.334022531419559e-001 
-   26 BOX: x 1 | y 2 | z 1
-   -1 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -1.15974e+001 | y 1.72911e+000 | z -1.72911e+000
    26 particle: vx -1.66915e+000 | vy 8.72386e-001 | vz 9.39939e-001
+ -1 i_copy 
 
     retime: 26 
  search...  check collision: 26 73 4.834175837676495e-001
@@ -15,16 +13,18 @@
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  19  
 
+ After the reform: 
+   26 particle: x -1.18200e+001 | y 1.84549e+000 | z -1.60372e+000
+   26 particle: vx 1.66915e+000 | vy 8.72386e-001 | vz 9.39939e-001
+ -1 i_copy 
+
+
  STEPS:: 1 
 
  particle 26, x, y, z: -1.18200e+001, 1.84549e+000, -1.60372e+000 
+ particle 26, vx, vy, vz: 1.66915e+000, 8.72386e-001, 9.39939e-001 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, -16, 1.218383563004796e-001 
- -1 i_copy 
- 
- particle 90, x, y, z: 0.00000e+000, 0.00000e+000, 0.00000e+000 
- particle x_box, y_box, z_box: 0, 0, 0 
- particle event: -1, 0, 0.000000000000000e+000 
  -1 i_copy 
  
 
@@ -38,145 +38,102 @@
 26  
 
  Event #22: 22 26 8.245577810334616e-003 
-   22 BOX: x 1 | y 2 | z 1
-   26 BOX: x 1 | y 2 | z 1 
-
    22 particle: x -1.18200e+001 | y 4.28784e-001 | z -1.26803e-001
    22 particle: vx 2.99753e+000 | vy 6.70650e+000 | vz -9.86428e-001
+ -1 i_copy 
 
-Trying to create virt particle 90... 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
     retime: 26 
  search...  check collision: 26 88 3.250796386617612e-002    retime result: 26 -16 9.780368743594071e-003 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  
 
- Event #26: 26 -16 9.780368743594071e-003 
-   26 BOX: x 1 | y 2 | z 1
-   -16 BOX: x 0 | y 0 | z 0 
+ After the reform: 
+   22 particle: x -1.17953e+001 | y 4.84083e-001 | z -1.34937e-001
+   22 particle: vx 2.75174e+000 | vy 2.76018e+000 | vz 2.91676e+000
+ -1 i_copy 
 
+
+ Event #26: 26 -16 9.780368743594071e-003 
    26 particle: x -1.17068e+001 | y 1.90465e+000 | z -1.53998e+000
    26 particle: vx 1.91494e+000 | vy 4.81871e+000 | vz -2.96325e+000
+ -1 i_copy 
 
-Trying to create virt particle 90... 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
 Starting to create virt particle 90... 
-Starting to create virt particle 90... 
-    retime: 26     retime: 26 
- search...  check collision: 26 88 2.272759512258201e-002
+    retime: 26 
  search...  check collision: 26 88 2.272759512258201e-002! 
-! 
     retime result: 26 88 2.272759512258201e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
-    retime result: 26 88 2.272759512258201e-002 
-    particle data 90: x_box, y_box, z_box: 3 0 2 
-
-    retime: 90     retime: 90 
- search...  check collision: 90 92 7.982042566768524e-003
+    retime: 90 
  search...  check collision: 90 92 7.982042566768524e-003! 
-! 
 
  search...  check collision: 90 10 4.322227101807926e-001
- search...  check collision: 90 10 4.322227101807926e-001
- search...  check collision: 90 17 3.261157244369712e-001
  search...  check collision: 90 17 3.261157244369712e-001
  search...  check collision: 90 20 8.152232021687710e-002
- search...  check collision: 90 20 8.152232021687710e-002
- search...  check collision: 90 29 5.196319867386932e-002
  search...  check collision: 90 29 5.196319867386932e-002    retime result: 90 92 7.982042566768524e-003 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
-    retime result: 90 92 7.982042566768524e-003 
-    particle data 90: x_box, y_box, z_box: 3 0 2 
+
+ After the reform: 
+   26 particle: x -1.16881e+001 | y 1.95178e+000 | z -1.56896e+000
+   26 particle: vx 1.91494e+000 | vy 4.81871e+000 | vz -2.96325e+000
+ 90 i_copy 
 
 
  Event #90: 90 92 7.982042566768524e-003 
-   90 BOX: x 3 | y 0 | z 2
-   92 BOX: x 3 | y 0 | z 3 
-
    90 particle: x -2.21413e+000 | y -3.95178e+000 | z 2.06142e+000
    90 particle: vx -1.91494e+000 | vy 4.81871e+000 | vz -2.96325e+000
+ 26 i_copy 
 
-
- Event #90: 90 92 7.982042566768524e-003 
-   90 BOX: x 3 | y 0 | z 2
-   92 BOX: x 3 | y 0 | z 3 
-
-   90 particle: x -2.21413e+000 | y -3.95178e+000 | z 2.06142e+000
-   90 particle: vx -1.91494e+000 | vy 4.81871e+000 | vz -2.96325e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
 Starting to create virt particle 90... 
-Starting to create virt particle 90... 
-    retime: 90     retime: 90 
- search...  check collision: 90 20 2.323270935883607e-001
+    retime: 90 
  search...  check collision: 90 20 2.323270935883607e-001
  search...  check collision: 90 17 3.532897304140615e-001
- search...  check collision: 90 17 3.532897304140615e-001
  search...  check collision: 90 5 4.191445703908140e-001
- search...  check collision: 90 5 4.191445703908140e-001
- search...  check collision: 90 29 1.526027055759544e-001
  search...  check collision: 90 29 1.526027055759544e-001    retime result: 90 -7 6.266530255608710e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
-    retime result: 90 -7 6.266530255608710e-002 
-    particle data 90: x_box, y_box, z_box: 3 0 3 
-
-    retime: 26     retime: 26 
- search...  check collision: 26 88 1.459231463848848e-002
+    retime: 26 
  search...  check collision: 26 88 1.459231463848848e-002! 
-! 
     retime result: 26 88 1.459231463848848e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
-    retime result: 26 88 1.459231463848848e-002 
-    particle data 90: x_box, y_box, z_box: 3 0 3 
+
+ After the reform: 
+   90 particle: x -2.60967e+000 | y -3.91332e+000 | z 3.18165e+000
+   90 particle: vx -2.11814e+000 | vy 4.53578e+000 | vz -3.66812e+000
+ 26 i_copy 
 
 
- search...  check collision: 20 90 2.852134583834162e-001
  search...  check collision: 20 90 2.852134583834162e-001
  STEPS:: 2 
 
  particle 26, x, y, z: -1.16728e+001, 1.99025e+000, -1.59262e+000 
+ particle 26, vx, vy, vz: 2.11814e+000, 4.53578e+000, -3.66812e+000 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, 88, 1.459231463848848e-002 
  90 i_copy 
   particle 90, x, y, z: -2.60967e+000, -3.91332e+000, 3.18165e+000 
+ particle 90, vx, vy, vz: -2.11814e+000, 4.53578e+000, -3.66812e+000 
  particle x_box, y_box, z_box: 3, 0, 3 
  particle event: 90, -7, 6.266530255608710e-002 
-
- particle 90, x, y, z: -2.60967e+000, -3.91332e+000, 3.18165e+000 
- particle x_box, y_box, z_box: 3, 0, 3 
- particle event: 90, -7, 6.266530255608710e-002 
- 26 i_copy 
-  particle 26, x, y, z: -1.16728e+001, 1.99025e+000, -1.59262e+000 
- particle x_box, y_box, z_box: 1, 2, 1 
- particle event: 26, 88, 1.459231463848848e-002 
 
 
 
  Event #26: 26 88 1.459231463848848e-002 
-   26 BOX: x 1 | y 2 | z 1
-   88 BOX: x 1 | y 3 | z 1 
-
    26 particle: x -1.16728e+001 | y 1.99025e+000 | z -1.59262e+000
    26 particle: vx 2.11814e+000 | vy 4.53578e+000 | vz -3.66812e+000
+ 90 i_copy 
 
-
- Event #26: 26 88 1.459231463848848e-002 
-   26 BOX: x 1 | y 2 | z 1
-   88 BOX: x 1 | y 3 | z 1 
-
-   26 particle: x -1.16728e+001 | y 1.99025e+000 | z -1.59262e+000
-   26 particle: vx 2.11814e+000 | vy 4.53578e+000 | vz -3.66812e+000
-
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
-particle 90 was destroyed... 
-Trying to create virt particle 90... 
 Trying to create virt particle 90... 
     retime: 26 
  search...  check collision: 26 14 2.337530553728226e-001
@@ -186,14 +143,18 @@ Trying to create virt particle 90...
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
 
- Event #26: 26 22 5.926055806169599e-002 
-   26 BOX: x 1 | y 2 | z 1
-   22 BOX: x 1 | y 2 | z 1 
-
+ After the reform: 
    26 particle: x -1.16419e+001 | y 2.05643e+000 | z -1.64614e+000
    26 particle: vx -1.04437e-001 | vy -3.16511e+000 | vz -1.11897e-001
+ -1 i_copy 
 
-Trying to create virt particle 90... 
+
+ Event #26: 26 22 5.926055806169599e-002 
+   26 particle: x -1.16419e+001 | y 2.05643e+000 | z -1.64614e+000
+   26 particle: vx -1.04437e-001 | vy -3.16511e+000 | vz -1.11897e-001
+ -1 i_copy 
+
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
     retime: 26 
  search...  check collision: 26 14 2.918852169887771e-001
@@ -201,9 +162,15 @@ Trying to create virt particle 90...
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  
 
+ After the reform: 
+   26 particle: x -1.16481e+001 | y 1.86887e+000 | z -1.65277e+000
+   26 particle: vx -1.38929e-001 | vy -1.29542e+000 | vz -2.17850e+000
+ -1 i_copy 
+
+
  search...  check collision: 14 26 2.685734665018609e-001
  SEARCH TRUE 105 26
-Trying to create virt particle 90... 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
     retime: 26 
  search...  check collision: 26 98 1.373069241917955e-001    retime result: 26 -16 4.397012832461446e-002 
@@ -213,373 +180,230 @@ Trying to create virt particle 90...
  STEPS:: 3 
 
  particle 26, x, y, z: -1.16557e+001, 1.79830e+000, -1.77144e+000 
+ particle 26, vx, vy, vz: 1.98132e+000, 3.49049e+000, 3.02387e+000 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, -16, 4.397012832461446e-002 
- -1 i_copy 
- 
- particle 90, x, y, z: -2.64058e+000, -3.84713e+000, 3.12812e+000 
- particle x_box, y_box, z_box: 3, 0, 3 
- particle event: -1, 0, 0.000000000000000e+000 
  -1 i_copy 
  
 
 
  Event #26: 26 -16 4.397012832461446e-002 
-   26 BOX: x 1 | y 2 | z 1
-   -16 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -1.16557e+001 | y 1.79830e+000 | z -1.77144e+000
    26 particle: vx 1.98132e+000 | vy 3.49049e+000 | vz 3.02387e+000
+ -1 i_copy 
 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 26     retime: 26 
- search...  check collision: 26 98 9.333679586718084e-002
+    retime: 26 
  search...  check collision: 26 98 9.333679586718084e-002    retime result: 26 -6 2.864928498648907e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  9  14  
-    retime result: 26 -6 2.864928498648907e-001 
-    particle data 90: x_box, y_box, z_box: 5 1 0 
-
-    retime: 90     retime: 90 
+    retime: 90 
  search...  check collision: 90 58 7.164736147460566e-001
- search...  check collision: 90 58 7.164736147460566e-001
- search...  check collision: 90 46 6.278511747420412e-002
  search...  check collision: 90 46 6.278511747420412e-002! 
-! 
     retime result: 90 46 6.278511747420412e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  9  14  
-    retime result: 90 46 6.278511747420412e-002 
-    particle data 90: x_box, y_box, z_box: 5 1 0 
+
+ After the reform: 
+   26 particle: x -1.15685e+001 | y 1.95178e+000 | z -1.63848e+000
+   26 particle: vx 1.98132e+000 | vy 3.49049e+000 | vz 3.02387e+000
+ 90 i_copy 
 
 
- search...  check collision: 9 26 1.113850372059582e-001
  search...  check collision: 9 26 1.113850372059582e-001! 
-! 
     retime result: 9 26 1.113850372059582e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 22  9  14  
-    retime result: 9 26 1.113850372059582e-001 
-    particle data 90: x_box, y_box, z_box: 5 1 0 
 
-
- search...  check collision: 3 26 7.376337151427382e-001
  search...  check collision: 3 26 7.376337151427382e-001
  STEPS:: 4 
 
  particle 26, x, y, z: -1.15466e+001, 1.99045e+000, -1.60498e+000 
+ particle 26, vx, vy, vz: 1.98132e+000, 3.49049e+000, 3.02387e+000 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 9, 26, 1.113850372059582e-001 
  90 i_copy 
   particle 90, x, y, z: 2.18233e+000, -5.64182e-001, -3.81810e+000 
+ particle 90, vx, vy, vz: -1.98132e+000, 3.49049e+000, 3.02387e+000 
  particle x_box, y_box, z_box: 5, 1, 0 
  particle event: 90, 46, 6.278511747420412e-002 
 
- particle 90, x, y, z: 2.18233e+000, -5.64182e-001, -3.81810e+000 
- particle x_box, y_box, z_box: 5, 1, 0 
- particle event: 90, 46, 6.278511747420412e-002 
- 26 i_copy 
-  particle 26, x, y, z: -1.15466e+001, 1.99045e+000, -1.60498e+000 
- particle x_box, y_box, z_box: 1, 2, 1 
- particle event: 9, 26, 1.113850372059582e-001 
 
 
-
- search...  check collision: 98 26 3.419336130528994e-002
  search...  check collision: 98 26 3.419336130528994e-002! 
-! 
 
  Event #90: 90 46 6.278511747420412e-002 
-   90 BOX: x 5 | y 1 | z 0
-   46 BOX: x 5 | y 2 | z 1 
-
    90 particle: x 2.18233e+000 | y -5.64182e-001 | z -3.81810e+000
    90 particle: vx -1.98132e+000 | vy 3.49049e+000 | vz 3.02387e+000
+ 26 i_copy 
 
-
- Event #90: 90 46 6.278511747420412e-002 
-   90 BOX: x 5 | y 1 | z 0
-   46 BOX: x 5 | y 2 | z 1 
-
-   90 particle: x 2.18233e+000 | y -5.64182e-001 | z -3.81810e+000
-   90 particle: vx -1.98132e+000 | vy 3.49049e+000 | vz 3.02387e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 90     retime: 90 
- search...  check collision: 90 37 1.722073170604664e-001
+    retime: 90 
  search...  check collision: 90 37 1.722073170604664e-001! 
-! 
 
- search...  check collision: 90 39 2.477300744103201e-002
  search...  check collision: 90 39 2.477300744103201e-002    retime result: 90 37 1.722073170604664e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 90 37 1.722073170604664e-001 
-    particle data 90: x_box, y_box, z_box: 6 0 2 
-
-    retime: 26     retime: 26 
- search...  check collision: 26 9 4.873846217703737e-002
+    retime: 26 
  search...  check collision: 26 9 4.873846217703737e-002! 
-! 
 
  search...  check collision: 26 14 2.103783630816507e-001
- search...  check collision: 26 14 2.103783630816507e-001
- search...  check collision: 26 98 7.920064954421557e-002
  search...  check collision: 26 98 7.920064954421557e-002    retime result: 26 9 4.873846217703737e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 26 9 4.873846217703737e-002 
-    particle data 90: x_box, y_box, z_box: 6 0 2 
+
+ After the reform: 
+   90 particle: x 6.28442e+000 | y -3.73263e+000 | z 1.18264e+000
+   90 particle: vx -3.18104e-001 | vy 2.37487e+000 | vz -1.05850e+000
+ 26 i_copy 
 
 
- search...  check collision: 39 90 4.412970574426324e-002
  search...  check collision: 39 90 4.412970574426324e-002! 
-! 
     retime result: 39 90 4.412970574426324e-002 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 39 90 4.412970574426324e-002 
-    particle data 90: x_box, y_box, z_box: 6 0 2 
-
 
  search...  check collision: 50 90 5.904836473577634e-001
- search...  check collision: 50 90 5.904836473577634e-001
  Event #39: 39 90 4.412970574426324e-002 
-   39 BOX: x 6 | y 1 | z 2
-   90 BOX: x 6 | y 0 | z 2 
-
    39 particle: x 5.62176e+000 | y -1.91461e+000 | z 1.80044e+000
    39 particle: vx -1.44427e+000 | vy 7.22600e-001 | vz 1.11942e-001
+ -1 i_copy 
 
-
- Event #39: 39 90 4.412970574426324e-002 
-   39 BOX: x 6 | y 1 | z 2
-   90 BOX: x 6 | y 0 | z 2 
-
-   39 particle: x 5.62176e+000 | y -1.91461e+000 | z 1.80044e+000
-   39 particle: vx -1.44427e+000 | vy 7.22600e-001 | vz 1.11942e-001
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 90     retime: 90 
+    retime: 90 
  search...  check collision: 90 37 3.552436270273429e-001
- search...  check collision: 90 37 3.552436270273429e-001
- search...  check collision: 90 43 1.724917277127391e-001
  search...  check collision: 90 43 1.724917277127391e-001! 
-! 
 
  search...  check collision: 90 60 7.191593972541295e-001
- search...  check collision: 90 60 7.191593972541295e-001
- search...  check collision: 90 49 5.734688268836888e-001
  search...  check collision: 90 49 5.734688268836888e-001    retime result: 90 43 1.724917277127391e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 90 43 1.724917277127391e-001 
-    particle data 90: x_box, y_box, z_box: 7 0 2 
-
-    retime: 26     retime: 26 
- search...  check collision: 26 9 4.268849305912115e-003
+    retime: 26 
  search...  check collision: 26 9 4.268849305912115e-003! 
-! 
 
- search...  check collision: 26 14 1.385638948586293e-001
  search...  check collision: 26 14 1.385638948586293e-001    retime result: 26 9 4.268849305912115e-003 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 26 9 4.268849305912115e-003 
-    particle data 90: x_box, y_box, z_box: 7 0 2 
+
+ After the reform: 
+   39 particle: x 5.55803e+000 | y -1.88272e+000 | z 1.80538e+000
+   39 particle: vx -1.59452e+000 | vy 1.09064e+000 | vz 2.53188e-001
+ -1 i_copy 
 
 
  Event #26: 26 9 4.268849305912115e-003 
-   26 BOX: x 1 | y 2 | z 1
-   9 BOX: x 1 | y 2 | z 1 
-
    26 particle: x -1.14301e+001 | y 2.27607e+000 | z -1.49548e+000
    26 particle: vx 4.68359e-001 | vy 2.00683e+000 | vz -1.19975e+000
+ 90 i_copy 
 
-
- Event #26: 26 9 4.268849305912115e-003 
-   26 BOX: x 1 | y 2 | z 1
-   9 BOX: x 1 | y 2 | z 1 
-
-   26 particle: x -1.14301e+001 | y 2.27607e+000 | z -1.49548e+000
-   26 particle: vx 4.68359e-001 | vy 2.00683e+000 | vz -1.19975e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 24
-
- SEARCH TRUE 90 24
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 26     retime: 26 
- search...  check collision: 26 14 1.775216586728780e-001
+    retime: 26 
  search...  check collision: 26 14 1.775216586728780e-001    retime result: 26 -6 2.522616269029431e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 26 -6 2.522616269029431e-001 
-    particle data 90: x_box, y_box, z_box: 3 0 1 
-
-    retime: 90     retime: 90     retime result: 90 -6 2.522616269029432e-001 
+    retime: 90     retime result: 90 -6 2.522616269029432e-001 
     particle data 26: x_box, y_box, z_box: 1 2 1 
 26  9  
-    retime result: 90 -6 2.522616269029432e-001 
-    particle data 90: x_box, y_box, z_box: 3 0 1 
+
+ After the reform: 
+   26 particle: x -1.14281e+001 | y 2.28463e+000 | z -1.50060e+000
+   26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ 90 i_copy 
 
 
- search...  check collision: 14 26 1.744079915843490e-001
  search...  check collision: 14 26 1.744079915843490e-001! 
-! 
 
  STEPS:: 5 
 
  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
+ particle 26, vx, vy, vz: 7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, -6, 2.522616269029431e-001 
  90 i_copy 
   particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
+ particle 90, vx, vy, vz: -7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 3, 0, 1 
  particle event: 90, -6, 2.522616269029432e-001 
-
- particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
- particle x_box, y_box, z_box: 3, 0, 1 
- particle event: 90, -6, 2.522616269029432e-001 
- 26 i_copy 
-  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
- particle x_box, y_box, z_box: 1, 2, 1 
- particle event: 26, -6, 2.522616269029431e-001 
 
 
 
  search...  check collision: 54 90 6.813685638015588e-001
- search...  check collision: 54 90 6.813685638015588e-001
- search...  check collision: 54 90 6.112028279403456e-001
  search...  check collision: 54 90 6.112028279403456e-001
  search...  check collision: 77 90 8.247121915707133e-001
- search...  check collision: 77 90 8.247121915707133e-001
- search...  check collision: 1 26 2.462646073878414e+000
  search...  check collision: 1 26 2.462646073878414e+000
  search...  check collision: 19 26 5.184530852359757e-001
- search...  check collision: 19 26 5.184530852359757e-001
- search...  check collision: 77 90 3.527761922069468e-001
  search...  check collision: 77 90 3.527761922069468e-001
  search...  check collision: 1 26 1.877687818102274e+000
- search...  check collision: 1 26 1.877687818102274e+000
- search...  check collision: 28 90 4.514738203454570e-001
  search...  check collision: 28 90 4.514738203454570e-001
  STEPS:: 6 
 
  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
+ particle 26, vx, vy, vz: 7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, -6, 2.522616269029431e-001 
  90 i_copy 
   particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
+ particle 90, vx, vy, vz: -7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 3, 0, 1 
  particle event: 90, -6, 2.522616269029432e-001 
-
- particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
- particle x_box, y_box, z_box: 3, 0, 1 
- particle event: 90, -6, 2.522616269029432e-001 
- 26 i_copy 
-  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
- particle x_box, y_box, z_box: 1, 2, 1 
- particle event: 26, -6, 2.522616269029431e-001 
 
 
 
  search...  check collision: 58 90 2.788316819346156e-001
- search...  check collision: 58 90 2.788316819346156e-001
- search...  check collision: 0 26 1.064055812085808e+000
  search...  check collision: 0 26 1.064055812085808e+000
  search...  check collision: 0 90 3.754821641501180e-001
- search...  check collision: 0 90 3.754821641501180e-001
- search...  check collision: 8 26 4.776708983198720e-001
  search...  check collision: 8 26 4.776708983198720e-001
  search...  check collision: 0 90 5.098000872368309e-001
- search...  check collision: 0 90 5.098000872368309e-001
- search...  check collision: 58 90 2.292326978178210e-001
  search...  check collision: 58 90 2.292326978178210e-001
  search...  check collision: 1 26 1.795195348819275e+000
- search...  check collision: 1 26 1.795195348819275e+000
- search...  check collision: 65 90 6.836666666589012e-001
  search...  check collision: 65 90 6.836666666589012e-001
  STEPS:: 7 
 
  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
+ particle 26, vx, vy, vz: 7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 1, 2, 1 
  particle event: 26, -6, 2.522616269029431e-001 
  90 i_copy 
   particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
+ particle 90, vx, vy, vz: -7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 3, 0, 1 
  particle event: 90, -6, 2.522616269029432e-001 
-
- particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
- particle x_box, y_box, z_box: 3, 0, 1 
- particle event: 90, -6, 2.522616269029432e-001 
- 26 i_copy 
-  particle 26, x, y, z: -1.14281e+001, 2.28463e+000, -1.50060e+000 
- particle x_box, y_box, z_box: 1, 2, 1 
- particle event: 26, -6, 2.522616269029431e-001 
 
 
 
  search...  check collision: 87 90 1.067852015067669e+000
- search...  check collision: 87 90 1.067852015067669e+000
- search...  check collision: 95 90 3.593444597632001e-001
  search...  check collision: 95 90 3.593444597632001e-001
  search...  check collision: 65 90 6.635274938610258e-001
- search...  check collision: 65 90 6.635274938610258e-001
  Event #26: 26 -6 2.522616269029431e-001 
-   26 BOX: x 1 | y 2 | z 1
-   -6 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -1.14281e+001 | y 2.28463e+000 | z -1.50060e+000
    26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ 90 i_copy 
 
-
- Event #26: 26 -6 2.522616269029431e-001 
-   26 BOX: x 1 | y 2 | z 1
-   -6 BOX: x 0 | y 0 | z 0 
-
-   26 particle: x -1.14281e+001 | y 2.28463e+000 | z -1.50060e+000
-   26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
-
-particle 90 was destroyed... 
+particle 26 Change with virt particle destroy ... 
 particle 90 was destroyed... 
     retime: 26 
  search...  check collision: 26 0 5.915310779858879e-001
@@ -589,12 +413,16 @@ particle 90 was destroyed...
     particle data 26: x_box, y_box, z_box: 3 0 1 
 
 
- Event #26: 26 -6 0.000000000000000e+000 
-   26 BOX: x 3 | y 0 | z 1
-   -6 BOX: x 0 | y 0 | z 0 
-
+ After the reform: 
    26 particle: x -3.22122e+000 | y -2.95178e+000 | z -1.19247e+000
    26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ -1 i_copy 
+
+
+ Event #26: 26 -6 0.000000000000000e+000 
+   26 particle: x -3.22122e+000 | y -2.95178e+000 | z -1.19247e+000
+   26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ -1 i_copy 
 
     retime: 26 
  search...  check collision: 26 0 5.915310779858879e-001
@@ -604,6 +432,12 @@ particle 90 was destroyed...
  search...  check collision: 26 28 2.519185305491856e-001    retime result: 26 -6 1.116124879887412e+000 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 16  
+
+ After the reform: 
+   26 particle: x -3.22122e+000 | y -2.95178e+000 | z -1.19247e+000
+   26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ -1 i_copy 
+
 
  search...  check collision: 91 26 5.944832241487669e-002
  search...  check collision: 91 26 5.235949753681843e-002! 
@@ -618,24 +452,18 @@ particle 90 was destroyed...
  STEPS:: 8 
 
  particle 26, x, y, z: -3.19474e+000, -2.86333e+000, -1.19768e+000 
+ particle 26, vx, vy, vz: 7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -100, 5.235949753681843e-002 
- -1 i_copy 
- 
- particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
- particle x_box, y_box, z_box: 3, 0, 1 
- particle event: -1, 0, 2.522616269029432e-001 
  -1 i_copy 
  
 
 
  search...  check collision: 28 26 2.179251054453600e-001
  Event #26: 26 -100 5.235949753681843e-002 
-   26 BOX: x 3 | y 1 | z 1
-   -100 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -3.19474e+000 | y -2.86333e+000 | z -1.19768e+000
    26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ -1 i_copy 
 
     retime: 26 
  search...  check collision: 26 30 5.444852881565132e-001! 
@@ -645,6 +473,12 @@ particle 90 was destroyed...
  search...  check collision: 26 59 8.915367164940691e-001    retime result: 26 30 5.444852881565132e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 16  
+
+ After the reform: 
+   26 particle: x -3.15349e+000 | y -2.72560e+000 | z -1.20578e+000
+   26 particle: vx 7.92024e-001 | vy 2.64467e+000 | vz -1.55622e-001
+ -1 i_copy 
+
 
  search...  check collision: 28 26 1.936015509021897e-001! 
     retime result: 28 26 1.936015509021897e-001 
@@ -659,13 +493,9 @@ particle 90 was destroyed...
  STEPS:: 9 
 
  particle 26, x, y, z: -3.13464e+000, -2.66267e+000, -1.20949e+000 
+ particle 26, vx, vy, vz: 7.92024e-001, 2.64467e+000, -1.55622e-001 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -100, 1.936015509021897e-001 
- -1 i_copy 
- 
- particle 90, x, y, z: -3.02143e+000, -3.61893e+000, -1.15322e+000 
- particle x_box, y_box, z_box: 3, 0, 1 
- particle event: -1, 0, 2.522616269029432e-001 
  -1 i_copy 
  
 
@@ -679,145 +509,94 @@ particle 90 was destroyed...
  search...  check collision: 50 26 1.864569443217462e+000
  search...  check collision: 27 26 7.171668880836345e-001
  Event #54: 54 26 1.057126327751812e-001 
-   54 BOX: x 4 | y 1 | z 1
-   26 BOX: x 3 | y 1 | z 1 
-
    54 particle: x -8.13965e-001 | y -8.82475e-001 | z -4.43639e-001
    54 particle: vx -4.30286e+000 | vy -3.01948e+000 | vz -5.74860e+000
+ -1 i_copy 
 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 26     retime: 26 
- search...  check collision: 26 7 3.675149432797989e-001
+    retime: 26 
  search...  check collision: 26 7 3.675149432797989e-001! 
-! 
     retime result: 26 7 3.675149432797989e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 7 3.675149432797989e-001 
-    particle data 90: x_box, y_box, z_box: 1 3 3 
-
-    retime: 90     retime: 90 
- search...  check collision: 90 41 1.990004158897007e-001
+    retime: 90 
  search...  check collision: 90 41 1.990004158897007e-001    retime result: 90 -7 1.427412554295614e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -7 1.427412554295614e-001 
-    particle data 90: x_box, y_box, z_box: 1 3 3 
+
+ After the reform: 
+   54 particle: x -1.26883e+000 | y -1.20167e+000 | z -1.05134e+000
+   54 particle: vx 2.36684e+000 | vy 8.20190e-001 | vz -5.03110e+000
+ -1 i_copy 
 
 
  STEPS:: 10 
 
  particle 26, x, y, z: -2.99464e+000, -2.19520e+000, -1.23699e+000 
+ particle 26, vx, vy, vz: -5.87768e+000, -1.19500e+000, -8.73122e-001 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, 7, 3.675149432797989e-001 
  90 i_copy 
   particle 90, x, y, z: -1.05340e+001, 3.70836e+000, 3.07641e+000 
+ particle 90, vx, vy, vz: -5.87768e+000, -1.19500e+000, -8.73122e-001 
  particle x_box, y_box, z_box: 1, 3, 3 
  particle event: 90, -7, 1.427412554295614e-001 
 
- particle 90, x, y, z: -1.05340e+001, 3.70836e+000, 3.07641e+000 
- particle x_box, y_box, z_box: 1, 3, 3 
- particle event: 90, -7, 1.427412554295614e-001 
+
+
+ search...  check collision: 122 26 1.081107645479607e-001
+ search...  check collision: 58 26 2.344897757181995e-001
+ search...  check collision: 58 26 2.344897757181995e-001
+ search...  check collision: 88 26 5.086047029811920e-001
+ Event #90: 90 -7 1.427412554295614e-001 
+   90 particle: x -1.05340e+001 | y 3.70836e+000 | z 3.07641e+000
+   90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
  26 i_copy 
-  particle 26, x, y, z: -2.99464e+000, -2.19520e+000, -1.23699e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, 7, 3.675149432797989e-001 
 
-
-
- search...  check collision: 122 26 1.081107645479607e-001
- search...  check collision: 122 26 1.081107645479607e-001
- search...  check collision: 58 26 2.344897757181995e-001
- search...  check collision: 58 26 2.344897757181995e-001
- search...  check collision: 58 26 2.344897757181995e-001
- search...  check collision: 58 26 2.344897757181995e-001
- search...  check collision: 88 26 5.086047029811920e-001
- search...  check collision: 88 26 5.086047029811920e-001
- Event #90: 90 -7 1.427412554295614e-001 
-   90 BOX: x 1 | y 3 | z 3
-   -7 BOX: x 0 | y 0 | z 0 
-
-   90 particle: x -1.05340e+001 | y 3.70836e+000 | z 3.07641e+000
-   90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
-
-
- Event #90: 90 -7 1.427412554295614e-001 
-   90 BOX: x 1 | y 3 | z 3
-   -7 BOX: x 0 | y 0 | z 0 
-
-   90 particle: x -1.05340e+001 | y 3.70836e+000 | z 3.07641e+000
-   90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
-
-    retime: 90     retime: 90 
- search...  check collision: 90 41 5.625916046013911e-002
+    retime: 90 
  search...  check collision: 90 41 5.625916046013911e-002! 
-! 
     retime result: 90 41 5.625916046013911e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 41 5.625916046013911e-002 
-    particle data 90: x_box, y_box, z_box: 1 3 2 
+
+ After the reform: 
+   90 particle: x -1.13730e+001 | y 3.53779e+000 | z 2.95178e+000
+   90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
+ 26 i_copy 
 
 
  search...  check collision: 58 26 1.005104708581436e-001
- search...  check collision: 58 26 1.005104708581436e-001
- search...  check collision: 88 26 4.883549777218093e-001
  search...  check collision: 88 26 4.883549777218093e-001
  STEPS:: 11 
 
  particle 26, x, y, z: -2.99464e+000, -2.19520e+000, -1.23699e+000 
+ particle 26, vx, vy, vz: -5.87768e+000, -1.19500e+000, -8.73122e-001 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -100, 3.675149432797989e-001 
  90 i_copy 
   particle 90, x, y, z: -1.13730e+001, 3.53779e+000, 2.95178e+000 
+ particle 90, vx, vy, vz: -5.87768e+000, -1.19500e+000, -8.73122e-001 
  particle x_box, y_box, z_box: 1, 3, 2 
  particle event: 90, 41, 5.625916046013911e-002 
 
- particle 90, x, y, z: -1.13730e+001, 3.53779e+000, 2.95178e+000 
- particle x_box, y_box, z_box: 1, 3, 2 
- particle event: 90, 41, 5.625916046013911e-002 
- 26 i_copy 
-  particle 26, x, y, z: -2.99464e+000, -2.19520e+000, -1.23699e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, -100, 3.675149432797989e-001 
 
 
-
- search...  check collision: 5 26 4.853667544362721e-002
  search...  check collision: 5 26 4.853667544362721e-002! 
-! 
     retime result: 5 26 4.853667544362721e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 5 26 4.853667544362721e-002 
-    particle data 90: x_box, y_box, z_box: 1 3 2 
-
 
  Event #90: 90 41 5.625916046013911e-002 
-   90 BOX: x 1 | y 3 | z 2
-   41 BOX: x 1 | y 2 | z 2 
-
    90 particle: x -1.13730e+001 | y 3.53779e+000 | z 2.95178e+000
    90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
+ 26 i_copy 
 
-
- Event #90: 90 41 5.625916046013911e-002 
-   90 BOX: x 1 | y 3 | z 2
-   41 BOX: x 1 | y 2 | z 2 
-
-   90 particle: x -1.13730e+001 | y 3.53779e+000 | z 2.95178e+000
-   90 particle: vx -5.87768e+000 | vy -1.19500e+000 | vz -8.73122e-001
-
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
-particle 90 was destroyed... 
-Trying to create virt particle 90... 
 Trying to create virt particle 90... 
     retime: 26 
  search...  check collision: 26 88 4.155219315208367e-001
@@ -829,520 +608,332 @@ Trying to create virt particle 90...
 
  search...  check collision: 88 26 3.905002275704360e-001
  Event #26: 26 5 3.141510288135232e-002 
-   26 BOX: x 3 | y 1 | z 1
-   5 BOX: x 3 | y 1 | z 2 
-
    26 particle: x -4.16430e+000 | y -2.43301e+000 | z -1.41075e+000
    26 particle: vx -6.50660e+000 | vy 2.38442e-001 | vz -7.48760e-001
+ -1 i_copy 
 
+particle 26 Create virt particle destroy ... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 26     retime: 26 
- search...  check collision: 26 58 2.212571107794618e-002
+    retime: 26 
  search...  check collision: 26 58 2.212571107794618e-002    retime result: 26 -17 1.072009812347493e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 -17 1.072009812347493e-001 
-    particle data 90: x_box, y_box, z_box: 2 2 3 
-102  
-    retime: 90     retime: 90 
+    retime: 90 
  search...  check collision: 90 22 2.456107029667857e-001
- search...  check collision: 90 22 2.456107029667857e-001
- search...  check collision: 90 31 9.749594162627896e-002
  search...  check collision: 90 31 9.749594162627896e-002    retime result: 90 -5 6.526023932544435e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -5 6.526023932544435e-002 
-    particle data 90: x_box, y_box, z_box: 2 2 3 
-102  
 
- search...  check collision: 58 26 2.068187378880442e-002
+ After the reform: 
+   26 particle: x -4.36871e+000 | y -2.42552e+000 | z -1.43427e+000
+   26 particle: vx -4.02699e+000 | vy -2.25219e+000 | vz -4.82751e+000
+ 90 i_copy 
+
+
  search...  check collision: 58 26 2.068187378880442e-002! 
-! 
     retime result: 58 26 2.068187378880442e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 58 26 2.068187378880442e-002 
-    particle data 90: x_box, y_box, z_box: 2 2 3 
-102  
 
  search...  check collision: 31 90 1.018142095177643e-001
- search...  check collision: 31 90 1.018142095177643e-001
  Event #58: 58 26 2.068187378880442e-002 
-   58 BOX: x 2 | y 1 | z 1
-   26 BOX: x 3 | y 1 | z 1 
-
    58 particle: x -6.34557e+000 | y -2.87365e+000 | z -1.95178e+000
    58 particle: vx -2.35997e-001 | vy -1.19104e+000 | vz -3.78157e+000
+ 122 i_copy 
 
-
- Event #58: 58 26 2.068187378880442e-002 
-   58 BOX: x 2 | y 1 | z 1
-   26 BOX: x 3 | y 1 | z 1 
-
-   58 particle: x -6.34557e+000 | y -2.87365e+000 | z -1.95178e+000
-   58 particle: vx -2.35997e-001 | vy -1.19104e+000 | vz -3.78157e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 26     retime: 26     retime result: 26 -17 1.071442522393633e-001 
+    retime: 26     retime result: 26 -17 1.071442522393633e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 -17 1.071442522393633e-001 
-    particle data 90: x_box, y_box, z_box: 1 1 3 
-
-    retime: 90     retime: 90 
- search...  check collision: 90 25 1.643292385688010e-001
+    retime: 90 
  search...  check collision: 90 25 1.643292385688010e-001
  search...  check collision: 90 22 2.929119294834877e-001
- search...  check collision: 90 22 2.929119294834877e-001
- search...  check collision: 90 31 1.638631022389973e-001
  search...  check collision: 90 31 1.638631022389973e-001    retime result: 90 -7 3.422569702286609e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -7 3.422569702286609e-001 
-    particle data 90: x_box, y_box, z_box: 1 1 3 
+
+ After the reform: 
+   58 particle: x -6.35045e+000 | y -2.89828e+000 | z -2.02999e+000
+   58 particle: vx -4.08523e+000 | vy -2.05120e+000 | vz -4.77592e+000
+ 122 i_copy 
 
 
  STEPS:: 12 
 
  particle 26, x, y, z: -4.45781e+000, -2.47535e+000, -1.54108e+000 
+ particle 26, vx, vy, vz: -1.77754e-001, -1.39203e+000, -3.83317e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -17, 1.071442522393633e-001 
  90 i_copy 
   particle 90, x, y, z: -9.99283e+000, -3.67314e-001, 4.26371e+000 
+ particle 90, vx, vy, vz: -1.77754e-001, -1.39203e+000, -3.83317e+000 
  particle x_box, y_box, z_box: 1, 1, 3 
  particle event: 90, -7, 3.422569702286609e-001 
 
- particle 90, x, y, z: -9.99283e+000, -3.67314e-001, 4.26371e+000 
- particle x_box, y_box, z_box: 1, 1, 3 
- particle event: 90, -7, 3.422569702286609e-001 
- 26 i_copy 
-  particle 26, x, y, z: -4.45781e+000, -2.47535e+000, -1.54108e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, -17, 1.071442522393633e-001 
 
 
-
- search...  check collision: 101 90 1.624593890060358e-002
  search...  check collision: 101 90 1.624593890060358e-002! 
-! 
     retime result: 101 90 1.624593890060358e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 101 90 1.624593890060358e-002 
-    particle data 90: x_box, y_box, z_box: 1 1 3 
-90  
 
  Event #101: 101 90 1.624593890060358e-002 
-   101 BOX: x 1 | y 1 | z 3
-   90 BOX: x 1 | y 1 | z 3 
-
    101 particle: x -1.17804e+001 | y -9.35752e-001 | z 3.38597e+000
    101 particle: vx 1.95685e+000 | vy -1.93643e+000 | vz -2.80064e+000
+ 37 i_copy 
 
-
- Event #101: 101 90 1.624593890060358e-002 
-   101 BOX: x 1 | y 1 | z 3
-   90 BOX: x 1 | y 1 | z 3 
-
-   101 particle: x -1.17804e+001 | y -9.35752e-001 | z 3.38597e+000
-   101 particle: vx 1.95685e+000 | vy -1.93643e+000 | vz -2.80064e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
 Starting to create virt particle 90... 
-Starting to create virt particle 90... 
-    retime: 90     retime: 90 
- search...  check collision: 90 20 1.555909957584903e+000
+    retime: 90 
  search...  check collision: 90 20 1.555909957584903e+000    retime result: 90 -7 5.349635174802042e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -7 5.349635174802042e-001 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
-
-    retime: 26     retime: 26     retime result: 26 -17 9.452128330653721e-002 
+    retime: 26     retime result: 26 -17 9.452128330653721e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 -17 9.452128330653721e-002 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
+
+ After the reform: 
+   101 particle: x -1.16995e+001 | y -9.64972e-001 | z 3.33987e+000
+   101 particle: vx 9.55497e-002 | vy -2.52498e+000 | vz -3.64621e+000
+ 37 i_copy 
 
 
  search...  check collision: 31 90 2.153524483592401e-001
- search...  check collision: 31 90 2.153524483592401e-001
- search...  check collision: 23 26 4.074681670806346e+000
  search...  check collision: 23 26 4.074681670806346e+000
  search...  check collision: 3 90 3.674421318522366e-001
- search...  check collision: 3 90 3.674421318522366e-001
- search...  check collision: 6 90 1.068026747690781e+000
  search...  check collision: 6 90 1.068026747690781e+000
  STEPS:: 13 
 
  particle 26, x, y, z: -4.46376e+000, -2.52195e+000, -1.66939e+000 
+ particle 26, vx, vy, vz: 1.68355e+000, -8.03487e-001, -2.98760e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -17, 9.452128330653721e-002 
  90 i_copy 
   particle 90, x, y, z: -7.96848e+000, -8.49290e-001, 4.55004e+000 
+ particle 90, vx, vy, vz: 1.68355e+000, -8.03487e-001, -2.98760e+000 
  particle x_box, y_box, z_box: 2, 1, 3 
  particle event: 90, -7, 5.349635174802042e-001 
-
- particle 90, x, y, z: -7.96848e+000, -8.49290e-001, 4.55004e+000 
- particle x_box, y_box, z_box: 2, 1, 3 
- particle event: 90, -7, 5.349635174802042e-001 
- 26 i_copy 
-  particle 26, x, y, z: -4.46376e+000, -2.52195e+000, -1.66939e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, -17, 9.452128330653721e-002 
 
 
 
  search...  check collision: 118 90 3.753955839308413e-001
- search...  check collision: 118 90 3.753955839308413e-001
  Event #26: 26 -17 9.452128330653721e-002 
-   26 BOX: x 3 | y 1 | z 1
-   -17 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -4.46376e+000 | y -2.52195e+000 | z -1.66939e+000
    26 particle: vx 1.68355e+000 | vy -8.03487e-001 | vz -2.98760e+000
+ 90 i_copy 
 
-
- Event #26: 26 -17 9.452128330653721e-002 
-   26 BOX: x 3 | y 1 | z 1
-   -17 BOX: x 0 | y 0 | z 0 
-
-   26 particle: x -4.46376e+000 | y -2.52195e+000 | z -1.66939e+000
-   26 particle: vx 1.68355e+000 | vy -8.03487e-001 | vz -2.98760e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
 Starting to create virt particle 90... 
-Starting to create virt particle 90... 
-    retime: 26     retime: 26 
- search...  check collision: 26 23 4.010948580243060e+000
+    retime: 26 
  search...  check collision: 26 23 4.010948580243060e+000    retime result: 26 -7 3.347163162395445e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 -7 3.347163162395445e-001 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
-
-    retime: 90     retime: 90 
- search...  check collision: 90 118 3.837620845305155e-001
+    retime: 90 
  search...  check collision: 90 118 3.837620845305155e-001
  search...  check collision: 90 6 1.295097183696595e-001
- search...  check collision: 90 6 1.295097183696595e-001
  search...  check collision: 90 5 7.331957298295947e-001
- search...  check collision: 90 5 7.331957298295947e-001
- search...  check collision: 90 3 2.260624288502761e-001
  search...  check collision: 90 3 2.260624288502761e-001    retime result: 90 -7 3.347163162395445e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -7 3.347163162395445e-001 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
+
+ After the reform: 
+   26 particle: x -4.30463e+000 | y -2.59789e+000 | z -1.95178e+000
+   26 particle: vx 1.68355e+000 | vy -8.03487e-001 | vz -2.98760e+000
+ 90 i_copy 
 
 
  search...  check collision: 126 90 3.814251157255592e-001
- search...  check collision: 126 90 3.814251157255592e-001
- search...  check collision: 78 90 1.005452921477406e-001
  search...  check collision: 78 90 1.005452921477406e-001
  search...  check collision: 31 90 9.833048380978142e-002
- search...  check collision: 31 90 9.833048380978142e-002
  search...  check collision: 118 90 2.563006419575883e-001
- search...  check collision: 118 90 2.563006419575883e-001
- search...  check collision: 54 90 2.528655306999145e-001
- search...  check collision: 54 90 2.528655306999145e-001
  search...  check collision: 54 90 2.528655306999145e-001
  search...  check collision: 54 90 2.528655306999145e-001
  STEPS:: 14 
 
  particle 26, x, y, z: -4.30463e+000, -2.59789e+000, -1.95178e+000 
+ particle 26, vx, vy, vz: 1.68355e+000, -8.03487e-001, -2.98760e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -7, 3.347163162395445e-001 
  90 i_copy 
   particle 90, x, y, z: -7.63135e+000, -1.01019e+000, 3.95178e+000 
+ particle 90, vx, vy, vz: 1.68355e+000, -8.03487e-001, -2.98760e+000 
  particle x_box, y_box, z_box: 2, 1, 3 
  particle event: 90, -7, 3.347163162395445e-001 
 
- particle 90, x, y, z: -7.63135e+000, -1.01019e+000, 3.95178e+000 
- particle x_box, y_box, z_box: 2, 1, 3 
- particle event: 90, -7, 3.347163162395445e-001 
- 26 i_copy 
-  particle 26, x, y, z: -4.30463e+000, -2.59789e+000, -1.95178e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, -7, 3.347163162395445e-001 
 
 
-
- search...  check collision: 31 90 6.430935126129617e-002
  search...  check collision: 31 90 6.430935126129617e-002! 
-! 
     retime result: 31 90 6.430935126129617e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 31 90 6.430935126129617e-002 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
-
 
  search...  check collision: 5 90 6.441070885820913e-001
- search...  check collision: 5 90 6.441070885820913e-001
- search...  check collision: 54 90 2.134063521204903e-001
  search...  check collision: 54 90 2.134063521204903e-001
  search...  check collision: 67 90 4.894402339695196e-001
- search...  check collision: 67 90 4.894402339695196e-001
- search...  check collision: 127 26 1.749857894351159e-001
  search...  check collision: 127 26 1.749857894351159e-001! 
-! 
     retime result: 127 26 1.749857894351159e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 127 26 1.749857894351159e-001 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
 
-
- search...  check collision: 31 90 2.755636973073885e-002
  search...  check collision: 31 90 2.755636973073885e-002! 
-! 
     retime result: 31 90 2.755636973073885e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 31 90 2.755636973073885e-002 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
 
-
- search...  check collision: 78 90 3.984630765913811e-003
  search...  check collision: 78 90 3.984630765913811e-003! 
-! 
     retime result: 78 90 3.984630765913811e-003 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 78 90 3.984630765913811e-003 
-    particle data 90: x_box, y_box, z_box: 2 1 3 
-90  
 
  Event #78: 78 90 3.984630765913811e-003 
-   78 BOX: x 2 | y 1 | z 3
-   90 BOX: x 2 | y 1 | z 3 
-
    78 particle: x -8.19588e+000 | y -2.95178e+000 | z 3.69195e+000
    78 particle: vx -3.71873e+000 | vy 2.07374e+000 | vz -2.69087e+000
+ 14 i_copy 
 
-
- Event #78: 78 90 3.984630765913811e-003 
-   78 BOX: x 2 | y 1 | z 3
-   90 BOX: x 2 | y 1 | z 3 
-
-   78 particle: x -8.19588e+000 | y -2.95178e+000 | z 3.69195e+000
-   78 particle: vx -3.71873e+000 | vy 2.07374e+000 | vz -2.69087e+000
-
-particle 90 was destroyed... 
+particle 26 Create virt particle destroy ... 
 particle 90 was destroyed... 
 Trying to create virt particle 90... 
-Trying to create virt particle 90... 
-Starting to create virt particle 90... 
 Starting to create virt particle 90... 
 
  SEARCH TRUE 90 -1
-
- SEARCH TRUE 90 -1
-    retime: 90     retime: 90 
- search...  check collision: 90 127 1.967153734876213e-001
+    retime: 90 
  search...  check collision: 90 127 1.967153734876213e-001    retime result: 90 -4 1.609405135346514e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 90 -4 1.609405135346514e-001 
-    particle data 90: x_box, y_box, z_box: 2 0 1 
-82  
-    retime: 26     retime: 26 
- search...  check collision: 26 127 1.155736784074389e-001
+    retime: 26 
  search...  check collision: 26 127 1.155736784074389e-001! 
-! 
     retime result: 26 127 1.155736784074389e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 
-    retime result: 26 127 1.155736784074389e-001 
-    particle data 90: x_box, y_box, z_box: 2 0 1 
-82  
 
- search...  check collision: 30 26 2.305475687599001e-001
+ After the reform: 
+   78 particle: x -6.17682e+000 | y 3.26419e+000 | z 1.64919e+000
+   78 particle: vx -2.32913e+000 | vy -1.04927e+000 | vz -2.44997e+000
+ 14 i_copy 
+
+
  search...  check collision: 30 26 2.305475687599001e-001
  STEPS:: 15 
 
  particle 26, x, y, z: -4.07294e+000, -2.70847e+000, -2.36294e+000 
+ particle 26, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, 127, 1.155736784074389e-001 
  90 i_copy 
   particle 90, x, y, z: -5.98889e+000, -3.37484e+000, -1.43543e+000 
+ particle 90, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 2, 0, 1 
  particle event: 90, -4, 1.609405135346514e-001 
-
- particle 90, x, y, z: -5.98889e+000, -3.37484e+000, -1.43543e+000 
- particle x_box, y_box, z_box: 2, 0, 1 
- particle event: 90, -4, 1.609405135346514e-001 
- 26 i_copy 
-  particle 26, x, y, z: -4.07294e+000, -2.70847e+000, -2.36294e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, 127, 1.155736784074389e-001 
 
 
 
  search...  check collision: 30 26 1.970737473525516e-001
- search...  check collision: 30 26 1.970737473525516e-001
- search...  check collision: 30 26 1.648566182069244e-001
  search...  check collision: 30 26 1.648566182069244e-001
  search...  check collision: 29 26 7.056217479182025e-001
- search...  check collision: 29 26 7.056217479182025e-001
  search...  check collision: 109 90 2.736912072158851e-001
- search...  check collision: 109 90 2.736912072158851e-001
- search...  check collision: 109 26 1.283136705189215e-001
  search...  check collision: 109 26 1.283136705189215e-001
  STEPS:: 16 
 
  particle 26, x, y, z: -4.07294e+000, -2.70847e+000, -2.36294e+000 
+ particle 26, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -100, 1.155736784074389e-001 
  90 i_copy 
   particle 90, x, y, z: -5.98889e+000, -3.37484e+000, -1.43543e+000 
+ particle 90, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 2, 0, 1 
  particle event: 90, -4, 1.609405135346514e-001 
-
- particle 90, x, y, z: -5.98889e+000, -3.37484e+000, -1.43543e+000 
- particle x_box, y_box, z_box: 2, 0, 1 
- particle event: 90, -4, 1.609405135346514e-001 
- 26 i_copy 
-  particle 26, x, y, z: -4.07294e+000, -2.70847e+000, -2.36294e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: 26, -100, 1.155736784074389e-001 
 
 
 
  Event #26: 26 -100 1.155736784074389e-001 
-   26 BOX: x 3 | y 1 | z 1
-   -100 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -4.07294e+000 | y -2.70847e+000 | z -2.36294e+000
    26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 90 i_copy 
 
-
- Event #26: 26 -100 1.155736784074389e-001 
-   26 BOX: x 3 | y 1 | z 1
-   -100 BOX: x 0 | y 0 | z 0 
-
-   26 particle: x -4.07294e+000 | y -2.70847e+000 | z -2.36294e+000
-   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
-
-    retime: 26     retime: 26 
- search...  check collision: 26 109 1.178438640748622e-001
+    retime: 26 
  search...  check collision: 26 109 1.178438640748622e-001
  search...  check collision: 26 29 6.720272646714329e-001
- search...  check collision: 26 29 6.720272646714329e-001
- search...  check collision: 26 30 1.065386753635828e-001
  search...  check collision: 26 30 1.065386753635828e-001    retime result: 26 -7 6.726853405527766e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 26  
-    retime result: 26 -7 6.726853405527766e-002 
-    particle data 90: x_box, y_box, z_box: 2 0 1 
+
+ After the reform: 
+   26 particle: x -3.71916e+000 | y -2.44144e+000 | z -2.73461e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 90 i_copy 
 
 
  search...  check collision: 50 26 2.253909030582303e+000
- search...  check collision: 50 26 2.253909030582303e+000
- search...  check collision: 50 26 2.243984600662781e+000
  search...  check collision: 50 26 2.243984600662781e+000
  Event #90: 90 -4 1.609405135346514e-001 
-   90 BOX: x 2 | y 0 | z 1
-   -4 BOX: x 0 | y 0 | z 0 
-
    90 particle: x -5.98889e+000 | y -3.37484e+000 | z -1.43543e+000
    90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 26 i_copy 
 
-
- Event #90: 90 -4 1.609405135346514e-001 
-   90 BOX: x 2 | y 0 | z 1
-   -4 BOX: x 0 | y 0 | z 0 
-
-   90 particle: x -5.98889e+000 | y -3.37484e+000 | z -1.43543e+000
-   90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
-
-    retime: 90     retime: 90     retime result: 90 -6 2.144863741083807e-002 
+    retime: 90     retime result: 90 -6 2.144863741083807e-002 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 26  43  30  
-    retime result: 90 -6 2.144863741083807e-002 
-    particle data 90: x_box, y_box, z_box: 3 0 1 
+
+ After the reform: 
+   90 particle: x -5.49429e+000 | y -3.00153e+000 | z -1.95503e+000
+   90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 26 i_copy 
 
 
  Event #90: 90 -6 2.144863741083807e-002 
-   90 BOX: x 3 | y 0 | z 1
-   -6 BOX: x 0 | y 0 | z 0 
-
    90 particle: x -5.49429e+000 | y -3.00153e+000 | z -1.95503e+000
    90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 26 i_copy 
 
-
- Event #90: 90 -6 2.144863741083807e-002 
-   90 BOX: x 3 | y 0 | z 1
-   -6 BOX: x 0 | y 0 | z 0 
-
-   90 particle: x -5.49429e+000 | y -3.00153e+000 | z -1.95503e+000
-   90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
-
-    retime: 90     retime: 90 
- search...  check collision: 90 0 5.625987080570182e-001
+    retime: 90 
  search...  check collision: 90 0 5.625987080570182e-001    retime result: 90 -7 2.872872571357631e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 26  43  30  5  
-    retime result: 90 -7 2.872872571357631e-001 
-    particle data 90: x_box, y_box, z_box: 3 1 1 
-26  43  30  5  
 
- Event #26: 26 -7 6.726853405527766e-002 
-   26 BOX: x 3 | y 1 | z 1
-   -7 BOX: x 0 | y 0 | z 0 
-
-   26 particle: x -3.71916e+000 | y -2.44144e+000 | z -2.73461e+000
-   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ After the reform: 
+   90 particle: x -5.42838e+000 | y -2.95178e+000 | z -2.02427e+000
+   90 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 26 i_copy 
 
 
  Event #26: 26 -7 6.726853405527766e-002 
-   26 BOX: x 3 | y 1 | z 1
-   -7 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -3.71916e+000 | y -2.44144e+000 | z -2.73461e+000
    26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ 90 i_copy 
 
-particle 90 was destroyed... 
+particle 26 Change with virt particle destroy ... 
 particle 90 was destroyed... 
     retime: 26 
  search...  check collision: 26 0 5.625987080570180e-001    retime result: 26 -7 2.872872571357629e-001 
     particle data 26: x_box, y_box, z_box: 3 1 1 
 5  43  30  
 
+ After the reform: 
+   26 particle: x -5.42838e+000 | y -2.95178e+000 | z -2.02427e+000
+   26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
+
+
  search...  check collision: 118 26 6.388581893421684e-001
  STEPS:: 17 
 
  particle 26, x, y, z: -5.42838e+000, -2.95178e+000, -2.02427e+000 
+ particle 26, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -7, 2.872872571357629e-001 
- -1 i_copy 
- 
- particle 90, x, y, z: -5.42838e+000, -2.95178e+000, -2.02427e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: -1, 0, 2.872872571357631e-001 
  -1 i_copy 
  
 
@@ -1355,21 +946,15 @@ particle 90 was destroyed...
  STEPS:: 18 
 
  particle 26, x, y, z: -5.42838e+000, -2.95178e+000, -2.02427e+000 
+ particle 26, vx, vy, vz: 3.07314e+000, 2.31952e+000, -3.22850e+000 
  particle x_box, y_box, z_box: 3, 1, 1 
  particle event: 26, -7, 2.872872571357629e-001 
- -1 i_copy 
- 
- particle 90, x, y, z: -5.42838e+000, -2.95178e+000, -2.02427e+000 
- particle x_box, y_box, z_box: 3, 1, 1 
- particle event: -1, 0, 2.872872571357631e-001 
  -1 i_copy 
  
 
 
  Event #26: 26 -7 2.872872571357629e-001 
-   26 BOX: x 3 | y 1 | z 1
-   -7 BOX: x 0 | y 0 | z 0 
-
    26 particle: x -5.42838e+000 | y -2.95178e+000 | z -2.02427e+000
    26 particle: vx 3.07314e+000 | vy 2.31952e+000 | vz -3.22850e+000
+ -1 i_copy 
 

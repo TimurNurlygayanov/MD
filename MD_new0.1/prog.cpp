@@ -783,78 +783,21 @@ void destroy_virt_particle(int &i) {
 }
 
 
+
+///////////// BUG
 void change_with_virt_particles(int &im, int &jm) {
 	int x_box, y_box, z_box, box_i;
 	int f = im + NP;
-
-	printf("\n| %d x, y, z: %.15le, %.15le, %.15le \n", im, particles[im].x, particles[im].y, particles[im].z);
-	printf("\n| %d x_box, y_box, z_box: %d, %d, %d \n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
-	printf("\n| vx, vy, vz: %le, %le, %le \n", particles[im].vx, particles[im].vy, particles[im].vz);
-
-	printf("\n%d\n", particles[im].i_copy);
-
-	if (particles[im].i_copy < 0) {
-		printf("ddd");
-	}
-
-	printf("\n %d x, y, z: %.15le, %.15le, %.15le \n", f, particles[f].x, particles[f].y, particles[f].z);
-	printf("\n %d x_box, y_box, z_box: %d, %d, %d \n", f, particles[f].x_box, particles[f].y_box, particles[f].z_box);
-	printf("\n vx, vy, vz: %le, %le, %le \n", particles[f].vx, particles[f].vy, particles[f].vz);
 
 	double dt = particles[im].t - particles[f].t;
 	particles[im].x = particles[f].x + dt*particles[f].vx;
 	particles[im].y = particles[f].y + dt*particles[f].vy;
 	particles[im].z = particles[f].z + dt*particles[f].vz;
 
-	printf("\n %d x, y, z: %.15le, %.15le, %.15le \n", im, particles[im].x, particles[im].y, particles[im].z);
-	printf("\n %d x_box, y_box, z_box: %d, %d, %d \n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
-	printf("\n vx, vy, vz: %le, %le, %le \n", particles[im].vx, particles[im].vy, particles[im].vz);
-
-	/*
-	// удаляем частицу из её ячейки
-	x_box = particles[im].x_box;
-	y_box = particles[im].y_box;
-	z_box = particles[im].z_box;
-	box_i = particles[im].box_i;
-	Box p_box = boxes_yz[y_box][z_box][x_box];
-
-	for (int t = 0; t <= p_box.end+5; t++) {
-		printf("e1 %d ", p_box.particles[t]);
-	}
-
-	printf("\n p.i_box = %d   p_box.end %d\n", box_i, p_box.end );
-
-	// clear information about this virtual particle in small cell
-	if (p_box.particles[box_i] == im)
-	{
-		int j = p_box.particles[box_i] = p_box.particles[p_box.end];
-		particles[j].box_i = box_i;
-		--p_box.end;
-		boxes_yz[y_box][z_box][x_box] = p_box;
-	}
-
-	for (int t = 0; t <= p_box.end; t++) {
-		printf("e2 %d ", p_box.particles[t]);
-	}
-	*/
-	// и записываем её в новую ячейку
-    x_box = particles[f].x_box;
-    y_box = particles[f].y_box;
-    z_box = particles[f].z_box;
-
-    particles[im].x_box = x_box;
-    particles[im].y_box = y_box;
-    particles[im].z_box = z_box;
-
-	/*
-	printf("\n in BOX_I %d \n", boxes_yz[y_box][z_box][x_box].particles[particles[f].box_i]);
-
-	boxes_yz[y_box][z_box][x_box].particles[particles[f].box_i] = im;
-
-	if (particles[im].vx * particles[f].vx < 0.0) {
-		particles[im].vx = -particles[im].vx;
-	}
-	*/
+	// записываем её в новую ячейку
+	particles[im].x_box = particles[f].x_box;
+	particles[im].y_box = particles[f].y_box;
+	particles[im].z_box = particles[f].z_box;
 
 	// при обмене виртуального образа на частицу ставим частицу точно на границу ячейки,
 	// чтобы избегать накопления ошибок
@@ -864,10 +807,16 @@ void change_with_virt_particles(int &im, int &jm) {
 	else if (particles[im].z < -A) particles[im].z = -A;
 
 	printf("... Change with virt particle destroy ...");
+	for (int t = 0; t < particles_for_check_count; t++) {
+		if (im == particles_for_check[t]) {
+			FILE *save_file = fopen("history.txt", "a");
+			fprintf(save_file, "particle %d Change with virt particle destroy ... \n", im);
+			fclose(save_file);
+		}
+	}
     destroy_virt_particle(im);
 
     clear_particle_events(im);
-	printf("aaa");
 }
 
 
@@ -879,6 +828,13 @@ void create_virt_particle(int &i) {
 	int new_i = i + NP;
 
 	printf("... Create virt particle destroy ...");
+	for (int t = 0; t < particles_for_check_count; t++) {
+		if (i == particles_for_check[t]) {
+			FILE *save_file = fopen("history.txt", "a");
+			fprintf(save_file, "particle %d Create virt particle destroy ... \n", i);
+			fclose(save_file);
+		}
+	}
 	destroy_virt_particle(i);
 
 	printf("Trying to create virt particle %d...", new_i);
@@ -1787,11 +1743,12 @@ void step() {
 			if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
 		        FILE *save_file = fopen("history.txt", "a");
 		        fprintf(save_file, "\n Event #%d: %d %d %.15le \n", im, time_queue[particles[im].ti].im, time_queue[particles[im].ti].jm, particles[im].dt);
-		        fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
-		        fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
+		        //fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
+		        //fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
 
 				fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
 				fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
+				fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
 		/*
 				for (int ty = 0; ty < boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].end; ty++) {
 					fprintf(save_file, "%d  ", boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].particles[ty]);
@@ -1860,6 +1817,20 @@ void step() {
 				retime(jm);
 				if (particles[jm].i_copy > -1)
 					retime(particles[jm].i_copy);
+			}
+		}
+
+
+		for (int t = 0; t < particles_for_check_count; t++) {
+			if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
+				FILE *save_file = fopen("history.txt", "a");
+				fprintf(save_file, "\n After the reform: \n");
+				fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
+				fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
+				fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
+				fprintf(save_file, "\n");
+
+				fclose(save_file);
 			}
 		}
     }
@@ -2083,7 +2054,7 @@ int main(array<System::String ^> ^args)
 	FILE *save_file = fopen("history.txt", "w");
 	fclose(save_file);
 
-	particles_for_check_count = 2;
+	particles_for_check_count = 1;
 	particles_for_check[0] = 26;
 	particles_for_check[1] = 90;
 	particles_for_check[2] = 24;
@@ -2102,12 +2073,15 @@ int main(array<System::String ^> ^args)
 		fprintf(save_file, "\n STEPS:: %d \n", GGH);
 		for (int t = 0; t < particles_for_check_count; t++) {
 			fprintf(save_file, "\n particle %d, x, y, z: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].x, particles[particles_for_check[t]].y, particles[particles_for_check[t]].z);
+			fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].vx, particles[particles_for_check[t]].vy, particles[particles_for_check[t]].vz);
+
 			fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[particles_for_check[t]].x_box, particles[particles_for_check[t]].y_box, particles[particles_for_check[t]].z_box);
 			fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[particles_for_check[t]].ti].im, time_queue[particles[particles_for_check[t]].ti].jm, particles[particles_for_check[t]].dt);
 			fprintf(save_file, " %d i_copy \n ", particles[particles_for_check[t]].i_copy);
 			if (particles[particles_for_check[t]].i_copy > 0) {
 				int r = particles[particles_for_check[t]].i_copy;
 				fprintf(save_file, " particle %d, x, y, z: %.5le, %.5le, %.5le \n", r, particles[r].x, particles[r].y, particles[r].z);
+				fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", r, particles[r].vx, particles[r].vy, particles[r].vz);
 				fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[r].x_box, particles[r].y_box, particles[r].z_box);
 				fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[r].ti].im, time_queue[particles[r].ti].jm, particles[r].dt);
 			}
