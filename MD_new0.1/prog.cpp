@@ -77,94 +77,94 @@ int particles_for_check_count = 0;
 
 
 void print_time_line() {
-	for (int i = 0; i <= last; i++) {
-	    fprintf(stderr, "EVENT:");
-	    fprintf(stderr, "%d %d %d %.5le", i, time_queue[i].im, time_queue[i].jm, time_queue[i].t);
-	}
+    for (int i = 0; i <= last; i++) {
+        fprintf(stderr, "EVENT:");
+        fprintf(stderr, "%d %d %d %.5le", i, time_queue[i].im, time_queue[i].jm, time_queue[i].t);
+    }
 }
 
 
 int check_particles() {
-	double E = 0.0;
+    double E = 0.0;
 
-	printf(" \n CHECK SYSTEM \n");
+    printf(" \n CHECK SYSTEM \n");
 
-	for (int i = 0; i < NP; i++) {
-		particle p1 = particles[i];
-		Box p1_box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
+    for (int i = 0; i < NP; i++) {
+        particle p1 = particles[i];
+        Box p1_box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
 
-		E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
+        E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
 
-		if ((p1.x_box > K2) || (p1.y_box > K) || (p1.z_box > K) ||
-			(p1.x_box < 0) || (p1.y_box < 0) || (p1.z_box < 0)) {
-			return 400;
-		}
+        if ((p1.x_box > K2) || (p1.y_box > K) || (p1.z_box > K) ||
+            (p1.x_box < 0) || (p1.y_box < 0) || (p1.z_box < 0)) {
+            return 400;
+        }
 
-		if ((p1.x > L) || (p1.y > A) || (p1.z > A) ||
-			(p1.x < -L) || (p1.y < -A) || (p1.z < -A)) {
-			printf(" \n Particle %d, %.15le, %.15le, %.15le \n ", i, p1.x, p1.y, p1.z);
-			return 500;
-		}
+        if ((p1.x > L) || (p1.y > A) || (p1.z > A) ||
+            (p1.x < -L) || (p1.y < -A) || (p1.z < -A)) {
+            printf(" \n Particle %d, %.15le, %.15le, %.15le \n ", i, p1.x, p1.y, p1.z);
+            return 500;
+        }
 
-		if ((p1.x < p1_box.x1) || (p1.x > p1_box.x2) ||
-			(p1.y < p1_box.y1) || (p1.y > p1_box.y2) ||
-			(p1.z < p1_box.z1) || (p1.z > p1_box.z2)) {
+        if ((p1.x < p1_box.x1) || (p1.x > p1_box.x2) ||
+            (p1.y < p1_box.y1) || (p1.y > p1_box.y2) ||
+            (p1.z < p1_box.z1) || (p1.z > p1_box.z2)) {
 
-			printf("Vilet za granicy %d \n", i);
+            printf("Vilet za granicy %d \n", i);
 
-			printf("Granizy:\n");
-			printf("X : [%f ; %f]\n", p1_box.x1, p1_box.x2);
-			printf("Y : [%f ; %f]\n", p1_box.y1, p1_box.y2);
-			printf("Z : [%f ; %f]\n", p1_box.z1, p1_box.z2);
-			printf("x, y, z: %.15le %.15le %.15le\n", p1.x, p1.y, p1.z);
+            printf("Granizy:\n");
+            printf("X : [%f ; %f]\n", p1_box.x1, p1_box.x2);
+            printf("Y : [%f ; %f]\n", p1_box.y1, p1_box.y2);
+            printf("Z : [%f ; %f]\n", p1_box.z1, p1_box.z2);
+            printf("x, y, z: %.15le %.15le %.15le\n", p1.x, p1.y, p1.z);
 
-			printf("p1.dt p1.jm = %.15le %d n", p1.t, time_queue[p1.ti].jm);
+            printf("p1.dt p1.jm = %.15le %d n", p1.t, time_queue[p1.ti].jm);
 
-			if (i != 1)
-				return 1;
-		}
+            if (i != 1)
+                return 1;
+        }
 
-		if ((p1.i_copy > -1) && (particles[i+NP].i_copy == -1)) return 2;
+        if ((p1.i_copy > -1) && (particles[i+NP].i_copy == -1)) return 2;
 
-		bool w = false;
-		for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ty++) {
-			//printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty]);
-			if (boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty] == i) w = true;
-		}
-		if (w == false) {
-			for (int t = 0; t <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; t++) {
-				printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[t]);
-			}
+        bool w = false;
+        for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ty++) {
+            //printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty]);
+            if (boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty] == i) w = true;
+        }
+        if (w == false) {
+            for (int t = 0; t <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; t++) {
+                printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[t]);
+            }
 
-			return 1010;
-		}
-		if (time_queue[p1.ti].im != i && time_queue[p1.ti].jm != i) {
-			return 3;
-		}
-	}
+            return 1010;
+        }
+        if (time_queue[p1.ti].im != i && time_queue[p1.ti].jm != i) {
+            return 3;
+        }
+    }
 
-	if (abs(E - global_E) > 0.1e-8) {
-		printf("\nENERGY was changed: \n E_seed = %.15le \n E_now= %.15le \n", global_E, E);
-		return 1000;
-	}
+    if (abs(E - global_E) > 0.1e-8) {
+        printf("\nENERGY was changed: \n E_seed = %.15le \n E_now= %.15le \n", global_E, E);
+        return 1000;
+    }
 ///////////////////// ?????????????????????????????????????????????????????????????????????????????????????????????
-	for (int i = 0; i < last; i++) {
-		if ((time_queue[i].im >= NP) && (particles[time_queue[i].im-NP].i_copy == -1)) {
-			printf("\n Time tree event # %d ", i);
-			printf("\n im, jm = %d %d \n", time_queue[i - 2].im, time_queue[i - 2].jm);
-			printf("\n im, jm = %d %d \n", time_queue[i-1].im, time_queue[i-1].jm);
-			printf("\n im, jm = %d %d \n", time_queue[i].im, time_queue[i].jm);
-			printf("\n im, jm = %d %d \n", time_queue[i+1].im, time_queue[i+1].jm);
-			printf("\n particle 34 event # %d \n", particles[34].ti);
-			printf("\n last = %d \n", last);
-			return time_queue[i].im;
-		}
-		if ((time_queue[i].jm >= NP) && (particles[time_queue[i].jm-NP].i_copy == -1)) {
-			return time_queue[i].im;
-		}
-	}
+    for (int i = 0; i < last; i++) {
+        if ((time_queue[i].im >= NP) && (particles[time_queue[i].im-NP].i_copy == -1)) {
+            printf("\n Time tree event # %d ", i);
+            printf("\n im, jm = %d %d \n", time_queue[i - 2].im, time_queue[i - 2].jm);
+            printf("\n im, jm = %d %d \n", time_queue[i-1].im, time_queue[i-1].jm);
+            printf("\n im, jm = %d %d \n", time_queue[i].im, time_queue[i].jm);
+            printf("\n im, jm = %d %d \n", time_queue[i+1].im, time_queue[i+1].jm);
+            printf("\n particle 34 event # %d \n", particles[34].ti);
+            printf("\n last = %d \n", last);
+            return time_queue[i].im;
+        }
+        if ((time_queue[i].jm >= NP) && (particles[time_queue[i].jm-NP].i_copy == -1)) {
+            return time_queue[i].im;
+        }
+    }
 
-	return 0;
+    return 0;
 }
 
 
@@ -261,26 +261,26 @@ void clear_particle_events(int &i) {
     // clear information about events for this virtual particle
     int k = particles[i].ti;
 
-	//printf("\n particle %d event %d ", i, k);
-	//printf("\n im, jm =  %d %d \n ", time_queue[k].im, time_queue[k].jm);
+    //printf("\n particle %d event %d ", i, k);
+    //printf("\n im, jm =  %d %d \n ", time_queue[k].im, time_queue[k].jm);
 
-	if (k > 0) {
-		if (time_queue[k].im == i) {
-			if (time_queue[k].jm >= 0) {
-				time_queue[k].im = time_queue[k].jm;
-				time_queue[k].jm = -100;
-				//printf("\n clear to -100: time_queue[k].im = %d  time_queue[k].jm = %d  i = %d\n", time_queue[k].im, time_queue[k].jm, i);
-				//printf("\n >>>>>>>> particle %d event %d\n", time_queue[k].im, particles[time_queue[k].im].ti);
-				//printf("\n >>>>>>>> time %.15le\n", time_queue[k].t);
-			}
-			else delete_event(k);
-		}
-		else if (time_queue[k].jm == i) {
-			printf("\n clear to -100: time_queue[k].im = %d  time_queue[k].jm = %d  i = %d\n", time_queue[k].im, time_queue[k].jm, i);
-			time_queue[k].jm = -100;
-		}
-		particles[i].ti = 0;
-	}
+    if (k > 0) {
+        if (time_queue[k].im == i) {
+            if (time_queue[k].jm >= 0) {
+                time_queue[k].im = time_queue[k].jm;
+                time_queue[k].jm = -100;
+                //printf("\n clear to -100: time_queue[k].im = %d  time_queue[k].jm = %d  i = %d\n", time_queue[k].im, time_queue[k].jm, i);
+                //printf("\n >>>>>>>> particle %d event %d\n", time_queue[k].im, particles[time_queue[k].im].ti);
+                //printf("\n >>>>>>>> time %.15le\n", time_queue[k].t);
+            }
+            else delete_event(k);
+        }
+        else if (time_queue[k].jm == i) {
+            printf("\n clear to -100: time_queue[k].im = %d  time_queue[k].jm = %d  i = %d\n", time_queue[k].im, time_queue[k].jm, i);
+            time_queue[k].jm = -100;
+        }
+        particles[i].ti = 0;
+    }
 }
 
 
@@ -297,13 +297,13 @@ void retime(int &i) {
 
     clear_particle_events(i);
 
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy) {
-			FILE *save_file = fopen("history.txt", "a");
-			fprintf(save_file, "    retime: %d ", i);
-			fclose(save_file);
-		}
-	}
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy) {
+            FILE *save_file = fopen("history.txt", "a");
+            fprintf(save_file, "    retime: %d ", i);
+            fclose(save_file);
+        }
+    }
 
     if (p1.vx < 0.0) {
         dt_min = (p1_box.x1 - p1.x) / p1.vx;
@@ -327,7 +327,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -5;
         }
-		if ((p1.y_box == 1) && (i < NP)) {
+        if ((p1.y_box == 1) && (i < NP)) {
             dt = (p1_box.y1 + 1.0 - p1.y) / p1.vy;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -340,7 +340,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -6;
         }
-		if ((p1.y_box == K - 1) && (i < NP)) {
+        if ((p1.y_box == K - 1) && (i < NP)) {
             dt = (p1_box.y2 - 1.0 - p1.y) / p1.vy;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -368,7 +368,7 @@ void retime(int &i) {
             dt_min = dt;
             jm = -8;
         }
-		if ((p1.z_box == K - 1) && (i < NP)) {
+        if ((p1.z_box == K - 1) && (i < NP)) {
             dt = (p1_box.z2 - 1.0 - p1.z) / p1.vz;
             if ((dt > 0) && (dt < dt_min)) {
                 dt_min = dt;
@@ -400,7 +400,7 @@ void retime(int &i) {
                 for (s = 0; s <= boxes_yz[q][w][r].end; ++s) {
                     n = boxes_yz[q][w][r].particles[s];
 
-					if (n == p1.i_copy) continue;
+                    if (n == p1.i_copy) continue;
 
                     temp = p1.t - particles[n].t;
                     dvx = particles[n].vx - p1.vx;
@@ -410,74 +410,74 @@ void retime(int &i) {
                     dy = particles[n].y + particles[n].vy * temp - p1.y;
                     dz = particles[n].z + particles[n].vz * temp - p1.z;
 
-					/*
-					for (int t = 0; t < particles_for_check_count; t++) {
-						if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
-							FILE *save_file = fopen("history.txt", "a");
-							fprintf(save_file, "\n search2...  check collision: %d %d %.15le \n", i, n, dx * dvx + dy * dvy + dz*dvz);
-							fclose(save_file);
-						}
-					}
-					*/
+                    /*
+                    for (int t = 0; t < particles_for_check_count; t++) {
+                        if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
+                            FILE *save_file = fopen("history.txt", "a");
+                            fprintf(save_file, "\n search2...  check collision: %d %d %.15le \n", i, n, dx * dvx + dy * dvy + dz*dvz);
+                            fclose(save_file);
+                        }
+                    }
+                    */
 
                     bij = dx * dvx + dy * dvy + dz*dvz;
                     if (bij < 0.0) {
                         dv = dvx * dvx + dvy * dvy + dvz*dvz;
                         d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
 
-						/////////////////
-						if ((COLL_COUNT>0) && (4.0 > dx * dx + dy * dy + dz * dz)) {
+                        /////////////////
+                        if ((COLL_COUNT>0) && (4.0 > dx * dx + dy * dy + dz * dz)) {
 
-							printf("\n i = %d  n = %d", i, n);
+                            printf("\n i = %d  n = %d", i, n);
 
-							printf("\n %.5le %.5le %.5le \n", particles[i].x, particles[i].y, particles[i].z);
-							printf("\n %.5le %.5le %.5le \n", particles[n].x, particles[n].y, particles[n].z);
+                            printf("\n %.5le %.5le %.5le \n", particles[i].x, particles[i].y, particles[i].z);
+                            printf("\n %.5le %.5le %.5le \n", particles[n].x, particles[n].y, particles[n].z);
 
-							printf("\n %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
-							printf("\n %d %d %d \n", particles[n].x_box, particles[n].y_box, particles[n].z_box);
+                            printf("\n %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
+                            printf("\n %d %d %d \n", particles[n].x_box, particles[n].y_box, particles[n].z_box);
 
-							printf("a");
+                            printf("a");
 
 
-						}
-						///////////////////
+                        }
+                        ///////////////////
 
                         if (d > 0.0) {
                             dt = -(sqrt(d) + bij) / dv;
                             temp += dt;
 
-							for (int t = 0; t < particles_for_check_count; t++) {
-								if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
-									FILE *save_file = fopen("history.txt", "a");
-									fprintf(save_file, "\n search...  check collision: %d %d %.15le", i, n, dt);
-									fclose(save_file);
-								}
-							}
+                            for (int t = 0; t < particles_for_check_count; t++) {
+                                if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
+                                    FILE *save_file = fopen("history.txt", "a");
+                                    fprintf(save_file, "\n search...  check collision: %d %d %.15le", i, n, dt);
+                                    fclose(save_file);
+                                }
+                            }
 
-							//if ((dt < dt_min) && ((temp < particles[n].dt) || ((time_queue[particles[n].ti].im == n) && (time_queue[particles[n].ti].jm == -100)))) {
-							if ((dt < dt_min) && ((temp < particles[n].dt) || ((abs(temp - particles[n].dt) < 0.1E-15) && (time_queue[particles[n].ti].im == n) && (time_queue[particles[n].ti].jm == -100)))) {
+                            //if ((dt < dt_min) && ((temp < particles[n].dt) || ((time_queue[particles[n].ti].im == n) && (time_queue[particles[n].ti].jm == -100)))) {
+                            if ((dt < dt_min) && ((temp < particles[n].dt) || ((abs(temp - particles[n].dt) < 0.1E-15) && (time_queue[particles[n].ti].im == n) && (time_queue[particles[n].ti].jm == -100)))) {
                                 dt_min = dt;
                                 jm = n;
 
-								for (int t = 0; t < particles_for_check_count; t++) {
-									if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
-										FILE *save_file = fopen("history.txt", "a");
-										fprintf(save_file, "! \n");
-										fclose(save_file);
-									}
-								}
+                                for (int t = 0; t < particles_for_check_count; t++) {
+                                    if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == n || particles_for_check[t] == particles[n].i_copy) {
+                                        FILE *save_file = fopen("history.txt", "a");
+                                        fprintf(save_file, "! \n");
+                                        fclose(save_file);
+                                    }
+                                }
 
-								if (dt < 0.0) {
-									printf("\n !!!!! %le %d %d!!!! \n", dt, i, n);
-									printf("\n %d ti = %d \n", i, particles[i].ti);
-									printf("\n im jm = %d %d \n", time_queue[particles[i].ti].im, time_queue[particles[i].ti].jm);
-									printf("\n %d ti = %d \n", n, particles[n].ti);
+                                if (dt < 0.0) {
+                                    printf("\n !!!!! %le %d %d!!!! \n", dt, i, n);
+                                    printf("\n %d ti = %d \n", i, particles[i].ti);
+                                    printf("\n im jm = %d %d \n", time_queue[particles[i].ti].im, time_queue[particles[i].ti].jm);
+                                    printf("\n %d ti = %d \n", n, particles[n].ti);
 
-									printf("\n %d x_box, y_box, z_box: %d %d %d", i, particles[i].x_box, particles[i].y_box, particles[i].z_box);
-									printf("\n %d x_box, y_box, z_box: %d %d %d", n, particles[n].x_box, particles[n].y_box, particles[n].z_box);
+                                    printf("\n %d x_box, y_box, z_box: %d %d %d", i, particles[i].x_box, particles[i].y_box, particles[i].z_box);
+                                    printf("\n %d x_box, y_box, z_box: %d %d %d", n, particles[n].x_box, particles[n].y_box, particles[n].z_box);
 
-									printf("\n !!!!! %le %d %d!!!! \n", dt, i, n);
-								}
+                                    printf("\n !!!!! %le %d %d!!!! \n", dt, i, n);
+                                }
                             }
                         }
                     }
@@ -486,66 +486,66 @@ void retime(int &i) {
 
     if (jm >= 0) {
 
-		/*
-		if (jm == 35) {
-			printf("\n %le %le %le", p1.t, particles[i].t, particles[jm].t);
-		}
-		*/
+        /*
+        if (jm == 35) {
+            printf("\n %le %le %le", p1.t, particles[i].t, particles[jm].t);
+        }
+        */
 
-		dt = p1.t - particles[jm].t;
+        dt = p1.t - particles[jm].t;
         particles[jm].t = p1.t;
         particles[jm].dt = dt_min;
         particles[jm].x += particles[jm].vx * dt;
         particles[jm].y += particles[jm].vy * dt;
         particles[jm].z += particles[jm].vz * dt;
 
-		/*
-		if (jm == 35) {
-			printf("\n BB %d %d %le", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm, time_queue[particles[jm].ti].t + particles[jm].dt);
-			printf("\n %le %le", particles[i].t, particles[jm].t);
-			printf("\n x, y, z: %le %le %le", particles[jm].x, particles[jm].y, particles[jm].z);
-			printf("\n vx, vy, vz: %le %le %le", particles[jm].vx, particles[jm].vy, particles[jm].vz);
-			printf("\n %.15le", dt);
-		}
-		*/
+        /*
+        if (jm == 35) {
+            printf("\n BB %d %d %le", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm, time_queue[particles[jm].ti].t + particles[jm].dt);
+            printf("\n %le %le", particles[i].t, particles[jm].t);
+            printf("\n x, y, z: %le %le %le", particles[jm].x, particles[jm].y, particles[jm].z);
+            printf("\n vx, vy, vz: %le %le %le", particles[jm].vx, particles[jm].vy, particles[jm].vz);
+            printf("\n %.15le", dt);
+        }
+        */
 
         short k = particles[jm].ti;
-		if (k > 0) {
-			if (time_queue[k].jm >= 0) {
+        if (k > 0) {
+            if (time_queue[k].jm >= 0) {
 
-				if (time_queue[k].im == jm)
-					time_queue[k].im = time_queue[k].jm;
-				printf("\ntime_queue[k].im = %d  time_queue[k].jm = %d  %d\n", time_queue[k].im, time_queue[k].jm, jm);
-				time_queue[k].jm = -100;
-			}
-			else delete_event(k);
-		}
+                if (time_queue[k].im == jm)
+                    time_queue[k].im = time_queue[k].jm;
+                printf("\ntime_queue[k].im = %d  time_queue[k].jm = %d  %d\n", time_queue[k].im, time_queue[k].jm, jm);
+                time_queue[k].jm = -100;
+            }
+            else delete_event(k);
+        }
     }
 
     particles[i].dt = dt_min;
     add_event(i, jm);
 
-	FILE *save_file = fopen("history.txt", "a");
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == jm || particles_for_check[t] == particles[jm].i_copy) {
-			fprintf(save_file, "    retime result: %d %d %.15le \n", i, jm, dt_min);
+    FILE *save_file = fopen("history.txt", "a");
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == jm || particles_for_check[t] == particles[jm].i_copy) {
+            fprintf(save_file, "    retime result: %d %d %.15le \n", i, jm, dt_min);
 
-			int x_box = particles[particles_for_check[t]].x_box;
-			int y_box = particles[particles_for_check[t]].y_box;
-			int z_box = particles[particles_for_check[t]].z_box;
+            int x_box = particles[particles_for_check[t]].x_box;
+            int y_box = particles[particles_for_check[t]].y_box;
+            int z_box = particles[particles_for_check[t]].z_box;
 
-			fprintf(save_file, "    particle data %d: x_box, y_box, z_box: %d %d %d \n", particles_for_check[t], x_box, y_box, z_box);
-			for (int ty = 0; ty < boxes_yz[y_box][z_box][x_box].end; ty++) {
-				fprintf(save_file, "%d  ", boxes_yz[y_box][z_box][x_box].particles[ty]);
-			}
-			fprintf(save_file, "\n");
-		}
-	}
-	fclose(save_file);
+            fprintf(save_file, "    particle data %d: x_box, y_box, z_box: %d %d %d \n", particles_for_check[t], x_box, y_box, z_box);
+            for (int ty = 0; ty < boxes_yz[y_box][z_box][x_box].end; ty++) {
+                fprintf(save_file, "%d  ", boxes_yz[y_box][z_box][x_box].particles[ty]);
+            }
+            fprintf(save_file, "\n");
+        }
+    }
+    fclose(save_file);
 
-	if (dt_min < 0.0) {
-		printf("QQQQQQQQQQQQQQ");
-	}
+    if (dt_min < 0.0) {
+        printf("QQQQQQQQQQQQQQ");
+    }
 }
 
 
@@ -558,10 +558,10 @@ int find_place_for_particle(int &i) {
     double no_free_space_min[3000];
     double no_free_space_max[3000];
 
-	int particles_count = 0;
-	int particles_on_the_line[100];  // список всех частиц, мешаюзих вставить новый образ
-	double particle_i_min[100];  // координаты левой и правой границ,
-	double particle_i_max[100];  // на которые можно поставить образ для столкновения
+    int particles_count = 0;
+    int particles_on_the_line[100];  // список всех частиц, мешаюзих вставить новый образ
+    double particle_i_min[100];  // координаты левой и правой границ,
+    double particle_i_max[100];  // на которые можно поставить образ для столкновения
 
     bool include;
     int spaces = 2;
@@ -571,82 +571,82 @@ int find_place_for_particle(int &i) {
     no_free_space_max[2] = L;
 
     for (int x_box = 0; x_box <= K2; ++x_box)
-		for (int y_box = particles[i].y_box - 1; y_box < particles[i].y_box + 2; ++y_box) {
-			for (int z_box = particles[i].z_box - 1; z_box < particles[i].z_box + 2; ++z_box) {
+        for (int y_box = particles[i].y_box - 1; y_box < particles[i].y_box + 2; ++y_box) {
+            for (int z_box = particles[i].z_box - 1; z_box < particles[i].z_box + 2; ++z_box) {
 
-				if (y_box == -1) {
-					continue;
-				}
-				if (y_box == K+1) {
-					continue;
-				}
-				if (z_box == -1) {
-					continue;
-				}
-				if (z_box == K+1) {
-					continue;
-				}
+                if (y_box == -1) {
+                    continue;
+                }
+                if (y_box == K+1) {
+                    continue;
+                }
+                if (z_box == -1) {
+                    continue;
+                }
+                if (z_box == K+1) {
+                    continue;
+                }
 
-				for (int s = 0; s <= boxes_yz[y_box][z_box][x_box].end; ++s) {
+                for (int s = 0; s <= boxes_yz[y_box][z_box][x_box].end; ++s) {
 
-					int n = boxes_yz[y_box][z_box][x_box].particles[s];
-					if (n == i) continue;
+                    int n = boxes_yz[y_box][z_box][x_box].particles[s];
+                    if (n == i) continue;
 
-					include = false;
-					double temp = particles[i].t - particles[n].t;
+                    include = false;
+                    double temp = particles[i].t - particles[n].t;
 
-					dy = particles[n].y + particles[n].vy * temp - particles[i].y;
-					dz = particles[n].z + particles[n].vz * temp - particles[i].z;
-					d = 4.0 - dy*dy - dz*dz;
-					if (d >= 0) {
-						dx = particles[n].x + particles[n].vx * temp - particles[i].x;
-						x_min = particles[n].x + particles[n].vx * temp - sqrt(d);
-						x_max = particles[n].x + particles[n].vx * temp + sqrt(d);
+                    dy = particles[n].y + particles[n].vy * temp - particles[i].y;
+                    dz = particles[n].z + particles[n].vz * temp - particles[i].z;
+                    d = 4.0 - dy*dy - dz*dz;
+                    if (d >= 0) {
+                        dx = particles[n].x + particles[n].vx * temp - particles[i].x;
+                        x_min = particles[n].x + particles[n].vx * temp - sqrt(d);
+                        x_max = particles[n].x + particles[n].vx * temp + sqrt(d);
 
-						particles_on_the_line[particles_count] = n;
-						particle_i_min[particles_count] = x_min;
-						particle_i_max[particles_count] = x_max;
-						particles_count++;
+                        particles_on_the_line[particles_count] = n;
+                        particle_i_min[particles_count] = x_min;
+                        particle_i_max[particles_count] = x_max;
+                        particles_count++;
 
-						//printf("\n particle %d : xmin: %.10le   xmax: %.10le", n, x_min, x_max);
+                        //printf("\n particle %d : xmin: %.10le   xmax: %.10le", n, x_min, x_max);
 
-						for (int m = 1; m <= spaces; ++m) {
-							if (x_min <= no_free_space_min[m] &&
-								x_max <= no_free_space_max[m] &&
-								x_max >= no_free_space_min[m])
-							{
-								no_free_space_min[m] = x_min;
-								include = true;
-							}
-							if (x_min <= no_free_space_min[m] &&
-								x_max >= no_free_space_max[m])
-							{
-								no_free_space_min[m] = x_min;
-								no_free_space_max[m] = x_max;
-								include = true;
-							}
-							if (x_min <= no_free_space_max[m] &&
-								x_min >= no_free_space_min[m] &&
-								x_max >= no_free_space_max[m])
-							{
-								no_free_space_max[m] = x_max;
-							    include = true;
-							}
-						}
-						if (include == false) {
-							spaces += 1;
-							no_free_space_min[spaces] = x_min;
-							no_free_space_max[spaces] = x_max;
-						}
-					}
-				}
-			}
+                        for (int m = 1; m <= spaces; ++m) {
+                            if (x_min <= no_free_space_min[m] &&
+                                x_max <= no_free_space_max[m] &&
+                                x_max >= no_free_space_min[m])
+                            {
+                                no_free_space_min[m] = x_min;
+                                include = true;
+                            }
+                            if (x_min <= no_free_space_min[m] &&
+                                x_max >= no_free_space_max[m])
+                            {
+                                no_free_space_min[m] = x_min;
+                                no_free_space_max[m] = x_max;
+                                include = true;
+                            }
+                            if (x_min <= no_free_space_max[m] &&
+                                x_min >= no_free_space_min[m] &&
+                                x_max >= no_free_space_max[m])
+                            {
+                                no_free_space_max[m] = x_max;
+                                include = true;
+                            }
+                        }
+                        if (include == false) {
+                            spaces += 1;
+                            no_free_space_min[spaces] = x_min;
+                            no_free_space_max[spaces] = x_max;
+                        }
+                    }
+                }
+            }
         }
     
-	
-	for (int r1 = 1; r1 <= spaces; r1++)
-		printf("\n No Space: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
-	
+    
+    for (int r1 = 1; r1 <= spaces; r1++)
+        printf("\n No Space: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
+    
 
     for (int r1 = 1; r1 < spaces; r1++)
         for (int r2 = r1+1; r2 <= spaces; r2++)
@@ -661,13 +661,13 @@ int find_place_for_particle(int &i) {
                 no_free_space_max[r2] = temp;
             }
 
-	
-	for (int r1 = 1; r1 <= spaces; r1++)
-		printf("\n No Space2: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
-	
+    
+    for (int r1 = 1; r1 <= spaces; r1++)
+        printf("\n No Space2: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
+    
 
-	int r1 = 1;
-	while (r1 < spaces)
+    int r1 = 1;
+    while (r1 < spaces)
     {
         if (no_free_space_max[r1] > no_free_space_min[r1+1])
         {
@@ -679,40 +679,40 @@ int find_place_for_particle(int &i) {
                 no_free_space_max[r2] = no_free_space_max[r2+1];
             }
             spaces--;
-		}
-		else r1++;
+        }
+        else r1++;
     }
 
-	if (spaces < 2) {	// если свободное место для нового образа не найдено
-		for (int r = 0; r <= particles_count; r++) {
-			int a = particles_on_the_line[r];
-			// ищем частицу с противоположной по направлению vx, которая пересекает прямую,
-			// на которой мы хотим вставить образ и соударяем эту частицу с новым образом
-			if ((a != i - NP) && (particles[i].vx * particles[a].vx < 0.0) && ((particles[i].vy * particles[a].vy < 0.0) || (particles[i].vz * particles[a].vz < 0.0))) {
-				if (particles[i].vx < 0.0) particles[i].x = particle_i_max[r];
-				else particles[i].x = particle_i_min[r];
+    if (spaces < 2) {    // если свободное место для нового образа не найдено
+        for (int r = 0; r <= particles_count; r++) {
+            int a = particles_on_the_line[r];
+            // ищем частицу с противоположной по направлению vx, которая пересекает прямую,
+            // на которой мы хотим вставить образ и соударяем эту частицу с новым образом
+            if ((a != i - NP) && (particles[i].vx * particles[a].vx < 0.0) && ((particles[i].vy * particles[a].vy < 0.0) || (particles[i].vz * particles[a].vz < 0.0))) {
+                if (particles[i].vx < 0.0) particles[i].x = particle_i_max[r];
+                else particles[i].x = particle_i_min[r];
 
-				printf("\n I = %d ; K = %d ;\n", i, a);
+                printf("\n I = %d ; K = %d ;\n", i, a);
 
-				printf("Particle %d:\n", i);
-				printf(" x,y,z: %.15le, %.15le, %.15le \n", particles[i].x, particles[i].y, particles[i].z);
-				printf(" vx,vy,vz: %.15le, %.15le, %.15le \n", particles[i].vx, particles[i].vy, particles[i].vz);
-				printf(" x,y,z: %d, %d, %d \n\n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
+                printf("Particle %d:\n", i);
+                printf(" x,y,z: %.15le, %.15le, %.15le \n", particles[i].x, particles[i].y, particles[i].z);
+                printf(" vx,vy,vz: %.15le, %.15le, %.15le \n", particles[i].vx, particles[i].vy, particles[i].vz);
+                printf(" x,y,z: %d, %d, %d \n\n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
 
-				printf("Particle %d:\n", a);
-				printf(" x,y,z: %.15le, %.15le, %.15le \n", particles[a].x, particles[a].y, particles[a].z);
-				printf(" vx,vy,vz: %.15le, %.15le, %.15le \n", particles[a].vx, particles[a].vy, particles[a].vz);
-				printf(" x,y,z: %d, %d, %d \n", particles[a].x_box, particles[a].y_box, particles[a].z_box);
+                printf("Particle %d:\n", a);
+                printf(" x,y,z: %.15le, %.15le, %.15le \n", particles[a].x, particles[a].y, particles[a].z);
+                printf(" vx,vy,vz: %.15le, %.15le, %.15le \n", particles[a].vx, particles[a].vy, particles[a].vz);
+                printf(" x,y,z: %d, %d, %d \n", particles[a].x_box, particles[a].y_box, particles[a].z_box);
 
 
-				printf("OLD dt = %le\n ", particles[a].dt);
-				particles[a].dt = particles[i].t - particles[a].t; // время, на которое надо передвинуть вторую частицу
-				                                                   // чтобы она столкнулась с новым образом
-				printf("NEW dt = %le\n ", particles[a].dt);
-				return a;
-			}
-		}
-	}
+                printf("OLD dt = %le\n ", particles[a].dt);
+                particles[a].dt = particles[i].t - particles[a].t; // время, на которое надо передвинуть вторую частицу
+                                                                   // чтобы она столкнулась с новым образом
+                printf("NEW dt = %le\n ", particles[a].dt);
+                return a;
+            }
+        }
+    }
 
     x_max = -L;
     x_min = L;
@@ -735,18 +735,18 @@ int find_place_for_particle(int &i) {
 
 
 void destroy_virt_particle(int &i) {
-	if (i >= NP) {
-		printf("\n %d particle \n", i);
-		printf(" i_copy = %d   particle icopy = %d \n", particles[i].i_copy, particles[i-NP].i_copy);
-		printf(" x, y, z: %.5le %.5le %.5le", particles[i].x, particles[i].y, particles[i].z);
+    if (i >= NP) {
+        printf("\n %d particle \n", i);
+        printf(" i_copy = %d   particle icopy = %d \n", particles[i].i_copy, particles[i-NP].i_copy);
+        printf(" x, y, z: %.5le %.5le %.5le", particles[i].x, particles[i].y, particles[i].z);
 
-		throw "AAAAAAAAAAA";
-	}
-	if (particles[i].i_copy == -1) return;
+        throw "AAAAAAAAAAA";
+    }
+    if (particles[i].i_copy == -1) return;
 
-	if (i == 26) {
-		printf("ffd");
-	}
+    if (i == 26) {
+        printf("ffd");
+    }
 
     int new_i = i + NP;
     int x_box, y_box, z_box, box_i;
@@ -771,15 +771,15 @@ void destroy_virt_particle(int &i) {
     particles[i].i_copy = -1;
     particles[new_i].i_copy = -1;
 
-	printf("particle %d was destroyed...", new_i);
+    printf("particle %d was destroyed...", new_i);
 
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
-			FILE *save_file = fopen("history.txt", "a");
-			fprintf(save_file, "particle %d was destroyed... \n", new_i);
-			fclose(save_file);
-		}
-	}
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
+            FILE *save_file = fopen("history.txt", "a");
+            fprintf(save_file, "particle %d was destroyed... \n", new_i);
+            fclose(save_file);
+        }
+    }
 }
 
 
@@ -789,34 +789,34 @@ void destroy_virt_particle(int &i) {
 // должен ли быть у нее образ, т.к. она может влететь в "угловую" зону и тогда
 // при переходе через следующую границу у нее не будет образа
 void change_with_virt_particles(int &im, int &jm) {
-	int x_box, y_box, z_box, box_i;
-	int f = im + NP;
+    int x_box, y_box, z_box, box_i;
+    int f = im + NP;
 
-	double dt = particles[im].t - particles[f].t;
-	particles[im].x = particles[f].x + dt*particles[f].vx;
-	particles[im].y = particles[f].y + dt*particles[f].vy;
-	particles[im].z = particles[f].z + dt*particles[f].vz;
+    double dt = particles[im].t - particles[f].t;
+    particles[im].x = particles[f].x + dt*particles[f].vx;
+    particles[im].y = particles[f].y + dt*particles[f].vy;
+    particles[im].z = particles[f].z + dt*particles[f].vz;
 
-	// записываем её в новую ячейку
-	particles[im].x_box = particles[f].x_box;
-	particles[im].y_box = particles[f].y_box;
-	particles[im].z_box = particles[f].z_box;
+    // записываем её в новую ячейку
+    particles[im].x_box = particles[f].x_box;
+    particles[im].y_box = particles[f].y_box;
+    particles[im].z_box = particles[f].z_box;
 
-	// при обмене виртуального образа на частицу ставим частицу точно на границу ячейки,
-	// чтобы избегать накопления ошибок
-	if (particles[im].y > A) particles[im].y = A;
-	else if (particles[im].y < -A) particles[im].y = -A;
-	if (particles[im].z > A) particles[im].z = A;
-	else if (particles[im].z < -A) particles[im].z = -A;
+    // при обмене виртуального образа на частицу ставим частицу точно на границу ячейки,
+    // чтобы избегать накопления ошибок
+    if (particles[im].y > A) particles[im].y = A;
+    else if (particles[im].y < -A) particles[im].y = -A;
+    if (particles[im].z > A) particles[im].z = A;
+    else if (particles[im].z < -A) particles[im].z = -A;
 
-	printf("... Change with virt particle destroy ...");
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (im == particles_for_check[t]) {
-			FILE *save_file = fopen("history.txt", "a");
-			fprintf(save_file, "particle %d Change with virt particle destroy ... \n", im);
-			fclose(save_file);
-		}
-	}
+    printf("... Change with virt particle destroy ...");
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (im == particles_for_check[t]) {
+            FILE *save_file = fopen("history.txt", "a");
+            fprintf(save_file, "particle %d Change with virt particle destroy ... \n", im);
+            fclose(save_file);
+        }
+    }
     destroy_virt_particle(im);
 
     clear_particle_events(im);
@@ -826,339 +826,339 @@ void change_with_virt_particles(int &im, int &jm) {
 void create_virt_particle(int &i) {
     double dt, dt_min, t1, t2, t11, t22, t_min, y, z, dy, dz;
     double x2, y2, z2, kv = 1.0;
-	double t01, t02;
+    double t01, t02;
     short x_box, y_box, z_box;
-	int new_i = i + NP;
-
-	printf("... Create virt particle destroy ...");
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (i == particles_for_check[t]) {
-			FILE *save_file = fopen("history.txt", "a");
-			fprintf(save_file, "particle %d Create virt particle destroy ... \n", i);
-			fclose(save_file);
-		}
-	}
-	destroy_virt_particle(i);
-
-	printf("Trying to create virt particle %d...", new_i);
-
-	for (int t = 0; t < particles_for_check_count; t++) {
-		if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
-			FILE *save_file = fopen("history.txt", "a");
-			fprintf(save_file, "Trying to create virt particle %d... \n", new_i);
-			fclose(save_file);
-		}
-	}
-
-	if (i == 26) {
-		printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
-		printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
-		printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
-		printf("wait...");
-	}
-
-	if (((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
-		((particles[i].y >= A - 1.0) && (particles[i].vy > 0.0)) ||
-		((particles[i].z <= 1.0 - A) && (particles[i].vz < 0.0)) ||
-		((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0))) {
-
-		printf("Starting to create virt particle %d...", new_i);
-
-		if (i == 26) {
-			printf("FD");
-		}
-
-		for (int t = 0; t < particles_for_check_count; t++) {
-			if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
-				FILE *save_file = fopen("history.txt", "a");
-				fprintf(save_file, "Starting to create virt particle %d... \n", new_i);
-				fclose(save_file);
-			}
-		}
-
-		printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
-		printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
-		printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
-
-		dt_min = 1.0e+20;
-
-		y = A + particles[i].y;
-		z = A + particles[i].z;
-		dy = A + particles[i].y;
-		dz = A + particles[i].z;
-
-		if (particles[i].vy < 0)
-			y = A - particles[i].y;
-		if (particles[i].vz < 0)
-			z = A - particles[i].z;
-
-		if (particles[i].z > 0)
-			dz = A - particles[i].z;
-		if (particles[i].y > 0)
-			dy = A - particles[i].y;
-
-		if ((particles[i].y*particles[i].vy > 0) && (dy <= 1.0)) {
-			dt = dy / abs(particles[i].vy);
-
-			particles[new_i].vx = particles[i].vx;
-			particles[new_i].vy = particles[i].vy;
-			particles[new_i].vz = particles[i].vz;
-
-			t01 = y / abs(particles[i].vy);
-			t02 = z / abs(particles[i].vz);
-
-			if (t01 < t02) {
-				t_min = t01;
-
-				particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
-				particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
-				particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
-
-				printf("\n %d Rozdenie 1go roda \n", i);
-			}
-			else {
-				t_min = t02;
-
-				particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
-				particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
-				particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
-
-				printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
-				printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
-			}
-
-			dt_min = dt;
-		}
-		if ((particles[i].z*particles[i].vz > 0) && (dz <= 1.0)) {
-			dt = dz / abs(particles[i].vz);
-
-			if (dt < dt_min) {
-
-				particles[new_i].vx = particles[i].vx;
-				particles[new_i].vy = particles[i].vy;
-				particles[new_i].vz = particles[i].vz;
-
-				t01 = y / abs(particles[i].vy);
-				t02 = z / abs(particles[i].vz);
-
-				if (t01 < t02) {
-					t_min = t01;
-
-					particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
-					particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
-					particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
-
-					printf("\n %d Rozdenie 1go roda \n", i);
-				}
-				else {
-					t_min = t02;
-
-					particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
-					particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
-					particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
-
-					printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
-					printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
-				}
-
-				dt_min = dt;
-			}
-		}
-
-		int k = particles[new_i].x / (L - 1.0);
-		particles[new_i].x = particles[new_i].x - k * (L - 1.0);
-
-		if (k % 2 != 0)
-			particles[new_i].vx = -particles[new_i].vx;
-
-		x_box = short((L + dL + particles[new_i].x) / dL);
-		y_box = short((A + dA + particles[new_i].y) / dA);
-		z_box = short((A + dA + particles[new_i].z) / dA);
-
-		printf("DT min = %.15le", dt_min);
-		printf("\n>>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
-
-		if (y_box < 0) y_box = 0;
-		if (y_box > K) y_box = K;
-		if (z_box < 0) z_box = 0;
-		if (z_box > K) z_box = K;
-
-		particles[new_i].x_box = x_box;
-		particles[new_i].y_box = y_box;
-		particles[new_i].z_box = z_box;
-
-		particles[new_i].t = particles[i].t;
-
-		// проверка того что новый образ не пересекается с уже существующими частицами
-		bool search = false;
-		for (short r = x_box - 1; r < x_box + 2; ++r)
-		for (short q = y_box - 1; q < y_box + 2; ++q)
-		for (short w = z_box - 1; w < z_box + 2; ++w) {
-
-			if (q == -1) {
-				continue;
-			}
-			if (q == K + 1) {
-				continue;
-			}
-			if (w == -1) {
-				continue;
-			}
-			if (w == K + 1) {
-				continue;
-			}
-
-			for (int s = 0; s <= boxes_yz[q][w][r].end; ++s) {
-				int n = boxes_yz[q][w][r].particles[s];
-				double temp = particles[new_i].t - particles[n].t;
-				double dx = particles[n].x + particles[n].vx * temp - particles[new_i].x;
-				double dy = particles[n].y + particles[n].vy * temp - particles[new_i].y;
-				double dz = particles[n].z + particles[n].vz * temp - particles[new_i].z;
-
-				if (4.0 > dx*dx + dy*dy + dz*dz) {
-					search = true;
-					printf("\n SEARCH!!! %d %d \n", new_i, n);
-				}
-			}
-		}
-
-		if (search == true) {
-			int k = find_place_for_particle(new_i); // ищем свободное место или номер частицы,
-			                                        // которая мешает вставить образ
-
-			printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
-
-			for (int t = 0; t < particles_for_check_count; t++) {
-				if (i == particles_for_check[t] || new_i == particles_for_check[t] || particles[k].i_copy == particles_for_check[t] || k == particles_for_check[t]) {
-					FILE *save_file = fopen("history.txt", "a");
-					fprintf(save_file, "\n SEARCH TRUE %d %d\n", new_i, k);
-					fclose(save_file);
-				}
-			}
-
-			if (k >= 0) {
-				// рассчитать соударение
-				particle p1 = particles[new_i];
-				particle p2 = particles[k];
-
-				printf("\n p1.i_copy p2.i_copy %d %d \n", p1.i_copy, p2.i_copy);
-
-				p2.x += p2.vx * p2.dt;
-				p2.y += p2.vy * p2.dt;
-				p2.z += p2.vz * p2.dt;
-				p2.t = p1.t;
-				p2.dt = 0.0;
-				double dx = p1.x - p2.x;
-				double dy = p1.y - p2.y;
-				double dz = p1.z - p2.z;
-
-				printf("\n particle %d: i_copy %d \n", new_i, p1.i_copy);
-				printf("x,y,z: %.5le, %.5le, %.5le \n ", p1.x, p1.y, p1.z);
-				printf("\n particle %d: i_copy %d \n", k, p2.i_copy);
-				printf("x,y,z: %.5le, %.5le, %.5le \n ", p2.x, p2.y, p2.z);
-
-				printf("\n Rasstoanie: %.15le \n", dx*dx+dy*dy+dz*dz);
-
-				if (new_i >= NP) {
-					p1.vx = particles[i].vx;
-					p1.vy = particles[i].vy;
-					p1.vz = particles[i].vz;
-
-					if (p1.vx * particles[i].vx < 0) {
-						p1.vx = -particles[i].vx;
-					}
-				}
-				if (k >= NP) {
-					p2.vx = particles[p2.i_copy].vx;
-					p2.vy = particles[p2.i_copy].vy;
-					p2.vz = particles[p2.i_copy].vz;
-
-					if (p2.vx * particles[p2.i_copy].vx < 0) {
-						p2.vx = -particles[p2.i_copy].vx;
-					}
-				}
-
-				double q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
-				double q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0;
-				double z = q2 - q1;
-				p1.vx += dx*z;
-				p1.vy += dy*z;
-				p1.vz += dz*z;
-				z = q1 - q2;
-				p2.vx += dx*z;
-				p2.vy += dy*z;
-				p2.vz += dz*z;
-
-				particles[i].vx = p1.vx;
-				particles[i].vy = p1.vy;
-				particles[i].vz = p1.vz;
-				particles[k] = p2;
-
-				int e = k;
-				if (k >= NP) {
-					e = k - NP;
-
-					double delta = p2.t - particles[e].t;
-					particles[e].x += particles[e].vx * delta;
-					particles[e].y += particles[e].vy * delta;
-					particles[e].z += particles[e].vz * delta;
-					particles[e].t = p2.t;
-
-					particles[e].vx = p2.vx;
-					particles[e].vy = p2.vy;
-					particles[e].vz = p2.vz;
-				}
-				create_virt_particle(e);
-
-				// после столкновения надо рассчитать новые события для частицы,
-				// с которой мы столкнули образ и для её образа
-				if (k >= NP) {
-					if (particles[k].i_copy > -1)
-						retime(k);
-					int e = k - NP;
-					retime(e);
-				}
-				else {
-					retime(k);
-					if (particles[k].i_copy > -1)
-						retime(particles[k].i_copy);
-				}
-
-				// пробуем опять создать, если нужно, образ для частицы
-				// после изменения скоростей
-				create_virt_particle(i);
-
-				return;
-			}
-		}
-
-		x_box = short((L + dL + particles[new_i].x) / dL);
-		particles[new_i].x_box = x_box;
-
-		short end = particles[new_i].box_i = ++boxes_yz[y_box][z_box][x_box].end;
-		boxes_yz[y_box][z_box][x_box].particles[end] = new_i;
-
-		particles[new_i].i_copy = i;
-		particles[i].i_copy = new_i;
-
-		/*
-		printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
-		printf("\n %d %d", i, new_i);
-		printf("\n %d x,y,z: %le %le %le", i, particles[i].x, particles[i].y, particles[i].z);
-		printf("\n %d vx,vy,vz: %le %le %le", i, particles[i].vx, particles[i].vy, particles[i].vz);
-		printf("\n %d x,y,z: %le %le %le", new_i, particles[new_i].x, particles[new_i].y, particles[new_i].z);
-		
-		if (new_i == 108) {
-			printf("\n %d xbox = %d, ybox = %d, zbox = %d\n", new_i, particles[new_i].x_box, particles[new_i].y_box, particles[new_i].z_box);
-			printf("\n %d xbox = %d, ybox = %d, zbox = %d\n", i, particles[i].x_box, particles[i].y_box, particles[i].z_box);
-			printf("\n Y = %le  A = %le", particles[new_i].y + particles[new_i].vy* (dy / abs(particles[i].vy)), A);
-		    printf("\n Y = %le  A = %le", particles[new_i].y + particles[new_i].vy*t02, A);
-			printf("\n Z = %le  A = %le", particles[new_i].z + particles[new_i].vz* (dz / abs(particles[i].vz)), A);
-			printf("\n Z = %le  A = %le", particles[new_i].z + particles[new_i].vz*t02, A);
-			printf("");
-		}
-		*/
-	}
+    int new_i = i + NP;
+
+    printf("... Create virt particle destroy ...");
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (i == particles_for_check[t]) {
+            FILE *save_file = fopen("history.txt", "a");
+            fprintf(save_file, "particle %d Create virt particle destroy ... \n", i);
+            fclose(save_file);
+        }
+    }
+    destroy_virt_particle(i);
+
+    printf("Trying to create virt particle %d...", new_i);
+
+    for (int t = 0; t < particles_for_check_count; t++) {
+        if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
+            FILE *save_file = fopen("history.txt", "a");
+            fprintf(save_file, "Trying to create virt particle %d... \n", new_i);
+            fclose(save_file);
+        }
+    }
+
+    if (i == 26) {
+        printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
+        printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
+        printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
+        printf("wait...");
+    }
+
+    if (((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
+        ((particles[i].y >= A - 1.0) && (particles[i].vy > 0.0)) ||
+        ((particles[i].z <= 1.0 - A) && (particles[i].vz < 0.0)) ||
+        ((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0))) {
+
+        printf("Starting to create virt particle %d...", new_i);
+
+        if (i == 26) {
+            printf("FD");
+        }
+
+        for (int t = 0; t < particles_for_check_count; t++) {
+            if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
+                FILE *save_file = fopen("history.txt", "a");
+                fprintf(save_file, "Starting to create virt particle %d... \n", new_i);
+                fclose(save_file);
+            }
+        }
+
+        printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
+        printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
+        printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
+
+        dt_min = 1.0e+20;
+
+        y = A + particles[i].y;
+        z = A + particles[i].z;
+        dy = A + particles[i].y;
+        dz = A + particles[i].z;
+
+        if (particles[i].vy < 0)
+            y = A - particles[i].y;
+        if (particles[i].vz < 0)
+            z = A - particles[i].z;
+
+        if (particles[i].z > 0)
+            dz = A - particles[i].z;
+        if (particles[i].y > 0)
+            dy = A - particles[i].y;
+
+        if ((particles[i].y*particles[i].vy > 0) && (dy <= 1.0)) {
+            dt = dy / abs(particles[i].vy);
+
+            particles[new_i].vx = particles[i].vx;
+            particles[new_i].vy = particles[i].vy;
+            particles[new_i].vz = particles[i].vz;
+
+            t01 = y / abs(particles[i].vy);
+            t02 = z / abs(particles[i].vz);
+
+            if (t01 < t02) {
+                t_min = t01;
+
+                particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
+                particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
+                particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
+
+                printf("\n %d Rozdenie 1go roda \n", i);
+            }
+            else {
+                t_min = t02;
+
+                particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
+                particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
+                particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
+
+                printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
+                printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+            }
+
+            dt_min = dt;
+        }
+        if ((particles[i].z*particles[i].vz > 0) && (dz <= 1.0)) {
+            dt = dz / abs(particles[i].vz);
+
+            if (dt < dt_min) {
+
+                particles[new_i].vx = particles[i].vx;
+                particles[new_i].vy = particles[i].vy;
+                particles[new_i].vz = particles[i].vz;
+
+                t01 = y / abs(particles[i].vy);
+                t02 = z / abs(particles[i].vz);
+
+                if (t01 < t02) {
+                    t_min = t01;
+
+                    particles[new_i].x = particles[i].x - particles[i].vx*t01 - particles[i].vx*dt;
+                    particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
+                    particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
+
+                    printf("\n %d Rozdenie 1go roda \n", i);
+                }
+                else {
+                    t_min = t02;
+
+                    particles[new_i].x = particles[i].x - particles[i].vx*t02 - particles[new_i].vx*dt;
+                    particles[new_i].y = particles[i].y - particles[i].vy*t02 - particles[new_i].vy*dt;
+                    particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
+
+                    printf("\n %d Rozdenie 4go roda t_min = %.5le \n", i, dt + t02);
+                    printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+                }
+
+                dt_min = dt;
+            }
+        }
+
+        int k = particles[new_i].x / (L - 1.0);
+        particles[new_i].x = particles[new_i].x - k * (L - 1.0);
+
+        if (k % 2 != 0)
+            particles[new_i].vx = -particles[new_i].vx;
+
+        x_box = short((L + dL + particles[new_i].x) / dL);
+        y_box = short((A + dA + particles[new_i].y) / dA);
+        z_box = short((A + dA + particles[new_i].z) / dA);
+
+        printf("DT min = %.15le", dt_min);
+        printf("\n>>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+
+        if (y_box < 0) y_box = 0;
+        if (y_box > K) y_box = K;
+        if (z_box < 0) z_box = 0;
+        if (z_box > K) z_box = K;
+
+        particles[new_i].x_box = x_box;
+        particles[new_i].y_box = y_box;
+        particles[new_i].z_box = z_box;
+
+        particles[new_i].t = particles[i].t;
+
+        // проверка того что новый образ не пересекается с уже существующими частицами
+        bool search = false;
+        for (short r = x_box - 1; r < x_box + 2; ++r)
+        for (short q = y_box - 1; q < y_box + 2; ++q)
+        for (short w = z_box - 1; w < z_box + 2; ++w) {
+
+            if (q == -1) {
+                continue;
+            }
+            if (q == K + 1) {
+                continue;
+            }
+            if (w == -1) {
+                continue;
+            }
+            if (w == K + 1) {
+                continue;
+            }
+
+            for (int s = 0; s <= boxes_yz[q][w][r].end; ++s) {
+                int n = boxes_yz[q][w][r].particles[s];
+                double temp = particles[new_i].t - particles[n].t;
+                double dx = particles[n].x + particles[n].vx * temp - particles[new_i].x;
+                double dy = particles[n].y + particles[n].vy * temp - particles[new_i].y;
+                double dz = particles[n].z + particles[n].vz * temp - particles[new_i].z;
+
+                if (4.0 > dx*dx + dy*dy + dz*dz) {
+                    search = true;
+                    printf("\n SEARCH!!! %d %d \n", new_i, n);
+                }
+            }
+        }
+
+        if (search == true) {
+            int k = find_place_for_particle(new_i); // ищем свободное место или номер частицы,
+                                                    // которая мешает вставить образ
+
+            printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+
+            for (int t = 0; t < particles_for_check_count; t++) {
+                if (i == particles_for_check[t] || new_i == particles_for_check[t] || particles[k].i_copy == particles_for_check[t] || k == particles_for_check[t]) {
+                    FILE *save_file = fopen("history.txt", "a");
+                    fprintf(save_file, "\n SEARCH TRUE %d %d\n", new_i, k);
+                    fclose(save_file);
+                }
+            }
+
+            if (k >= 0) {
+                // рассчитать соударение
+                particle p1 = particles[new_i];
+                particle p2 = particles[k];
+
+                printf("\n p1.i_copy p2.i_copy %d %d \n", p1.i_copy, p2.i_copy);
+
+                p2.x += p2.vx * p2.dt;
+                p2.y += p2.vy * p2.dt;
+                p2.z += p2.vz * p2.dt;
+                p2.t = p1.t;
+                p2.dt = 0.0;
+                double dx = p1.x - p2.x;
+                double dy = p1.y - p2.y;
+                double dz = p1.z - p2.z;
+
+                printf("\n particle %d: i_copy %d \n", new_i, p1.i_copy);
+                printf("x,y,z: %.5le, %.5le, %.5le \n ", p1.x, p1.y, p1.z);
+                printf("\n particle %d: i_copy %d \n", k, p2.i_copy);
+                printf("x,y,z: %.5le, %.5le, %.5le \n ", p2.x, p2.y, p2.z);
+
+                printf("\n Rasstoanie: %.15le \n", dx*dx+dy*dy+dz*dz);
+
+                if (new_i >= NP) {
+                    p1.vx = particles[i].vx;
+                    p1.vy = particles[i].vy;
+                    p1.vz = particles[i].vz;
+
+                    if (p1.vx * particles[i].vx < 0) {
+                        p1.vx = -particles[i].vx;
+                    }
+                }
+                if (k >= NP) {
+                    p2.vx = particles[p2.i_copy].vx;
+                    p2.vy = particles[p2.i_copy].vy;
+                    p2.vz = particles[p2.i_copy].vz;
+
+                    if (p2.vx * particles[p2.i_copy].vx < 0) {
+                        p2.vx = -particles[p2.i_copy].vx;
+                    }
+                }
+
+                double q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
+                double q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0;
+                double z = q2 - q1;
+                p1.vx += dx*z;
+                p1.vy += dy*z;
+                p1.vz += dz*z;
+                z = q1 - q2;
+                p2.vx += dx*z;
+                p2.vy += dy*z;
+                p2.vz += dz*z;
+
+                particles[i].vx = p1.vx;
+                particles[i].vy = p1.vy;
+                particles[i].vz = p1.vz;
+                particles[k] = p2;
+
+                int e = k;
+                if (k >= NP) {
+                    e = k - NP;
+
+                    double delta = p2.t - particles[e].t;
+                    particles[e].x += particles[e].vx * delta;
+                    particles[e].y += particles[e].vy * delta;
+                    particles[e].z += particles[e].vz * delta;
+                    particles[e].t = p2.t;
+
+                    particles[e].vx = p2.vx;
+                    particles[e].vy = p2.vy;
+                    particles[e].vz = p2.vz;
+                }
+                create_virt_particle(e);
+
+                // после столкновения надо рассчитать новые события для частицы,
+                // с которой мы столкнули образ и для её образа
+                if (k >= NP) {
+                    if (particles[k].i_copy > -1)
+                        retime(k);
+                    int e = k - NP;
+                    retime(e);
+                }
+                else {
+                    retime(k);
+                    if (particles[k].i_copy > -1)
+                        retime(particles[k].i_copy);
+                }
+
+                // пробуем опять создать, если нужно, образ для частицы
+                // после изменения скоростей
+                create_virt_particle(i);
+
+                return;
+            }
+        }
+
+        x_box = short((L + dL + particles[new_i].x) / dL);
+        particles[new_i].x_box = x_box;
+
+        short end = particles[new_i].box_i = ++boxes_yz[y_box][z_box][x_box].end;
+        boxes_yz[y_box][z_box][x_box].particles[end] = new_i;
+
+        particles[new_i].i_copy = i;
+        particles[i].i_copy = new_i;
+
+        /*
+        printf("\n&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+        printf("\n %d %d", i, new_i);
+        printf("\n %d x,y,z: %le %le %le", i, particles[i].x, particles[i].y, particles[i].z);
+        printf("\n %d vx,vy,vz: %le %le %le", i, particles[i].vx, particles[i].vy, particles[i].vz);
+        printf("\n %d x,y,z: %le %le %le", new_i, particles[new_i].x, particles[new_i].y, particles[new_i].z);
+        
+        if (new_i == 108) {
+            printf("\n %d xbox = %d, ybox = %d, zbox = %d\n", new_i, particles[new_i].x_box, particles[new_i].y_box, particles[new_i].z_box);
+            printf("\n %d xbox = %d, ybox = %d, zbox = %d\n", i, particles[i].x_box, particles[i].y_box, particles[i].z_box);
+            printf("\n Y = %le  A = %le", particles[new_i].y + particles[new_i].vy* (dy / abs(particles[i].vy)), A);
+            printf("\n Y = %le  A = %le", particles[new_i].y + particles[new_i].vy*t02, A);
+            printf("\n Z = %le  A = %le", particles[new_i].z + particles[new_i].vz* (dz / abs(particles[i].vz)), A);
+            printf("\n Z = %le  A = %le", particles[new_i].z + particles[new_i].vz*t02, A);
+            printf("");
+        }
+        */
+    }
 }
 
 
@@ -1181,7 +1181,7 @@ void load_seed(std::string file_name) {
     dA = A2 / (K - 1);
     dL = L * 2.0 / (K2 - 1);
 
-	printf("%le %le", dA, dL);
+    printf("%le %le", dA, dL);
 
     y = z = -A - dA;
     x = -L - dL;
@@ -1221,74 +1221,74 @@ void load_seed(std::string file_name) {
         particles[i].x = a1 - L;
         particles[i].y = a2 - A;
         particles[i].z = a3 - A;
-		x_box = short((L + dL + particles[i].x) / dL);
-		y_box = short((A + dA + particles[i].y) / dA);
-		z_box = short((A + dA + particles[i].z) / dA);
+        x_box = short((L + dL + particles[i].x) / dL);
+        y_box = short((A + dA + particles[i].y) / dA);
+        z_box = short((A + dA + particles[i].z) / dA);
 
-		printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
-		printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
-		printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
-		printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
+        printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
+        printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
+        printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
+        printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
 
         if (boxes_yz[y_box][z_box][x_box].x1 < particles[i].x &&
                 boxes_yz[y_box][z_box][x_box].x2 > particles[i].x)
             particles[i].x_box = x_box;
         else {
-        	printf("Particle locates in incorrect place %d", i);
-        	throw "Particle locates in incorrect place";
+            printf("Particle locates in incorrect place %d", i);
+            throw "Particle locates in incorrect place";
         }
 
         if (boxes_yz[y_box][z_box][x_box].y1 < particles[i].y &&
                 boxes_yz[y_box][z_box][x_box].y2 > particles[i].y)
             particles[i].y_box = y_box;
         else {
-        	printf("Particle locates in incorrect place %d", i);
-        	throw "Particle locates in incorrect place";
+            printf("Particle locates in incorrect place %d", i);
+            throw "Particle locates in incorrect place";
         }
 
         if (boxes_yz[y_box][z_box][x_box].z1 < particles[i].z &&
                 boxes_yz[y_box][z_box][x_box].z2 > particles[i].z)
             particles[i].z_box = z_box;
         else {
-        	printf("Particle %d locates in incorrect place", i);
-        	throw "Particle locates in incorrect place";
+            printf("Particle %d locates in incorrect place", i);
+            throw "Particle locates in incorrect place";
         }
 
         fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
         particles[i].vx = a1;
         particles[i].vy = a2;
         particles[i].vz = a3;
-		particles[i].kv = 1.0;	// velocity coefficient. kv != 1 for virtual particles.
+        particles[i].kv = 1.0;    // velocity coefficient. kv != 1 for virtual particles.
         particles[i].t = 0.0;
         particles[i].dt = 0.0;
         particles[i].ti = 1;
         end = particles[i].box_i = ++boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end;
         boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[particles[i].box_i] = i;
 
-		particle p1 = particles[6];
-		for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ty++) {
-			printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty]);
-		}
+        particle p1 = particles[6];
+        for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ty++) {
+            printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty]);
+        }
 
-		global_E += a1*a1 + a2*a2 + a3*a3;
+        global_E += a1*a1 + a2*a2 + a3*a3;
 
         if (end > 7) {
-        	printf("Error: Too many particles in one box");
-        	throw "Error: Too many particles in one box";
+            printf("Error: Too many particles in one box");
+            throw "Error: Too many particles in one box";
         }
         for (short t = 0; t < particles[i].box_i; ++t)
             for (short d = t + 1; d <= particles[i].box_i; ++d)
                 if (boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[t] == boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[d])
                 {
-                	printf("Duplicated particles in one box");
-                	throw "Duplicated particles in one box";
+                    printf("Duplicated particles in one box");
+                    throw "Duplicated particles in one box";
                 }
     }
     fclose(loading_file);
 
     last = 1;
     time_queue[0].t = 0.0;
-	time_queue[0].im = -1;
+    time_queue[0].im = -1;
     for (int i = 1; i < 30000; ++i) time_queue[i].t = 1.0E+20;
 
     for (int i = 0; i < NP - 1; ++i)
@@ -1298,26 +1298,26 @@ void load_seed(std::string file_name) {
             double z = particles[i].z - particles[j].z;
             double d = x * x + y * y + z*z;
             if (d < 3.99999) {
-            	printf("Incorrect distance between particles");
-            	throw "Incorrect distance between particles";
+                printf("Incorrect distance between particles");
+                throw "Incorrect distance between particles";
             }
         }
 
-	double E1 = 0.0, E2 = 0.0;
-	for (int i = 0; i < NP; ++i) {
-		E1 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
-	}
+    double E1 = 0.0, E2 = 0.0;
+    for (int i = 0; i < NP; ++i) {
+        E1 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
+    }
 
 
     for (int i = 0; i < NP; ++i) retime(i);
 
-	for (int i = 0; i < NP; ++i) {
-		E2 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
-	}
+    for (int i = 0; i < NP; ++i) {
+        E2 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
+    }
 
-	printf("global_E = %.15le \n", global_E);
-	printf("global_E = %.15le \n", E1);
-	printf("global_E = %.15le  \n", E2);
+    printf("global_E = %.15le \n", global_E);
+    printf("global_E = %.15le \n", E1);
+    printf("global_E = %.15le  \n", E2);
 }
 
 /*
@@ -1563,32 +1563,32 @@ void reform(int &im, int &jm) {
     if (jm >= 0) {
         particle p2 = particles[jm];
 
-		p2.x += p2.vx * p2.dt;
-		p2.y += p2.vy * p2.dt;
-		p2.z += p2.vz * p2.dt;
-		p2.t = p1.t;
-		p2.dt = 0.0;
-		dx = p1.x - p2.x;
-		dy = p1.y - p2.y;
-		dz = p1.z - p2.z;
+        p2.x += p2.vx * p2.dt;
+        p2.y += p2.vy * p2.dt;
+        p2.z += p2.vz * p2.dt;
+        p2.t = p1.t;
+        p2.dt = 0.0;
+        dx = p1.x - p2.x;
+        dy = p1.y - p2.y;
+        dz = p1.z - p2.z;
 
         if (im >= NP) {
-			p1.vx = particles[p1.i_copy].vx;
-			p1.vy = particles[p1.i_copy].vy;
-			p1.vz = particles[p1.i_copy].vz;
+            p1.vx = particles[p1.i_copy].vx;
+            p1.vy = particles[p1.i_copy].vy;
+            p1.vz = particles[p1.i_copy].vz;
 
-			if (p1.vx * particles[p1.i_copy].vx < 0) {
-				p1.vx = -particles[p1.i_copy].vx;
-			}
+            if (p1.vx * particles[p1.i_copy].vx < 0) {
+                p1.vx = -particles[p1.i_copy].vx;
+            }
         }
         if (jm >= NP) {
-			p2.vx = particles[p2.i_copy].vx;
-			p2.vy = particles[p2.i_copy].vy;
-			p2.vz = particles[p2.i_copy].vz;
+            p2.vx = particles[p2.i_copy].vx;
+            p2.vy = particles[p2.i_copy].vy;
+            p2.vz = particles[p2.i_copy].vz;
 
-			if (p2.vx * particles[p2.i_copy].vx < 0) {
-				p2.vx = -particles[p2.i_copy].vx;
-			}
+            if (p2.vx * particles[p2.i_copy].vx < 0) {
+                p2.vx = -particles[p2.i_copy].vx;
+            }
         }
 
         q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
@@ -1606,17 +1606,17 @@ void reform(int &im, int &jm) {
 
         int e = jm;
         if (jm >= NP) {
-        	e = jm - NP;
+            e = jm - NP;
 
-			double delta = p2.t - particles[e].t;
-			particles[e].x += particles[e].vx * delta;
-			particles[e].y += particles[e].vy * delta;
-			particles[e].z += particles[e].vz * delta;
-			particles[e].t = p2.t;
+            double delta = p2.t - particles[e].t;
+            particles[e].x += particles[e].vx * delta;
+            particles[e].y += particles[e].vy * delta;
+            particles[e].z += particles[e].vz * delta;
+            particles[e].t = p2.t;
 
-        	particles[e].vx = p2.vx;
-        	particles[e].vy = p2.vy;
-        	particles[e].vz = p2.vz;
+            particles[e].vx = p2.vx;
+            particles[e].vy = p2.vy;
+            particles[e].vz = p2.vz;
         }
         create_virt_particle(e);
     } else
@@ -1661,11 +1661,11 @@ void reform(int &im, int &jm) {
                 --p1.z_box;
                 p1.z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2;
 
-				if (im == 26 && p1.i_copy < 0) {
-					printf("\nZBOX %d\n", p1.z_box);
-					printf("\nZBOX %d\n", p1.i_copy);
+                if (im == 26 && p1.i_copy < 0) {
+                    printf("\nZBOX %d\n", p1.z_box);
+                    printf("\nZBOX %d\n", p1.i_copy);
 
-				}
+                }
 
                 if ((p1.z_box == 0) && (im < NP)) {
                     change_with_virt_particles(im, jm);
@@ -1692,26 +1692,26 @@ void reform(int &im, int &jm) {
 
     if (jm >= 0)
     {
-    	int e = im;
+        int e = im;
 
-		if (im >= NP) {
-    	    e = im - NP;
-    	    particles[e].vx = p1.vx;
-    	    particles[e].vy = p1.vy;
-    	    particles[e].vz = p1.vz;
-    	}
-    	clear_particle_events(e);
+        if (im >= NP) {
+            e = im - NP;
+            particles[e].vx = p1.vx;
+            particles[e].vy = p1.vy;
+            particles[e].vz = p1.vz;
+        }
+        clear_particle_events(e);
         create_virt_particle(e);
     }
 
     if ((p1.i_copy > -1) && (jm == -1))
     {
-    	int e = im;
-    	if (im >= NP) {
-    	    e = im - NP;
-			particles[e].vx = -particles[e].vx;
-    	}
-    	clear_particle_events(e);
+        int e = im;
+        if (im >= NP) {
+            e = im - NP;
+            particles[e].vx = -particles[e].vx;
+        }
+        clear_particle_events(e);
         create_virt_particle(e);
     }
 }
@@ -1724,121 +1724,121 @@ void step() {
     int i, im, jm;
     double time = 0.0;
 
-	COLL_COUNT = 0;
+    COLL_COUNT = 0;
 
     while (COLL_COUNT < NP/2) {
-    	im = time_queue[1].im;
-    	jm = time_queue[1].jm;
+        im = time_queue[1].im;
+        jm = time_queue[1].jm;
 
-		int u = check_particles();
-		if (u != 0) {
-			printf("ALARM: %d \n", u);
-		}
+        int u = check_particles();
+        if (u != 0) {
+            printf("ALARM: %d \n", u);
+        }
 
-		printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
-		//printf("\n last = %d %d\n", time_queue[last].im, time_queue[last].jm);
+        printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+        //printf("\n last = %d %d\n", time_queue[last].im, time_queue[last].jm);
 
-		//fprintf(stderr, "\n particle 21 x, y, z: %.15le %.15le %.15le\n", particles[21].x, particles[21].y, particles[21].z);
-		//fprintf(stderr, " particle 21 vx, vy, vz: %.15le %.15le %.15le\n", particles[21].vx, particles[21].vy, particles[21].vz);
-		
-		
-		for (int t = 0; t < particles_for_check_count; t++) {
-			if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
-		        FILE *save_file = fopen("history.txt", "a");
-		        fprintf(save_file, "\n Event #%d: %d %d %.15le \n", im, time_queue[particles[im].ti].im, time_queue[particles[im].ti].jm, particles[im].dt);
-		        //fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
-		        //fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
+        //fprintf(stderr, "\n particle 21 x, y, z: %.15le %.15le %.15le\n", particles[21].x, particles[21].y, particles[21].z);
+        //fprintf(stderr, " particle 21 vx, vy, vz: %.15le %.15le %.15le\n", particles[21].vx, particles[21].vy, particles[21].vz);
+        
+        
+        for (int t = 0; t < particles_for_check_count; t++) {
+            if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
+                FILE *save_file = fopen("history.txt", "a");
+                fprintf(save_file, "\n Event #%d: %d %d %.15le \n", im, time_queue[particles[im].ti].im, time_queue[particles[im].ti].jm, particles[im].dt);
+                //fprintf(save_file, "   %d BOX: x %d | y %d | z %d\n", im, particles[im].x_box, particles[im].y_box, particles[im].z_box);
+                //fprintf(save_file, "   %d BOX: x %d | y %d | z %d \n\n", jm, particles[jm].x_box, particles[jm].y_box, particles[jm].z_box);
 
-				fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
-				fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
-				fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
-		/*
-				for (int ty = 0; ty < boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].end; ty++) {
-					fprintf(save_file, "%d  ", boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].particles[ty]);
-				}
+                fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
+                fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
+                fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
+        /*
+                for (int ty = 0; ty < boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].end; ty++) {
+                    fprintf(save_file, "%d  ", boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].particles[ty]);
+                }
         */
-		        fprintf(save_file, "\n");
+                fprintf(save_file, "\n");
 
-		        fclose(save_file);
-			}
-		}
-		
+                fclose(save_file);
+            }
+        }
+        
 
-    	delete_event(1);
+        delete_event(1);
 
-    	p1 = particles[im];
+        p1 = particles[im];
 
-		if (jm == -100) {
-			printf("\ntime: %.15le  p1.t: %.15le  p1.dt: %.15le\n", time, p1.t, p1.dt);
-			p1.dt = time - p1.t;
-		}
+        if (jm == -100) {
+            printf("\ntime: %.15le  p1.t: %.15le  p1.dt: %.15le\n", time, p1.t, p1.dt);
+            p1.dt = time - p1.t;
+        }
 
-    	p1.x += p1.vx * p1.dt;
-    	p1.y += p1.vy * p1.dt;
-    	p1.z += p1.vz * p1.dt;
-    	p1.t += p1.dt;
-		p1.dt = 0.0;
-		time = p1.t;
+        p1.x += p1.vx * p1.dt;
+        p1.y += p1.vy * p1.dt;
+        p1.z += p1.vz * p1.dt;
+        p1.t += p1.dt;
+        p1.dt = 0.0;
+        time = p1.t;
 
-		if ((p1.i_copy > -1) && (jm > -2)) {
-			double delta = p1.t - particles[p1.i_copy].t;
-			particles[p1.i_copy].x += particles[p1.i_copy].vx * delta;
-			particles[p1.i_copy].y += particles[p1.i_copy].vy * delta;
-			particles[p1.i_copy].z += particles[p1.i_copy].vz * delta;
-			particles[p1.i_copy].t = p1.t;
-			particles[p1.i_copy].dt = 0.0;
-		}
+        if ((p1.i_copy > -1) && (jm > -2)) {
+            double delta = p1.t - particles[p1.i_copy].t;
+            particles[p1.i_copy].x += particles[p1.i_copy].vx * delta;
+            particles[p1.i_copy].y += particles[p1.i_copy].vy * delta;
+            particles[p1.i_copy].z += particles[p1.i_copy].vz * delta;
+            particles[p1.i_copy].t = p1.t;
+            particles[p1.i_copy].dt = 0.0;
+        }
 
-    	particles[im] = p1;
-    	reform(im, jm);
+        particles[im] = p1;
+        reform(im, jm);
 
-		if (im >= NP) {
-			if (particles[im].i_copy > -1)
-				retime(im);
-			if (jm > -2) {
-				int e = im - NP;
-				retime(e);
-			}
-		}
-		else {
-			retime(im);
-			if ((particles[im].i_copy > -1) && ((jm > -2) || ((jm < -10) && (jm != -100)))) {
-				retime(particles[im].i_copy);
-			}
-		}
+        if (im >= NP) {
+            if (particles[im].i_copy > -1)
+                retime(im);
+            if (jm > -2) {
+                int e = im - NP;
+                retime(e);
+            }
+        }
+        else {
+            retime(im);
+            if ((particles[im].i_copy > -1) && ((jm > -2) || ((jm < -10) && (jm != -100)))) {
+                retime(particles[im].i_copy);
+            }
+        }
 
-		if (jm >= 0) {
-			++COLL_COUNT;
+        if (jm >= 0) {
+            ++COLL_COUNT;
 
-			if (jm >= NP) {
-				if (particles[jm].i_copy > -1)
-					retime(jm);
-				int e = jm - NP;
-				retime(e);
-			}
-			else {
-				retime(jm);
-				if (particles[jm].i_copy > -1)
-					retime(particles[jm].i_copy);
-			}
-		}
+            if (jm >= NP) {
+                if (particles[jm].i_copy > -1)
+                    retime(jm);
+                int e = jm - NP;
+                retime(e);
+            }
+            else {
+                retime(jm);
+                if (particles[jm].i_copy > -1)
+                    retime(particles[jm].i_copy);
+            }
+        }
 
 
-		for (int t = 0; t < particles_for_check_count; t++) {
-			if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
-				FILE *save_file = fopen("history.txt", "a");
-				fprintf(save_file, "\n After the reform: \n");
-				fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
-				fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
-				fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
-				fprintf(save_file, "\n");
+        for (int t = 0; t < particles_for_check_count; t++) {
+            if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
+                FILE *save_file = fopen("history.txt", "a");
+                fprintf(save_file, "\n After the reform: \n");
+                fprintf(save_file, "   %d particle: x %.5le | y %.5le | z %.5le\n", im, particles[im].x, particles[im].y, particles[im].z);
+                fprintf(save_file, "   %d particle: vx %.5le | vy %.5le | vz %.5le\n", im, particles[im].vx, particles[im].vy, particles[im].vz);
+                fprintf(save_file, " %d i_copy \n", particles[im].i_copy);
+                fprintf(save_file, "\n");
 
-				fclose(save_file);
-			}
-		}
+                fclose(save_file);
+            }
+        }
     }
 
-	printf("\n AAAAAAAAAAAAAAAAAAAAAA \n");
+    printf("\n AAAAAAAAAAAAAAAAAAAAAA \n");
 
     particle *p = particles;
     for (i = 0; i < NP*2; ++i, ++p)
@@ -2048,51 +2048,51 @@ void init(std::string file_name) {
 
 int main(array<System::String ^> ^args)
 {
-	K = 3;
-	K2 = 8;
-	new_seed(2, 0.3);
+    K = 3;
+    K2 = 8;
+    new_seed(2, 0.3);
 
-	check_particles();
+    check_particles();
 
-	FILE *save_file = fopen("history.txt", "w");
-	fclose(save_file);
+    FILE *save_file = fopen("history.txt", "w");
+    fclose(save_file);
 
-	particles_for_check_count = 1;
-	particles_for_check[0] = 26;
-	particles_for_check[1] = 90;
-	particles_for_check[2] = 24;
+    particles_for_check_count = 1;
+    particles_for_check[0] = 26;
+    particles_for_check[1] = 90;
+    particles_for_check[2] = 24;
 
-	int GGH = 0;
-	while (GGH < 2000) {
-		fprintf(stderr, "===============\n");
-		fprintf(stderr, "%d %d\n", time_queue[1].im, time_queue[1].jm);
-		GGH++;
-		print_time_line();
-		int k = check_particles();
-		fprintf(stderr, "K == %d  %d\n", k, GGH);
-		step();
+    int GGH = 0;
+    while (GGH < 2000) {
+        fprintf(stderr, "===============\n");
+        fprintf(stderr, "%d %d\n", time_queue[1].im, time_queue[1].jm);
+        GGH++;
+        print_time_line();
+        int k = check_particles();
+        fprintf(stderr, "K == %d  %d\n", k, GGH);
+        step();
 
-		FILE *save_file = fopen("history.txt", "a");
-		fprintf(save_file, "\n STEPS:: %d \n", GGH);
-		for (int t = 0; t < particles_for_check_count; t++) {
-			fprintf(save_file, "\n particle %d, x, y, z: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].x, particles[particles_for_check[t]].y, particles[particles_for_check[t]].z);
-			fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].vx, particles[particles_for_check[t]].vy, particles[particles_for_check[t]].vz);
+        FILE *save_file = fopen("history.txt", "a");
+        fprintf(save_file, "\n STEPS:: %d \n", GGH);
+        for (int t = 0; t < particles_for_check_count; t++) {
+            fprintf(save_file, "\n particle %d, x, y, z: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].x, particles[particles_for_check[t]].y, particles[particles_for_check[t]].z);
+            fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].vx, particles[particles_for_check[t]].vy, particles[particles_for_check[t]].vz);
 
-			fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[particles_for_check[t]].x_box, particles[particles_for_check[t]].y_box, particles[particles_for_check[t]].z_box);
-			fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[particles_for_check[t]].ti].im, time_queue[particles[particles_for_check[t]].ti].jm, particles[particles_for_check[t]].dt);
-			fprintf(save_file, " %d i_copy \n ", particles[particles_for_check[t]].i_copy);
-			if (particles[particles_for_check[t]].i_copy > 0) {
-				int r = particles[particles_for_check[t]].i_copy;
-				fprintf(save_file, " particle %d, x, y, z: %.5le, %.5le, %.5le \n", r, particles[r].x, particles[r].y, particles[r].z);
-				fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", r, particles[r].vx, particles[r].vy, particles[r].vz);
-				fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[r].x_box, particles[r].y_box, particles[r].z_box);
-				fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[r].ti].im, time_queue[particles[r].ti].jm, particles[r].dt);
-			}
-		}
-		fprintf(save_file, "\n\n");
-		fclose(save_file);
+            fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[particles_for_check[t]].x_box, particles[particles_for_check[t]].y_box, particles[particles_for_check[t]].z_box);
+            fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[particles_for_check[t]].ti].im, time_queue[particles[particles_for_check[t]].ti].jm, particles[particles_for_check[t]].dt);
+            fprintf(save_file, " %d i_copy \n ", particles[particles_for_check[t]].i_copy);
+            if (particles[particles_for_check[t]].i_copy > 0) {
+                int r = particles[particles_for_check[t]].i_copy;
+                fprintf(save_file, " particle %d, x, y, z: %.5le, %.5le, %.5le \n", r, particles[r].x, particles[r].y, particles[r].z);
+                fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", r, particles[r].vx, particles[r].vy, particles[r].vz);
+                fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[r].x_box, particles[r].y_box, particles[r].z_box);
+                fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[r].ti].im, time_queue[particles[r].ti].jm, particles[r].dt);
+            }
+        }
+        fprintf(save_file, "\n\n");
+        fclose(save_file);
 
-	}
+    }
 
-	return 0;
+    return 0;
 }
