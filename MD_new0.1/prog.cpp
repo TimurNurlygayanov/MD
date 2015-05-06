@@ -1559,6 +1559,7 @@ void new_seed(int NN, double etta) {
 void reform(int &im, int &jm) {
     particle p1 = particles[im];
     double dx, dy, dz, q1, q2, z;
+    bool need_create_virt_particle = false;
 
     if (jm >= 0) {
         particle p2 = particles[jm];
@@ -1647,6 +1648,7 @@ void reform(int &im, int &jm) {
                 if ((p1.y_box == 0) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
+                    need_create_virt_particle = true;
                 }
             }
             if (jm == -6) {
@@ -1655,21 +1657,16 @@ void reform(int &im, int &jm) {
                 if ((p1.y_box == K) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
+                    need_create_virt_particle = true;
                 }
             }
             if (jm == -7) {
                 --p1.z_box;
                 p1.z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2;
-
-                if (im == 26 && p1.i_copy < 0) {
-                    printf("\nZBOX %d\n", p1.z_box);
-                    printf("\nZBOX %d\n", p1.i_copy);
-
-                }
-
                 if ((p1.z_box == 0) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
+                    need_create_virt_particle = true;
                 }
             }
             if (jm == -8) {
@@ -1678,6 +1675,7 @@ void reform(int &im, int &jm) {
                 if ((p1.z_box == K) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
+                    need_create_virt_particle = true;
                 }
             }
             if (jm < -10) {
@@ -1711,6 +1709,15 @@ void reform(int &im, int &jm) {
             e = im - NP;
             particles[e].vx = -particles[e].vx;
         }
+        clear_particle_events(e);
+        create_virt_particle(e);
+    }
+
+    if (need_create_virt_particle == true) {
+        int e = im;
+        if (im >= NP)
+            e = im - NP;
+        printf("\n AAA - need create virt particle \n");
         clear_particle_events(e);
         create_virt_particle(e);
     }
