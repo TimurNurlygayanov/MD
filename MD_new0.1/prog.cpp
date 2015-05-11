@@ -428,7 +428,7 @@ void retime(int &i) {
                         /////////////////
                         if ((COLL_COUNT>0) && (4.0 > dx * dx + dy * dy + dz * dz)) {
 
-                            printf("\n i = %d  n = %d", i, n);
+                            printf("\n i = %d  n = %d, difference = %.15le", i, n, dx * dx + dy * dy + dz * dz);
 
                             printf("\n %.5le %.5le %.5le \n", particles[i].x, particles[i].y, particles[i].z);
                             printf("\n %.5le %.5le %.5le \n", particles[n].x, particles[n].y, particles[n].z);
@@ -534,7 +534,7 @@ void retime(int &i) {
             int y_box = particles[particles_for_check[t]].y_box;
             int z_box = particles[particles_for_check[t]].z_box;
 
-            fprintf(save_file, "    particle data %d: x_box, y_box, z_box: %d %d %d \n", particles_for_check[t], x_box, y_box, z_box);
+            //fprintf(save_file, "    particle data %d: x_box, y_box, z_box: %d %d %d \n", particles_for_check[t], x_box, y_box, z_box);
             for (int ty = 0; ty < boxes_yz[y_box][z_box][x_box].end; ty++) {
                 fprintf(save_file, "%d  ", boxes_yz[y_box][z_box][x_box].particles[ty]);
             }
@@ -559,7 +559,7 @@ int find_place_for_particle(int &i) {
     double no_free_space_max[3000];
 
     int particles_count = 0;
-    int particles_on_the_line[100];  // список всех частиц, мешаюзих вставить новый образ
+    int particles_on_the_line[100];  // список всех частиц, мешающих вставить новый образ
     double particle_i_min[100];  // координаты левой и правой границ,
     double particle_i_max[100];  // на которые можно поставить образ для столкновения
 
@@ -1615,6 +1615,8 @@ void reform(int &im, int &jm) {
             particles[e].z += particles[e].vz * delta;
             particles[e].t = p2.t;
 
+            printf("\nDelta: %.15le ; particles[jm].dt=%.15le  \n", delta, particles[e].dt);
+
             particles[e].vx = p2.vx;
             particles[e].vy = p2.vy;
             particles[e].vz = p2.vz;
@@ -1809,6 +1811,7 @@ void step() {
         }
         else {
             retime(im);
+            // нужно вызывать retime для пересоздаваемых образов после перерождения!  BUG
             if ((particles[im].i_copy > -1) && ((jm > -2) || ((jm < -10) && (jm != -100)))) {
                 retime(particles[im].i_copy);
             }
@@ -2064,10 +2067,10 @@ int main(array<System::String ^> ^args)
     FILE *save_file = fopen("history.txt", "w");
     fclose(save_file);
 
-    particles_for_check_count = 1;
-    particles_for_check[0] = 26;
-    particles_for_check[1] = 90;
-    particles_for_check[2] = 24;
+    particles_for_check_count = 2;
+    particles_for_check[0] = 1;
+    particles_for_check[1] = 65;
+    particles_for_check[2] = 65;
 
     int GGH = 0;
     while (GGH < 2000) {
@@ -2087,6 +2090,7 @@ int main(array<System::String ^> ^args)
 
             fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[particles_for_check[t]].x_box, particles[particles_for_check[t]].y_box, particles[particles_for_check[t]].z_box);
             fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[particles_for_check[t]].ti].im, time_queue[particles[particles_for_check[t]].ti].jm, particles[particles_for_check[t]].dt);
+            fprintf(save_file, " particle event number: %d\n", particles[particles_for_check[t]].ti);
             fprintf(save_file, " %d i_copy \n ", particles[particles_for_check[t]].i_copy);
             if (particles[particles_for_check[t]].i_copy > 0) {
                 int r = particles[particles_for_check[t]].i_copy;
