@@ -904,20 +904,13 @@ void create_virt_particle(int &i) {
 
     printf("Trying to create virt particle %d...", new_i);
 
-    for (int t = 0; t < particles_for_check_count; t++) {
-        if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
-            FILE *save_file = fopen("history.txt", "a");
-            fprintf(save_file, "Trying to create virt particle %d... \n", new_i);
-            fclose(save_file);
-        }
-    }
-
-    if (i == 26) {
-        printf("\n x_box, y_box, z_box: %d %d %d \n", particles[i].x_box, particles[i].y_box, particles[i].z_box);
-        printf("\n x, y, z: %le %le %le \n", particles[i].x, particles[i].y, particles[i].z);
-        printf("\n vx, vy, vz: %le %le %le \n", particles[i].vx, particles[i].vy, particles[i].vz);
-        printf("wait...");
-    }
+    //for (int t = 0; t < particles_for_check_count; t++) {
+    //    if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
+    FILE *save_file = fopen("history.txt", "a");
+    fprintf(save_file, "Trying to create virt particle %d... \n", new_i);
+    fclose(save_file);
+    //    }
+    //}
 
     if (((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
         ((particles[i].y >= A - 1.0) && (particles[i].vy > 0.0)) ||
@@ -1109,13 +1102,6 @@ void create_virt_particle(int &i) {
                 double dx = p1.x - p2.x;
                 double dy = p1.y - p2.y;
                 double dz = p1.z - p2.z;
-
-                printf("\n particle %d: i_copy %d \n", new_i, p1.i_copy);
-                printf("x,y,z: %.5le, %.5le, %.5le \n ", p1.x, p1.y, p1.z);
-                printf("\n particle %d: i_copy %d \n", k, p2.i_copy);
-                printf("x,y,z: %.5le, %.5le, %.5le \n ", p2.x, p2.y, p2.z);
-
-                printf("\n Rasstoanie: %.15le \n", dx*dx+dy*dy+dz*dz);
 
                 if (new_i >= NP) {
                     p1.vx = particles[i].vx;
@@ -2205,8 +2191,8 @@ int main(array<System::String ^> ^args)
     fclose(save_file);
 
     particles_for_check_count = 2;
-    particles_for_check[0] = 13;
-    particles_for_check[1] = 95;
+    particles_for_check[0] = 93;
+    particles_for_check[1] = 65;
     particles_for_check[2] = 76;
 
     int GGH = 0;
