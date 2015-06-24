@@ -559,8 +559,8 @@ void retime(int &i) {
 int find_place_for_particle(int &i) {
 
     double dy, dz, dx, d, x_min, x_max=0.0;
-    double no_free_space_min[3000];
-    double no_free_space_max[3000];
+    double no_free_space_min[300];
+    double no_free_space_max[300];
 
     int particles_count = 0;
     int particles_on_the_line[100];  // список всех частиц, мешающих вставить новый образ
@@ -647,9 +647,11 @@ int find_place_for_particle(int &i) {
             }
         }
     
-    
     for (int r1 = 1; r1 <= spaces; r1++)
+    {
+        printf("\nR=%d\n", r1);
         printf("\n No Space: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
+    }
     
 
     for (int r1 = 1; r1 < spaces; r1++)
@@ -1082,7 +1084,7 @@ void create_virt_particle(int &i) {
             int k = find_place_for_particle(new_i); // ищем свободное место или номер частицы,
                                                     // которая мешает вставить образ
 
-            printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+            //printf("\n>>> %.15le, %.15le, %.15le\n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
 
             for (int t = 0; t < particles_for_check_count; t++) {
                 if (i == particles_for_check[t] || new_i == particles_for_check[t] || particles[k].i_copy == particles_for_check[t] || k == particles_for_check[t]) {
@@ -1644,6 +1646,30 @@ bool reform(int &im, int &jm) {
     if (jm >= 0) {
         particle p2 = particles[jm];
 
+        double En1 = p1.vx*p1.vx + p2.vx*p2.vx + p1.vy*p1.vy + p2.vy*p2.vy + p1.vz*p1.vz + p2.vz*p2.vz;
+        printf("\n Energy 1 = %.15le\n", En1);
+
+        // experiment:
+        if (particles[im].i_copy > 0) {
+            int k = im;
+            if (particles[im].i_copy < NP)
+                k = k - NP;
+            printf("\n 1 K = %d\n", k);
+            printf(" particle %d i_copy = %d \n", im, particles[im].i_copy);
+            printf(" particle %d i_copy = %d \n", k, particles[k].i_copy);
+            destroy_virt_particle(k);
+            p1.i_copy = -1;
+        }
+        if (particles[jm].i_copy > 0) {
+            int k = jm;
+            if (particles[jm].i_copy < NP)
+                k = k - NP;
+            destroy_virt_particle(k);
+            printf("\n 2 K = %d\n", k);
+            p2.i_copy = -1;
+        }
+        //
+
         p2.x += p2.vx * p2.dt;
         p2.y += p2.vy * p2.dt;
         p2.z += p2.vz * p2.dt;
@@ -1654,21 +1680,30 @@ bool reform(int &im, int &jm) {
         dz = p1.z - p2.z;
 
         if (im >= NP) {
-            p1.vx = particles[p1.i_copy].vx;
-            p1.vy = particles[p1.i_copy].vy;
-            p1.vz = particles[p1.i_copy].vz;
+            // BUG: here we already have i_copy == -1
+            int k = im - NP;
+            p1.vy = particles[k].vy;
+            p1.vz = particles[k].vz;
 
-            if (p1.vx * particles[p1.i_copy].vx < 0) {
-                p1.vx = -particles[p1.i_copy].vx;
+            if (p1.vx * particles[k].vx < 0) {
+                p1.vx = -particles[k].vx;
+            }
+            else
+            {
+                p1.vx = particles[k].vx;
             }
         }
         if (jm >= NP) {
-            p2.vx = particles[p2.i_copy].vx;
-            p2.vy = particles[p2.i_copy].vy;
-            p2.vz = particles[p2.i_copy].vz;
+            int k = jm - NP;
+            p2.vy = particles[k].vy;
+            p2.vz = particles[k].vz;
 
-            if (p2.vx * particles[p2.i_copy].vx < 0) {
-                p2.vx = -particles[p2.i_copy].vx;
+            if (p2.vx * particles[k].vx < 0) {
+                p2.vx = -particles[k].vx;
+            }
+            else
+            {
+                p2.vx = particles[k].vx;
             }
         }
 
@@ -1682,10 +1717,23 @@ bool reform(int &im, int &jm) {
         p2.vx += dx*z;
         p2.vy += dy*z;
         p2.vz += dz*z;
- 
-        particles[jm] = p2;
 
-        int e = jm;
+        double En2 = p1.vx*p1.vx + p2.vx*p2.vx + p1.vy*p1.vy + p2.vy*p2.vy + p1.vz*p1.vz + p2.vz*p2.vz;
+        printf("\n Energy 2 = %.15le\n", En2);
+ 
+        int e = im;
+        if (im >= NP) {
+            e = im - NP;
+            particles[e].vx = p1.vx;
+            particles[e].vy = p1.vy;
+            particles[e].vz = p1.vz;
+        }
+        else
+            particles[im] = p1;
+        //clear_particle_events(e);
+        create_virt_particle(e);
+
+        e = jm;
         if (jm >= NP) {
             e = jm - NP;
 
@@ -1695,16 +1743,21 @@ bool reform(int &im, int &jm) {
             particles[e].z += particles[e].vz * delta;
             particles[e].t = p2.t;
 
-            //printf("\nDelta: %.15le ; particles[jm].dt=%.15le  \n", delta, particles[e].dt);
-
             particles[e].vx = p2.vx;
             particles[e].vy = p2.vy;
             particles[e].vz = p2.vz;
         }
+        else
+            particles[jm] = p2;
+        //clear_particle_events(e);
         create_virt_particle(e);
+
+        double En3 = p1.vx*p1.vx + p2.vx*p2.vx + p1.vy*p1.vy + p2.vy*p2.vy + p1.vz*p1.vz + p2.vz*p2.vz;
+        printf("\n Energy 3 = %.15le\n", En3);
     } else
     if (jm == -1) {
         p1.vx = -p1.vx;
+        particles[im] = p1;
     } else {
         if (jm != -100) {
             short end = boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
@@ -1766,49 +1819,11 @@ bool reform(int &im, int &jm) {
             }
             p1.box_i = ++boxes_yz[p1.y_box][p1.z_box][p1.x_box].end;
             boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[p1.box_i] = im;
+            particles[im] = p1;
         }
     }
 
-    //////////
-    for (int t = 0; t < particles_for_check_count; t++) {
-        if (im == particles_for_check[t]) {
-            FILE *save_file = fopen("history.txt", "a");
-
-            fprintf(save_file, "particle %d box_i = %d  p_box.particles[box_i] = %d \n", im, particles[im].box_i);
-
-            fprintf(save_file, " ->particles in the box:\n");
-            for (int p = 0; p <= boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].end; p++) {
-                fprintf(save_file, " %d, particle index: %d \n", boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].particles[p], particles[boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].particles[p]].box_i);
-            }
-            fprintf(save_file, " \n");
-
-            fclose(save_file);
-        }
-    }
-    //////////
-
-    particles[im] = p1;  // BUG: если сталкиваются два образа, которые находились в одной ячейке, то после обновления
-                         // ячейки индекс первого образа меняется, а эта команда затрет сделанные изменения и мы не сможем
-                         // удалить образ из ячейки
-
-    //////////
-    for (int t = 0; t < particles_for_check_count; t++) {
-        if (im == particles_for_check[t]) {
-            FILE *save_file = fopen("history.txt", "a");
-
-            fprintf(save_file, "particle %d box_i = %d  p_box.particles[box_i] = %d \n", im, particles[im].box_i);
-
-            fprintf(save_file, " -->particles in the box:\n");
-            for (int p = 0; p <= boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].end; p++) {
-                fprintf(save_file, " %d, particle index: %d \n", boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].particles[p], particles[boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box].particles[p]].box_i);
-            }
-            fprintf(save_file, " \n");
-
-            fclose(save_file);
-        }
-    }
-    //////////
-
+    /*
     if (jm >= 0)
     {
         int e = im;
@@ -1822,6 +1837,7 @@ bool reform(int &im, int &jm) {
         clear_particle_events(e);
         create_virt_particle(e);
     }
+    */
 
     if ((p1.i_copy > -1) && (jm == -1))
     {
@@ -2188,9 +2204,9 @@ int main(array<System::String ^> ^args)
     FILE *save_file = fopen("history.txt", "w");
     fclose(save_file);
 
-    particles_for_check_count = 3;
-    particles_for_check[0] = 15;
-    particles_for_check[1] = 102;
+    particles_for_check_count = 2;
+    particles_for_check[0] = 13;
+    particles_for_check[1] = 95;
     particles_for_check[2] = 76;
 
     int GGH = 0;
