@@ -444,6 +444,8 @@ void retime(int &i) {
                             dt = -(sqrt(d) + bij) / dv;
                             temp += dt;
 
+                            printf("\n retime tempory:: i = %d, n = %d, dt = %.15le \n", i, n, dt);
+
                             if (dt < -1.0e-12) {
 
                                 int ti = particles[n].ti;
@@ -527,6 +529,7 @@ void retime(int &i) {
     add_event(i, jm);
 
     //////////////////
+    printf(" \n    retime result: %d %d %.15le \n", i, jm, dt_min);
     FILE *save_file = fopen("history.txt", "a");
     for (int t = 0; t < particles_for_check_count; t++) {
         if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy || particles_for_check[t] == jm || particles_for_check[t] == particles[jm].i_copy) {
@@ -557,7 +560,7 @@ void retime(int &i) {
 // с одной из частиц, мешающих его поставить
 void find_place_for_particle(int &i) {
 
-    double x, dy, dz, dx, d, dt, dvx, dvy, dvz, bij, dv, x_min, x_max = 0.0;
+    double x, y, z, dy, dz, dx, d, dt, dvx, dvy, dvz, bij, dv, x_min, x_max = 0.0;
     double no_free_space_min[300];
     double no_free_space_max[300];
 
@@ -747,6 +750,120 @@ void find_place_for_particle(int &i) {
         else {
             printf("\n @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ \n");
             printf(" %d", i);
+
+            particle p1 = particles[i];
+            particle p2;
+            double fa, fb, fc, fD, sD, t1, t2;
+
+            for (int j = 0; j < NP; j++) {
+
+                if (j == i - NP) continue;
+
+                p2 = particles[j];
+
+                dt = p1.t - p2.t;
+                p2.x += p2.vx*dt;
+                p2.y += p2.vy*dt;
+                p2.z += p2.vz*dt;
+
+                fa = p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
+                fb = 2.0*p1.x*p1.vx + 2.0*p1.y*p1.vy + 2.0*p1.z*p1.vz - 2.0*p2.x*p1.vx - 2.0*p2.y*p1.vy - 2.0*p2.z*p1.vz;
+                fc = p2.x*p2.x + p1.x*p1.x + p2.y*p2.y + p1.y*p1.y + p2.z*p2.z + p1.z*p1.z - 2.0*p1.x*p2.x - 2.0*p1.y*p2.y - 2.0*p1.z*p2.z - 4.0;
+
+                fD = fb*fb - 4.0*fa*fc;
+                if (fD > 0) {
+                    sD = sqrt(fD);
+
+                    t1 = (-fb - sD) / (2.0*fa);
+                    t2 = (-fb + sD) / (2.0*fa);
+
+                    dx = p2.x - p1.x - p1.vx*t1;
+                    dy = p2.y - p1.y - p1.vy*t1;
+                    dz = p2.z - p1.z - p1.vz*t1;
+
+                    dvx = p2.vx - p1.vx;
+                    dvy = p2.vy - p1.vy;
+                    dvz = p2.vz - p1.vz;
+
+                    bij = dx * dvx + dy * dvy + dz*dvz;
+                    if (bij < 0.0) {
+                        dv = dvx * dvx + dvy * dvy + dvz*dvz;
+                        d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
+                        if (d > 0.0) {
+                            particles[i].x += p1.vx*t1;
+                            particles[i].y += p1.vy*t1;
+                            particles[i].z += p1.vz*t1;
+
+                            particles[j].x = p2.x;
+                            particles[j].y = p2.y;
+                            particles[j].z = p2.z;
+
+                            dt = particles[i].t - particles[j].t;
+                            particles[j].t = particles[i].t;
+                            particles[j].dt -= dt;
+
+                            //////////////////////////////////
+                            printf("\n2&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                            dx = particles[i].x - particles[j].x;
+                            dy = particles[i].y - particles[j].y;
+                            dz = particles[i].z - particles[j].z;
+                            d = dx*dx + dy*dy + dz*dz;
+                            printf("d= %.15le\n", d);
+                            FILE *save_file = fopen("history.txt", "a");
+                            fprintf(save_file, "\n /2/ particles %d, %d distance d = %.15le\n", i, j, d);
+                            fclose(save_file);
+                            //////////////////////////////////
+
+                            /* clear events for this particle */
+                            clear_particle_events(j);
+
+                            return;
+                        }
+                    }
+                    else {
+                        dx = p2.x - p1.x - p1.vx*t2;
+                        dy = p2.y - p1.y - p1.vy*t2;
+                        dz = p2.z - p1.z - p1.vz*t2;
+
+                        bij = dx * dvx + dy * dvy + dz*dvz;
+                        if (bij < 0.0) {
+                            dv = dvx * dvx + dvy * dvy + dvz*dvz;
+                            d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
+                            if (d > 0.0) {
+                                particles[i].x += p1.vx*t2;
+                                particles[i].y += p1.vy*t2;
+                                particles[i].z += p1.vz*t2;
+
+                                particles[j].x = p2.x;
+                                particles[j].y = p2.y;
+                                particles[j].z = p2.z;
+
+                                dt = particles[i].t - particles[j].t;
+                                particles[j].t = particles[i].t;
+                                particles[j].dt -= dt;
+
+                                //////////////////////////////////
+                                printf("\n3&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&");
+                                dx = particles[i].x - particles[j].x;
+                                dy = particles[i].y - particles[j].y;
+                                dz = particles[i].z - particles[j].z;
+                                d = dx*dx + dy*dy + dz*dz;
+                                printf("d= %.15le\n", d);
+                                FILE *save_file = fopen("history.txt", "a");
+                                fprintf(save_file, "\n /3/ particles %d, %d distance d = %.15le\n", i, j, d);
+                                fclose(save_file);
+                                //////////////////////////////////
+
+                                /* clear events for this particle */
+                                clear_particle_events(j);
+
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
             printf("\n");
         }
     }
@@ -2144,7 +2261,7 @@ int main(array<System::String ^> ^args)
     fclose(save_file);
 
     particles_for_check_count = 1;
-    particles_for_check[0] = 22;
+    particles_for_check[0] = 116;
     particles_for_check[1] = 88;
     particles_for_check[2] = 76;
 
