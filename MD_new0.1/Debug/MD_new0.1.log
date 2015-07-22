@@ -36,9 +36,9 @@ prog.cpp(1061): warning C4996: 'fopen': This function or variable may be unsafe.
 prog.cpp(1077): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
 prog.cpp(1172): warning C4244: 'initializing' : conversion from 'double' to 'int', possible loss of data
-prog.cpp(1240): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1251): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1258): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1269): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
 prog.cpp(1036): warning C4101: 'y2' : unreferenced local variable
 prog.cpp(1036): warning C4101: 'x2' : unreferenced local variable
@@ -47,44 +47,44 @@ prog.cpp(1036): warning C4101: 'z2' : unreferenced local variable
 prog.cpp(1035): warning C4101: 't22' : unreferenced local variable
 prog.cpp(1035): warning C4101: 't1' : unreferenced local variable
 prog.cpp(1035): warning C4101: 't11' : unreferenced local variable
-prog.cpp(1289): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1290): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1301): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(230) : see declaration of 'fscanf'
-prog.cpp(1292): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1303): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(230) : see declaration of 'fscanf'
-prog.cpp(1295): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1306): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(230) : see declaration of 'fscanf'
-prog.cpp(1336): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1347): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(230) : see declaration of 'fscanf'
-prog.cpp(1373): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1384): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(230) : see declaration of 'fscanf'
-prog.cpp(1448): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1459): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1488): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-prog.cpp(1489): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
-prog.cpp(1651): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1499): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+prog.cpp(1500): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+prog.cpp(1662): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1706): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1717): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1721): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1732): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1752): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1763): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1771): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1782): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(1941): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(1952): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2023): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2034): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2080): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2091): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2101): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2112): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2247): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2258): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2260): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2271): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
-prog.cpp(2278): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+prog.cpp(2289): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
           C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(211) : see declaration of 'fopen'
   MD_new0.1.vcxproj -> C:\Users\losta\Documents\GitHub\MD\Debug\MD_new0.1.exe

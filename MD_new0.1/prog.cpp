@@ -1230,8 +1230,19 @@ void create_virt_particle(int &i) {
             find_place_for_particle(new_i);
         }
 
+        /* update information about cell for new virtual particle */
         x_box = short((L + dL + particles[new_i].x) / dL);
+        y_box = short((A + dA + particles[new_i].y) / dA);
+        z_box = short((A + dA + particles[new_i].z) / dA);
+
+        if (y_box < 0) y_box = 0;
+        if (y_box > K) y_box = K;
+        if (z_box < 0) z_box = 0;
+        if (z_box > K) z_box = K;
+
         particles[new_i].x_box = x_box;
+        particles[new_i].y_box = y_box;
+        particles[new_i].z_box = z_box;
 
         /////////////////
         // it is just debug output:
