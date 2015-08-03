@@ -87,7 +87,7 @@ void print_time_line() {
 int check_particles() {
     double E = 0.0;
 
-    printf(" \n CHECK SYSTEM \n");
+    //printf(" \n CHECK SYSTEM \n");
 
     for (int i = 0; i < NP; i++) {
         particle p1 = particles[i];
@@ -100,9 +100,10 @@ int check_particles() {
             return 400;
         }
 
-        if ((p1.x > L) || (p1.y > A) || (p1.z > A) ||
-            (p1.x < -L) || (p1.y < -A) || (p1.z < -A)) {
-            printf(" \n Particle %d, %.15le, %.15le, %.15le \n ", i, p1.x, p1.y, p1.z);
+        if (((abs(p1.x) - L) > 1.0e-14) ||
+			((abs(p1.y) - A) > 1.0e-14) ||
+			((abs(p1.z) - A) > 1.0e-14)) {
+            printf(" \n Particle %d, %.15le, %.15le, %.15le, A = %.15le, %.15le \n ", i, p1.x, p1.y, p1.z, A, p1.z - A);
             return 500;
         }
 
@@ -118,10 +119,9 @@ int check_particles() {
             printf("Z : [%.15le ; %.15le]\n", p1_box.z1, p1_box.z2);
             printf("x, y, z: %.15le %.15le %.15le\n", p1.x, p1.y, p1.z);
 
-            printf("p1.dt = %.15le, p.im = %d, p1.jm = %d n", p1.t, time_queue[p1.ti].im, time_queue[p1.ti].jm);
+            printf("p1.dt = %.15le, p.im = %d, p1.jm = %d \n", p1.t, time_queue[p1.ti].im, time_queue[p1.ti].jm);
 
-            if (i != 1)
-                return 1;
+            return 1;
         }
 
         if ((p1.i_copy > -1) && (particles[i+NP].i_copy == -1)) return 2;
@@ -264,6 +264,7 @@ void clear_particle_events(int &i) {
     int k = particles[i].ti;
 
 	///////////////
+	/*
 	for (int t = 0; t < particles_for_check_count; t++) {
 		if (particles_for_check[t] == time_queue[k].im || particles_for_check[t] == time_queue[k].jm) {
 			FILE *save_file = fopen("history.txt", "a");
@@ -271,6 +272,7 @@ void clear_particle_events(int &i) {
 			fclose(save_file);
 		}
 	}
+	*/
 	///////////////
 
     if (k > 0) {
@@ -282,8 +284,7 @@ void clear_particle_events(int &i) {
             else delete_event(k);
         }
         else if (time_queue[k].jm == i) {
-            printf("\n clear to -100: time_queue[k].im = %d  time_queue[k].jm = %d  i = %d\n", time_queue[k].im, time_queue[k].jm, i);
-            time_queue[k].jm = -100;
+			time_queue[k].jm = -100;
         }
         particles[i].ti = 0;
     }
@@ -304,6 +305,7 @@ void retime(int &i) {
     clear_particle_events(i);
 
     ///////////////
+	/*
     for (int t = 0; t < particles_for_check_count; t++) {
         if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy) {
             FILE *save_file = fopen("history.txt", "a");
@@ -311,6 +313,7 @@ void retime(int &i) {
             fclose(save_file);
         }
     }
+	*/
     ///////////////
 
     if (p1.vx < 0.0) {
@@ -410,18 +413,8 @@ void retime(int &i) {
 
                     if (n == p1.i_copy) continue;
 
-					/*
-                    for (int t = 0; t < particles_for_check_count; t++) {
-                        if (i == particles_for_check[t] || n == particles_for_check[t]) {
-                            FILE *save_file = fopen("history.txt", "a");
-                            fprintf(save_file, "collission calculation: %d vs %d \n", i, n);
-                            fclose(save_file);
-                        }
-                    }
-					*/
-
                     temp = p1.t - particles[n].t;
-                    if (temp < 0.0 && temp > -1.0e-14) temp = 0.0;
+                    //if (temp < 0.0 && temp > -1.0e-14) temp = 0.0;
 
                     dvx = particles[n].vx - p1.vx;
                     dvy = particles[n].vy - p1.vy;
@@ -435,57 +428,19 @@ void retime(int &i) {
                         dv = dvx * dvx + dvy * dvy + dvz*dvz;
                         d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
 
-                        /////////////////
-                        if (((i<NP) && (n<NP)) && (COLL_COUNT>0) && (4.0 - 1.0e-14 > dx * dx + dy * dy + dz * dz)) {
-
-                            printf("\n i = %d  n = %d, difference = %.15le", i, n, dx * dx + dy * dy + dz * dz);
-
-                            printf("\n %.5le %.5le %.5le \n", particles[i].x, particles[i].y, particles[i].z);
-                            printf("%.5le %.5le %.5le \n", particles[n].x, particles[n].y, particles[n].z);
-
-                            printf("\n %d %d %d", particles[i].x_box, particles[i].y_box, particles[i].z_box);
-                            printf("\n %d %d %d \n", particles[n].x_box, particles[n].y_box, particles[n].z_box);
-
-                            printf(" particle %d i_copy = %d\n", i, particles[i].i_copy);
-                            printf(" particle %d i_copy = %d\n", n, particles[n].i_copy);
-
-
-                            printf("a");
-                        }
-                        ///////////////////
-
-						/*
-                        for (int t = 0; t < particles_for_check_count; t++) {
-                            if (i == particles_for_check[t] || n == particles_for_check[t]) {
-                                FILE *save_file = fopen("history.txt", "a");
-                                fprintf(save_file, "collission calculation: d = %.15le, d should be > 0 \n", d);
-                                fclose(save_file);
-                            }
-                        }
-						*/
-
                         if (d > 0.0) {
                             dt = -(sqrt(d) + bij) / dv;
 
 							if (dt < -1.0e-12) {
-
-								int ti = particles[n].ti;
-								////////////////////
-								for (int t = 0; t < particles_for_check_count; t++) {
-									if (i == particles_for_check[t] || n == particles_for_check[t]) {
-										FILE *save_file = fopen("history.txt", "a");
-										fprintf(save_file, "\n DT<0!!! i = %d, n = %d, dt = %.15le \n", i, n, dt);
-										fprintf(save_file, "%d particle im = %d, jm = %d, dt = %.15le \n", n, time_queue[ti].im, time_queue[ti].jm, particles[n].dt);
-										fclose(save_file);
-									}
-								}
-								////////////////////
-
 								if (i < NP && n < NP) {
-									printf("%d i_copy = %d", n, particles[n].i_copy);
+									printf("\n particle %d: vx = %.15le, vy = %.15le, vz = %.15le \n", i, particles[i].vx, particles[i].vy, particles[i].vz);
+									printf("particle %d: vx = %.15le, vy = %.15le, vz = %.15le \n", n, particles[n].vx, particles[n].vy, particles[n].vz);
+									printf("\n i = %d, n = %d, i.i_copy = %d, n.i_copy = %d \n", i, n, particles[i].i_copy, particles[n].i_copy);
 									printf("11");
 								}
 							}
+							if (dt < -1.0e-15 && dt > -1.0e-12)
+								printf("\n i = %d, n = %d, dt = %.15le, distance = %.15le \n", i, n, dt, dx*dx+dy*dy+dz*dz);
 							if (dt > -1.0e-12 && dt < 1.0e-15) dt = 0.0;
 
                             temp += dt;
@@ -501,30 +456,13 @@ void retime(int &i) {
                             }
 							*/
 
-
-
-                            ////////////////////////////////
-							/*
-                            for (int t = 0; t < particles_for_check_count; t++) {
-                                if (i == particles_for_check[t] || n == particles_for_check[t]) {
-                                    FILE *save_file = fopen("history.txt", "a");
-                                    fprintf(save_file, "\n temp = %.15le, p[n].dt = %.15le \n", temp, particles[n].dt);
-                                    fprintf(save_file, "abs(temp - particles[n].dt) = %.15le \n", abs(temp - particles[n].dt));
-                                    fprintf(save_file, "time_queue[particles[n].ti].im = %d", time_queue[particles[n].ti].im);
-                                    fclose(save_file);
-                                }
-                            }
-							*/
-                            ////////////////////////////////
-
-                            if ((dt < dt_min) && (dt > -1.0e-12) &&
+                            if ((dt < dt_min) && (dt >= 0.0) &&
                             ((temp < particles[n].dt) || ((abs(temp - particles[n].dt) < 0.1E-15) &&
                             (time_queue[particles[n].ti].im == n) &&
                             (time_queue[particles[n].ti].jm == -100)))) {
 
-                                if (dt < 0) dt = 0.0;
-
                                 ////////////////////
+								/*
                                 for (int t = 0; t < particles_for_check_count; t++) {
                                     if (i == particles_for_check[t] || n == particles_for_check[t]) {
                                         FILE *save_file = fopen("history.txt", "a");
@@ -532,6 +470,7 @@ void retime(int &i) {
                                         fclose(save_file);
                                     }
                                 }
+								*/
                                 ////////////////////
 
                                 dt_min = dt;
@@ -544,9 +483,11 @@ void retime(int &i) {
 
     if (jm >= 0) {
         dt = p1.t - particles[jm].t;
-        if (dt < 0.0 && dt > -1.0e-14) dt = 0.0;
+		if (dt < 0.0 && dt > -1.0e-15)
+			dt = 0.0;
 
 		//////////////////
+		/*
 		for (int t = 0; t < particles_for_check_count; t++) {
 			if (particles_for_check[t] == i || particles_for_check[t] == jm || particles_for_check[t] == particles[i].i_copy) {
 				FILE *save_file = fopen("history.txt", "a");
@@ -554,6 +495,7 @@ void retime(int &i) {
 				fclose(save_file);
 			}
 		}
+		*/
 		//////////////////
 
         particles[jm].t = p1.t;
@@ -563,12 +505,14 @@ void retime(int &i) {
         particles[jm].z += particles[jm].vz * dt;
 
         clear_particle_events(jm);
+
     }
 
     particles[i].dt = dt_min;
     add_event(i, jm);
 
     //////////////////
+	/*
     for (int t = 0; t < particles_for_check_count; t++) {
         if (particles_for_check[t] == i || particles_for_check[t] == jm || particles_for_check[t] == particles[i].i_copy) {
 			FILE *save_file = fopen("history.txt", "a");
@@ -576,9 +520,13 @@ void retime(int &i) {
 			fclose(save_file);
         }
     }
+	*/
     //////////////////
 
     if (dt_min < -1.0e-11) {
+		printf("\n p1.x = %.15le, p1.y = %.15le, p1.z = %.15le \n", p1.x, p1.y, p1.z);
+		printf("\n p1.x_box = %d, p1.y_box = %d, p1.z_box = %d", p1.x_box, p1.z_box, p1.y_box);
+		printf("\n im = %d, jm = %d, dt = %.15le, A = %.15le", i, jm, dt_min, A);
         printf("QQQQQQQQQQQQQQ");
     }
 }
@@ -657,29 +605,12 @@ void find_place_for_particle(int &i) {
                             if (bij < 0.0) {
                                 dv = dvx * dvx + dvy * dvy + dvz*dvz;
                                 d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
-                                if ((d > 0.0) && (abs(x) < L - 1.0)) {
+
+								dt = -(sqrt(d) + bij) / dv;
+
+                                if ((dt > 0.0) && (abs(x) < L - 1.0)) {
                                     particle_on_the_line = n;
                                     particle_x_for_collission = x;
-
-                                    //////////////////////////////////
-                                    for (int t = 0; t < particles_for_check_count; t++) {
-                                        if (i == particles_for_check[t] || n == particles_for_check[t]) {
-                                            FILE *save_file = fopen("history.txt", "a");
-                                            fprintf(save_file, "\n for #%d particle on the line %d \n", i, particle_on_the_line);
-
-                                            dt = -(sqrt(d) + bij) / dv;
-
-                                            fprintf(save_file, " DT = %.15le \n", dt);
-                                            fprintf(save_file, " x = %.15le \n", x);
-
-                                            temp = particles[i].t - particles[n].t;
-                                            fprintf(save_file, " p[i].t = %.15le, p[n].t = %.15le \n", particles[i].t, particles[n].t);
-                                            fprintf(save_file, " temp = %.15le \n", temp);
-
-                                            fclose(save_file);
-                                        }
-                                    }
-                                    //////////////////////////////////
                                 }
                             }
                         }
@@ -765,8 +696,8 @@ void find_place_for_particle(int &i) {
     }
 
     /* just print all free spaces after resort, debug: */
-    for (int r1 = 1; r1 <= spaces; r1++)
-        printf("\n No Space3: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
+    //for (int r1 = 1; r1 <= spaces; r1++)
+    //    printf("\n No Space3: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
 
     //FILE *save_file = fopen("history.txt", "a");
     //fprintf(save_file, "\n SPACES: %d \n", spaces);
@@ -787,20 +718,6 @@ void find_place_for_particle(int &i) {
             p.t = particles[i].t;
             p.dt -= dt;
             particles[particle_on_the_line] = p;
-
-            //////////////////////////////////
-            dx = particles[i].x - particles[particle_on_the_line].x;
-            dy = particles[i].y - particles[particle_on_the_line].y;
-            dz = particles[i].z - particles[particle_on_the_line].z;
-            d = dx*dx + dy*dy + dz*dz;
-            for (int t = 0; t < particles_for_check_count; t++) {
-                if (i == particles_for_check[t] || particle_on_the_line == particles_for_check[t]) {
-                    FILE *save_file = fopen("history.txt", "a");
-                    fprintf(save_file, "\n >> particles %d, %d distance d = %.15le\n", i, particle_on_the_line, d);
-                    fclose(save_file);
-                }
-            }
-            //////////////////////////////////
 
             return;
         }
@@ -849,7 +766,10 @@ void find_place_for_particle(int &i) {
                     if (bij < 0.0) {
                         dv = dvx * dvx + dvy * dvy + dvz*dvz;
                         d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
-                        if (d > 0.0) {
+
+						dt = -(sqrt(d) + bij) / dv;
+
+                        if (dt > 0.0) {
                             particles[i].x += p1.vx*t1;
                             particles[i].y += p1.vy*t1;
                             particles[i].z += p1.vz*t1;
@@ -874,7 +794,10 @@ void find_place_for_particle(int &i) {
                         if (bij < 0.0) {
                             dv = dvx * dvx + dvy * dvy + dvz*dvz;
                             d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
-                            if (d > 0.0) {
+
+							dt = -(sqrt(d) + bij) / dv;
+
+                            if (dt > 0.0) {
                                 particles[i].x += p1.vx*t2;
                                 particles[i].y += p1.vy*t2;
                                 particles[i].z += p1.vz*t2;
@@ -942,6 +865,7 @@ void destroy_virt_particle(int &i) {
     Box p_box = boxes_yz[y_box][z_box][x_box];
 
     //////////
+	/*
     for (int t = 0; t < particles_for_check_count; t++) {
         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
             FILE *save_file = fopen("history.txt", "a");
@@ -949,6 +873,7 @@ void destroy_virt_particle(int &i) {
             fclose(save_file);
         }
     }
+	*/
     //////////
 
     // clear information about this virtual particle in small cell
@@ -965,9 +890,10 @@ void destroy_virt_particle(int &i) {
     particles[i].i_copy = -1;
     particles[new_i].i_copy = -1;
 
-    printf("particle %d was destroyed...", new_i);
+    //printf("particle %d was destroyed...", new_i);
 
     //////////
+	/*
     for (int t = 0; t < particles_for_check_count; t++) {
         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
             FILE *save_file = fopen("history.txt", "a");
@@ -975,6 +901,7 @@ void destroy_virt_particle(int &i) {
             fclose(save_file);
         }
     }
+	*/
     //////////
 }
 
@@ -984,7 +911,8 @@ void change_with_virt_particles(int &im, int &jm) {
     int y_box, z_box, box_i;
     int f = im + NP;
 
-    printf("\n im f = %d %d %d \n", im, f, particles[f].ti);
+    //printf("\n im f = %d %d %d \n", im, f, particles[f].ti);
+	//printf("\n p.i_copy = %d \n", particles[im].i_copy);
 
     double dt = particles[im].t - particles[f].t;
     particles[im].x = particles[f].x + dt*particles[f].vx;
@@ -1006,12 +934,13 @@ void change_with_virt_particles(int &im, int &jm) {
 
     // при обмене виртуального образа на частицу ставим частицу точно на границу ячейки,
     // чтобы избегать накопления ошибок
-    if (particles[im].y > A) particles[im].y = A;
-    else if (particles[im].y < -A) particles[im].y = -A;
-    if (particles[im].z > A) particles[im].z = A;
-    else if (particles[im].z < -A) particles[im].z = -A;
+    if (particles[im].y > A) particles[im].y = boxes_yz[y_box][z_box][particles[f].x_box].y2;
+    else if (particles[im].y < -A) particles[im].y = boxes_yz[y_box][z_box][particles[f].x_box].y1;
+    if (particles[im].z > A) particles[im].z = boxes_yz[y_box][z_box][particles[f].x_box].z2;
+    else if (particles[im].z < -A) particles[im].z = boxes_yz[y_box][z_box][particles[f].x_box].z1;
 
-    printf("... Change with virt particle destroy ...");
+    //printf("... Change with virt particle destroy ...");
+	/*
     for (int t = 0; t < particles_for_check_count; t++) {
         if (im == particles_for_check[t]) {
             FILE *save_file = fopen("history.txt", "a");
@@ -1019,6 +948,8 @@ void change_with_virt_particles(int &im, int &jm) {
             fclose(save_file);
         }
     }
+	*/
+
     destroy_virt_particle(im);
 
     clear_particle_events(im);
@@ -1033,6 +964,7 @@ void create_virt_particle(int &i) {
     int new_i = i + NP;
 
     ////////////////////////////
+	/*
     printf("... Create virt particle destroy ...");
     for (int t = 0; t < particles_for_check_count; t++) {
         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
@@ -1041,11 +973,13 @@ void create_virt_particle(int &i) {
             fclose(save_file);
         }
     }
+	*/
     ////////////////////////////
 
     destroy_virt_particle(i);
 
     ////////////////////////////
+	/*
     printf("Trying to create virt particle %d...", new_i);
     for (int t = 0; t < particles_for_check_count; t++) {
         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
@@ -1054,6 +988,7 @@ void create_virt_particle(int &i) {
             fclose(save_file);
         }
     }
+	*/
     ////////////////////////////
 
     if (((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
@@ -1062,6 +997,7 @@ void create_virt_particle(int &i) {
         ((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0))) {
 
         ////////////////////////////
+		/*
         printf("Starting to create virt particle %d...", new_i);
         for (int t = 0; t < particles_for_check_count; t++) {
             if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
@@ -1070,6 +1006,7 @@ void create_virt_particle(int &i) {
                 fclose(save_file);
             }
         }
+		*/
         ////////////////////////////
 
         dt_min = 1.0e+20;
@@ -1106,9 +1043,10 @@ void create_virt_particle(int &i) {
                 particles[new_i].y = particles[i].y - particles[i].vy*t01 - particles[i].vy*dt;
                 particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
 
-                printf("\n %d Rozdenie 1go roda \n", i);
+                //printf("\n %d Rozdenie 1go roda \n", i);
 
                 ////////////////////////////
+				/*
                 for (int t = 0; t < particles_for_check_count; t++) {
                     if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                         FILE *save_file = fopen("history.txt", "a");
@@ -1116,6 +1054,7 @@ void create_virt_particle(int &i) {
                         fclose(save_file);
                     }
                 }
+				*/
                 ////////////////////////////
             }
             else {
@@ -1126,6 +1065,7 @@ void create_virt_particle(int &i) {
                 particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
 
                 ////////////////////////////
+				/*
                 for (int t = 0; t < particles_for_check_count; t++) {
                     if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                         FILE *save_file = fopen("history.txt", "a");
@@ -1133,6 +1073,7 @@ void create_virt_particle(int &i) {
                         fclose(save_file);
                     }
                 }
+				*/
                 ////////////////////////////
             }
 
@@ -1158,6 +1099,7 @@ void create_virt_particle(int &i) {
                     particles[new_i].z = particles[i].z - particles[i].vz*t01 - particles[i].vz*dt;
 
                     ////////////////////////////
+					/*
                     for (int t = 0; t < particles_for_check_count; t++) {
                         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                             FILE *save_file = fopen("history.txt", "a");
@@ -1165,6 +1107,7 @@ void create_virt_particle(int &i) {
                             fclose(save_file);
                         }
                     }
+					*/
                     ////////////////////////////
                 }
                 else {
@@ -1175,6 +1118,7 @@ void create_virt_particle(int &i) {
                     particles[new_i].z = particles[i].z - particles[i].vz*t02 - particles[new_i].vz*dt;
 
                     ////////////////////////////
+					/*
                     for (int t = 0; t < particles_for_check_count; t++) {
                         if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                             FILE *save_file = fopen("history.txt", "a");
@@ -1182,6 +1126,7 @@ void create_virt_particle(int &i) {
                             fclose(save_file);
                         }
                     }
+					*/
                     ////////////////////////////
                 }
 
@@ -1190,11 +1135,6 @@ void create_virt_particle(int &i) {
         }
 
         // Find correct X coordinate for new particle
-		/*
-        FILE *save_file = fopen("history.txt", "a");
-        fprintf(save_file, "\n Particle X before the fix: %.15le \n", particles[new_i].x);
-        fclose(save_file);
-		*/
         if (abs(particles[new_i].x) > L - 1.0) {
             int f = 1;
             double LL = L - 1.0;
@@ -1210,12 +1150,6 @@ void create_virt_particle(int &i) {
             else
                 particles[new_i].vx = -particles[new_i].vx;
             particles[new_i].x = x_wall * (f * LL - x);
-
-			/*
-            FILE *save_file = fopen("history.txt", "a");
-            fprintf(save_file, "\n Particle X after the fix: %.15le \n", particles[new_i].x);
-            fclose(save_file);
-			*/
         }
 
         x_box = short((L + dL + particles[new_i].x) / dL);
@@ -1261,9 +1195,10 @@ void create_virt_particle(int &i) {
 
                         if (4.0 > dx*dx + dy*dy + dz*dz) {
                             search = true;
-                            printf("\n SEARCH!!! %d %d \n", new_i, n);
+                            //printf("\n SEARCH!!! %d %d \n", new_i, n);
 
                             ////////////////////////////
+							/*
                             for (int t = 0; t < particles_for_check_count; t++) {
                                 if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                                     FILE *save_file = fopen("history.txt", "a");
@@ -1271,6 +1206,7 @@ void create_virt_particle(int &i) {
                                     fclose(save_file);
                                 }
                             }
+							*/
                             ////////////////////////////
                         }
                     }
@@ -1279,6 +1215,7 @@ void create_virt_particle(int &i) {
         }
 
         ////////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                 FILE *save_file = fopen("history.txt", "a");
@@ -1286,6 +1223,7 @@ void create_virt_particle(int &i) {
                 fclose(save_file);
             }
         }
+		*/
         ////////////////////////////
 
         if (search == true) {
@@ -1307,6 +1245,7 @@ void create_virt_particle(int &i) {
         }
 
         ////////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (i == particles_for_check[t] || new_i == particles_for_check[t]) {
                 FILE *save_file = fopen("history.txt", "a");
@@ -1314,6 +1253,7 @@ void create_virt_particle(int &i) {
                 fclose(save_file);
             }
         }
+		*/
         ////////////////////////////
 
         
@@ -1344,8 +1284,6 @@ void load_seed(std::string file_name) {
     L = a1 / 2.0;
     dA = A2 / (K - 1);
     dL = L * 2.0 / (K2 - 1);
-
-    printf("%le %le", dA, dL);
 
     y = z = -A - dA;
     x = -L - dL;
@@ -1389,10 +1327,12 @@ void load_seed(std::string file_name) {
         y_box = short((A + dA + particles[i].y) / dA);
         z_box = short((A + dA + particles[i].z) / dA);
 
+		/*
         printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
         printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
         printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
         printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
+		*/
 
         if (boxes_yz[y_box][z_box][x_box].x1 < particles[i].x &&
                 boxes_yz[y_box][z_box][x_box].x2 > particles[i].x)
@@ -1419,20 +1359,23 @@ void load_seed(std::string file_name) {
         }
 
         fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
+
         particles[i].vx = a1;
         particles[i].vy = a2;
         particles[i].vz = a3;
-        particles[i].kv = 1.0;    // velocity coefficient. kv != 1 for virtual particles.
         particles[i].t = 0.0;
         particles[i].dt = 0.0;
         particles[i].ti = 1;
         end = particles[i].box_i = ++boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end;
         boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[particles[i].box_i] = i;
 
-        particle p1 = particles[6];
-        for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ty++) {
-            printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[ty]);
-        }
+		/*
+		printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
+		printf("\n vx, vy, vz: %le %le %le ", particles[i].vx, particles[i].vy, particles[i].vz);
+		printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
+		printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
+		printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
+		*/
 
         global_E += a1*a1 + a2*a2 + a3*a3;
 
@@ -1461,27 +1404,26 @@ void load_seed(std::string file_name) {
             double y = particles[i].y - particles[j].y;
             double z = particles[i].z - particles[j].z;
             double d = x * x + y * y + z*z;
-            if (d < 3.99999) {
+            if (d < 4.0 - 1.0e-15) {
                 printf("Incorrect distance between particles");
                 throw "Incorrect distance between particles";
             }
         }
 
+	/*
     double E1 = 0.0, E2 = 0.0;
     for (int i = 0; i < NP; ++i) {
         E1 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
     }
-
+	*/
 
     for (int i = 0; i < NP; ++i) retime(i);
 
+	/*
     for (int i = 0; i < NP; ++i) {
         E2 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
     }
-
-    printf("global_E = %.15le \n", global_E);
-    printf("global_E = %.15le \n", E1);
-    printf("global_E = %.15le  \n", E2);
+	*/
 }
 
 /*
@@ -1557,29 +1499,31 @@ void new_seed(int NN, double etta) {
 
     NA = 0;
 
+	srand(501);
+
     for (int i = 0; i < 2 * NN; i++)
         for (int j = 0; j < NN; j++)
             for (int k = 0; k < NN / 2; k++) {
-                vx = double((rand() % 1000)) / double(rand() % 1000) - double((rand() % 1000)) / double(rand() % 1000); //  задаем скорость.
-                vy = double((rand() % 1000)) / double(rand() % 1000) - double((rand() % 1000)) / double(rand() % 1000); //  она будет одинакова для нескольких частиц сразу(с небольшим отклонением)
-                vz = double((rand() % 1000)) / double(rand() % 1000) - double((rand() % 1000)) / double(rand() % 1000); //  чтобы был равен нулю импульс и момент импульса системы.
+                vx = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  задаем скорость.
+                vy = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  она будет одинакова для нескольких частиц сразу(с небольшим отклонением)
+                vz = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  чтобы был равен нулю импульс и момент импульса системы.
 
                 for (int ii = -1; ii < 2; ii += 2) {
                     if ((i == 0) && (ii > 0)) continue;
 
-                    ax = XC + i * ii*rbp;
+                    ax = XC + i * ii*rbp + 1.0e-7;
 
                     for (int jj = -1; jj < 2; jj += 2) {
                         if ((j == 0) && (jj > 0)) continue;
 
-                        ay = YC + j * jj*rbp;
+                        ay = YC + j * jj*rbp + 1.0e-7;
 
                         for (int kk = -1; kk < 2; kk += 2) {
                             if (((i % 2 == 0) && (j % 2 == 0)) || ((i % 2 != 0) && (j % 2 != 0)))
-                                az = ZC + kk * (rbp + k * rb);
+                                az = ZC + kk * (rbp + k * rb) + 1.0e-7;
                             else {
                                 if ((k == 0) && (kk > 0)) continue;
-                                az = ZC + kk * k*rb;
+                                az = ZC + kk * k*rb + 1.0e-7;
                             }
 
                             particles[NA].x = ax; // назначаем координаты для новой молекулы
@@ -1662,9 +1606,9 @@ void new_seed(int NN, double etta) {
                                     }
                             }
 
-                            particles[NA].vx = vx * ii * jj*kk;
-                            particles[NA].vy = vy * ii * jj*kk;
-                            particles[NA].vz = vz * ii * jj*kk;
+                            particles[NA].vx = vx * ii * jj * kk;
+                            particles[NA].vy = vy * ii * jj * kk;
+                            particles[NA].vz = vz * ii * jj * kk;
 
                             NA++;
                         }
@@ -1707,10 +1651,6 @@ void new_seed(int NN, double etta) {
     fclose(save_file);
 
     load_seed("new.txt");
-    //save("new2.txt");
-
-
-    //load_seed("new2.txt");
 }
 
 /*
@@ -1778,6 +1718,7 @@ bool reform(int &im, int &jm) {
         }
 
         /////////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (im == particles_for_check[t] || jm == particles_for_check[t]) {
                 FILE *save_file3 = fopen("history.txt", "a");
@@ -1787,6 +1728,7 @@ bool reform(int &im, int &jm) {
                 fclose(save_file3);
             }
         }
+		*/
         /////////////////////////////
 
         q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
@@ -1801,6 +1743,7 @@ bool reform(int &im, int &jm) {
         p2.vz += dz*z;
 
         /////////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (im == particles_for_check[t] || jm == particles_for_check[t]) {
                 FILE *save_file4 = fopen("history.txt", "a");
@@ -1810,6 +1753,7 @@ bool reform(int &im, int &jm) {
                 fclose(save_file4);
             }
         }
+		*/
         /////////////////////////////
 
         int e1 = im;
@@ -1876,14 +1820,6 @@ bool reform(int &im, int &jm) {
             if (jm == -6) {
                 ++p1.y_box;
                 p1.y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1;
-
-                printf("\n^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n");
-                printf(" im = %d, i_copy = %d, t = %.15le \n", im, particles[im].i_copy, particles[im].t);
-                int f = im + NP;
-                printf(" virtual particle = %d, i_copy = %d, t = %.15le \n", f, particles[f].i_copy, particles[f].t);
-                int ti = particles[f].ti;
-                printf(" ti = %d, im = %d, jm = %d, dt = %.15le \n", ti, time_queue[ti].im, time_queue[ti].jm, particles[f].dt);
-
                 if ((p1.y_box == K) && (im < NP)) {
                     change_with_virt_particles(im, jm);
                     p1 = particles[im];
@@ -1933,7 +1869,7 @@ bool reform(int &im, int &jm) {
         int e = im;
         if (im >= NP)
             e = im - NP;
-        printf("\n AAA - need create virt particle \n");
+        //printf("\n AAA - need create virt particle \n");
         clear_particle_events(e);
         create_virt_particle(e);
     }
@@ -1945,27 +1881,21 @@ bool reform(int &im, int &jm) {
  функция "шаг", основной цикл программы
  */
 void step() {
-    particle p1;
-    int i, im, jm;
-    double time = 0.0;
-    bool need_virt_particle_retime;
+	particle p1;
+	int i, im, jm;
+	double time = 0.0;
+	bool need_virt_particle_retime;
 
-    COLL_COUNT = 0;
+	COLL_COUNT = 0;
 
-    while (COLL_COUNT < NP/2) {
-        im = time_queue[1].im;
-        jm = time_queue[1].jm;
+	while (COLL_COUNT < NP / 2) {
+		im = time_queue[1].im;
+		jm = time_queue[1].jm;
 
-        if (jm < 0) {
-            int u = check_particles();
-            if (u != 0) {
-                printf("ALARM: %d \n", u);
-            }
-        }
-
-        printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
-        
+		if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
+            printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
         /////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
                 FILE *save_file = fopen("history.txt", "a");
@@ -1988,6 +1918,7 @@ void step() {
                 fclose(save_file);
             }
         }
+		*/
         /////////////////////////
 
         delete_event(1);
@@ -1997,8 +1928,7 @@ void step() {
         p1 = particles[im];
 
         if (jm == -100) {
-            printf("\ntime: %.15le  p1.t: %.15le  p1.dt: %.15le\n", time, p1.t, p1.dt);
-            p1.dt = time - p1.t;
+			p1.dt = time - p1.t;
         }
 
         p1.x += p1.vx * p1.dt;
@@ -2052,6 +1982,7 @@ void step() {
         }
 
         /////////////////////////
+		/*
         for (int t = 0; t < particles_for_check_count; t++) {
             if (im == particles_for_check[t] || jm == particles_for_check[t] || particles[im].i_copy == particles_for_check[t] || particles[jm].i_copy == particles_for_check[t]) {
                 FILE *save_file = fopen("history.txt", "a");
@@ -2072,10 +2003,11 @@ void step() {
                 fclose(save_file);
             }
         }
+		*/
         /////////////////////////
     }
 
-    printf("\n AAAAAAAAAAAAAAAAAAAAAA \n");
+    //printf("\n AAAAAAAAAAAAAAAAAAAAAA \n");
 
     particle *p = particles;
     for (i = 0; i < NP*2; ++i, ++p)
@@ -2198,9 +2130,9 @@ void compress(double compress_to_etta) {
         printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
         printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
         printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-        printf("%.12le should be equal to %.12le", etta, compress_to_etta);
+        printf("etta = %.15le, should be equal to %.15le", etta, compress_to_etta);
     }
-    printf("\nINFO: System density was sucessfully changed to %.15le\n", etta);
+    printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
 }
 
 void init(std::string file_name) {
@@ -2217,31 +2149,36 @@ void init(std::string file_name) {
         printf("\n\n<==========================>\n");
 
         if (str_command.compare("new") == 0) {
-            int NN = 4;
-            double etta = 0.3e-1;
+            int NN = 8;
+            double etta = 0.3;
+			K = 12;
+			K2 = 32;
+
             command_file >> NN;
             command_file >> etta;
             command_file.getline(parameter, 255, '\n');
             new_seed(NN, etta);
             etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
-            printf("A=%f;  L=%f;  etta=%.15le\n", 2.0 * A, 2.0 * L, etta);
+			printf("A = %.15le;  L = %.15le; N = %d; \n etta = %.15le; \n", 2.0 * A, 2.0 * L, NP, etta);
         }
         if (str_command.compare("load") == 0) {
             command_file.getline(parameter, 255, '\n');
             load_seed(parameter);
             double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
-            printf("A=%f  L=%f\netta=%.15le", 2.0 * A, 2.0 * L, etta);
+            printf("A=%f  L=%f \n etta=%.15le \n", 2.0 * A, 2.0 * L, etta);
         }
         if (str_command.compare("step") == 0) {
             command_file >> steps;
             command_file.getline(parameter, 255, '\n');
 
-            printf("INFO: Step start.\n");
+            printf(" INFO: Step start. \n");
 
             start = clock();
 
             for (i = 0; i < steps; ++i) {
                 step();
+				check_particles();
+
                 printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
                 printf("%d / %d", i + 1, steps);
             }
@@ -2249,8 +2186,8 @@ void init(std::string file_name) {
             end = clock();
             result = end - start;
 
-            printf("\nINFO: %d collisions per particle\n", steps);
-            printf("Total Time = %f seconds.\n", double(result / CLOCKS_PER_SEC));
+            printf("\n INFO: finished %d collisions per particle \n", steps);
+            printf("Total Time = %f seconds. \n", double(result / CLOCKS_PER_SEC));
         }
         if (str_command.compare("image") == 0) {
             command_file >> steps; // число соударений на одну частицу за время измерений
@@ -2269,6 +2206,7 @@ void init(std::string file_name) {
         if (str_command.compare("save") == 0) {
             command_file.getline(parameter, 255, '\n');
             save(parameter);
+			printf("\n INFO: particles coordinates saved to '%s' \n", parameter);
         }
         if (str_command.compare("compress") == 0) {
             double etta;
@@ -2285,54 +2223,20 @@ void init(std::string file_name) {
 
 int main(array<System::String ^> ^args)
 {
-    K = 3;
-    K2 = 8;
-    new_seed(2, 0.3);
+    //K = 3;
+    //K2 = 8;
+    //new_seed(2, 0.3);
 
-    check_particles();
+	//K = 12;
+	//K2 = 32;
+	//new_seed(8, 0.3);
 
     FILE *save_file = fopen("history.txt", "w");
     fclose(save_file);
+    //particles_for_check_count = 0;
+    //particles_for_check[0] = 5154;
+	//particles_for_check[1] = 3165;
 
-    particles_for_check_count = 2;
-    particles_for_check[0] = 42;
-    particles_for_check[1] = 12;
-    particles_for_check[2] = 76;
-
-    int GGH = 0;
-    while (GGH < 10000) {
-        fprintf(stderr, "===============\n");
-        fprintf(stderr, "%d %d\n", time_queue[1].im, time_queue[1].jm);
-        GGH++;
-        print_time_line();
-        //int k = check_particles();
-        //fprintf(stderr, "K == %d  %d\n", k, GGH);
-        step();
-
-        FILE *save_file = fopen("history.txt", "a");
-        fprintf(save_file, "\n STEPS:: %d \n", GGH);
-        for (int t = 0; t < particles_for_check_count; t++) {
-            fprintf(save_file, "\n particle %d, x, y, z: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].x, particles[particles_for_check[t]].y, particles[particles_for_check[t]].z);
-            fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", particles_for_check[t], particles[particles_for_check[t]].vx, particles[particles_for_check[t]].vy, particles[particles_for_check[t]].vz);
-
-            fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[particles_for_check[t]].x_box, particles[particles_for_check[t]].y_box, particles[particles_for_check[t]].z_box);
-            fprintf(save_file, " particle box_i, box[box_i]: %d, %d \n", particles[particles_for_check[t]].box_i, boxes_yz[particles[particles_for_check[t]].y_box][particles[particles_for_check[t]].z_box][particles[particles_for_check[t]].x_box].particles[particles[particles_for_check[t]].box_i]);
-            fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[particles_for_check[t]].ti].im, time_queue[particles[particles_for_check[t]].ti].jm, particles[particles_for_check[t]].dt);
-            fprintf(save_file, " particle event number: %d\n", particles[particles_for_check[t]].ti);
-            fprintf(save_file, " %d i_copy \n ", particles[particles_for_check[t]].i_copy);
-            if (particles[particles_for_check[t]].i_copy > 0) {
-                int r = particles[particles_for_check[t]].i_copy;
-                fprintf(save_file, " particle %d, x, y, z: %.5le, %.5le, %.5le \n", r, particles[r].x, particles[r].y, particles[r].z);
-                fprintf(save_file, " particle %d, vx, vy, vz: %.5le, %.5le, %.5le \n", r, particles[r].vx, particles[r].vy, particles[r].vz);
-                fprintf(save_file, " particle x_box, y_box, z_box: %d, %d, %d \n", particles[r].x_box, particles[r].y_box, particles[r].z_box);
-                fprintf(save_file, " particle event: %d, %d, %.15le \n", time_queue[particles[r].ti].im, time_queue[particles[r].ti].jm, particles[r].dt);
-            }
-        }
-        fprintf(save_file, "\n\n");
-
-        fclose(save_file);
-
-    }
-
+	init("program.txt");
     return 0;
 }

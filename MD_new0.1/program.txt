@@ -1,0 +1,7 @@
+new 8 0.4
+step 1000
+step 1000
+step 1000
+save test.txt
+step 1000
+step 10000
