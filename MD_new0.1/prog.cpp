@@ -74,6 +74,7 @@ Box boxes_yz[16][16][47];
 int particles_for_check[100];
 int particles_for_check_count = 0;
 
+int iim, ijm;
 
 
 void print_time_line() {
@@ -276,15 +277,41 @@ void clear_particle_events(int &i) {
 	///////////////
 
     if (k > 0) {
+		int e = -100;
+		int kim = time_queue[k].im;
+		int kjm = time_queue[k].jm;
+
         if (time_queue[k].im == i) {
             if (time_queue[k].jm >= 0) {
-                time_queue[k].im = time_queue[k].jm;
-                time_queue[k].jm = -100;
+                //time_queue[k].im = time_queue[k].jm;
+                //time_queue[k].jm = -100;
+
+				double dt = particles[kim].t - particles[kjm].t;  // разница в текущем времени
+
+				particles[kjm].x += particles[kjm].vx*dt;
+				particles[kjm].y += particles[kjm].vy*dt;
+				particles[kjm].z += particles[kjm].vz*dt;
+				particles[kjm].t = particles[kim].t;
+				particles[kjm].dt = (particles[kjm].dt - dt) / 1.1;
+
+				delete_event(k);
+				add_event(kjm, e);
             }
             else delete_event(k);
         }
         else if (time_queue[k].jm == i) {
-			time_queue[k].jm = -100;
+			//time_queue[k].jm = -100;
+
+			double dt = particles[kjm].t - particles[kim].t;  // разница в текущем времени
+
+			particles[kim].x += particles[kim].vx*dt;
+			particles[kim].y += particles[kim].vy*dt;
+			particles[kim].z += particles[kim].vz*dt;
+			particles[kim].t = particles[kjm].t;
+			particles[kim].dt = (particles[kim].dt - dt) / 1.1;
+
+			delete_event(k);
+			add_event(kim, e);
         }
         particles[i].ti = 0;
     }
@@ -303,18 +330,6 @@ void retime(int &i) {
     double dt, dt_min;
 
     clear_particle_events(i);
-
-    ///////////////
-	/*
-    for (int t = 0; t < particles_for_check_count; t++) {
-        if (particles_for_check[t] == i || particles_for_check[t] == particles[i].i_copy) {
-            FILE *save_file = fopen("history.txt", "a");
-            fprintf(save_file, "    retime: %d ", i);
-            fclose(save_file);
-        }
-    }
-	*/
-    ///////////////
 
     if (p1.vx < 0.0) {
         dt_min = (p1_box.x1 - p1.x) / p1.vx;
@@ -414,7 +429,6 @@ void retime(int &i) {
                     if (n == p1.i_copy) continue;
 
                     temp = p1.t - particles[n].t;
-                    //if (temp < 0.0 && temp > -1.0e-14) temp = 0.0;
 
                     dvx = particles[n].vx - p1.vx;
                     dvy = particles[n].vy - p1.vy;
@@ -431,16 +445,33 @@ void retime(int &i) {
                         if (d > 0.0) {
                             dt = -(sqrt(d) + bij) / dv;
 
+							/*
 							if (dt < -1.0e-12) {
-								if (i < NP && n < NP) {
+								double d = dx*dx + dy*dy + dz*dz;
+								if (i < NP && n < NP && d < 4.0 - 1.0e-14) {
+									printf("\n DISTANCE = %.15le", d);
 									printf("\n particle %d: vx = %.15le, vy = %.15le, vz = %.15le \n", i, particles[i].vx, particles[i].vy, particles[i].vz);
 									printf("particle %d: vx = %.15le, vy = %.15le, vz = %.15le \n", n, particles[n].vx, particles[n].vy, particles[n].vz);
 									printf("\n i = %d, n = %d, i.i_copy = %d, n.i_copy = %d \n", i, n, particles[i].i_copy, particles[n].i_copy);
 									printf("11");
 								}
 							}
-							if (dt < -1.0e-15 && dt > -1.0e-12)
-								printf("\n i = %d, n = %d, dt = %.15le, distance = %.15le \n", i, n, dt, dx*dx+dy*dy+dz*dz);
+							if (dt < -1.0e-15 && dt > -1.0e-12) {
+								printf("\n previous event: iim = %d, ijm = %d \n", iim, ijm);
+								printf("\n i = %d, n = %d, dt = %.15le, distance = %.15le \n", i, n, dt, dx*dx + dy*dy + dz*dz);
+							}
+							*/
+							/*
+							 Сценарии, при котором возможны отрицательные времена:
+							  1. Образ, вставленный в систему для мгновенного соударения может проникать
+							     в другие частицы, после мгновенного соударения с частицей из объема этот
+								 образ будет уничтожен.
+							  2. Частица n1 сталкивается с частицей n2, мы создаем образ для частицы n1,
+							     для которого не находится места и мы сталкиваем его с другой частицей n3,
+							     в результате чего скорость частицы n1 снова меняется и время соударения
+							     частиц n1 и n2 может быть отрицательным (-1*10-14) из за погрешности
+							     в расчете координат в 15ом знаке.
+							*/
 							if (dt > -1.0e-12 && dt < 1.0e-15) dt = 0.0;
 
                             temp += dt;
@@ -505,7 +536,6 @@ void retime(int &i) {
         particles[jm].z += particles[jm].vz * dt;
 
         clear_particle_events(jm);
-
     }
 
     particles[i].dt = dt_min;
@@ -648,14 +678,6 @@ void find_place_for_particle(int &i) {
                 }
             }
         }
-    
-    /* just print all free spaces, debug:
-    for (int r1 = 1; r1 <= spaces; r1++)
-    {
-        printf("\n No Space: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
-    }
-    */
-    
 
     for (int r1 = 1; r1 < spaces; r1++)
         for (int r2 = r1+1; r2 <= spaces; r2++)
@@ -670,10 +692,6 @@ void find_place_for_particle(int &i) {
                 no_free_space_max[r2] = temp;
             }
 
-    /* just print all free spaces after resort, debug: */
-    //for (int r1 = 1; r1 <= spaces; r1++)
-    //    printf("\n No Space2: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
-    
     /* we need to combine different free spaces if they overlap with each other */
     int r1 = 1;
     while (r1 < spaces)
@@ -694,14 +712,6 @@ void find_place_for_particle(int &i) {
         }
         else r1++;
     }
-
-    /* just print all free spaces after resort, debug: */
-    //for (int r1 = 1; r1 <= spaces; r1++)
-    //    printf("\n No Space3: %.15le, %.15le", no_free_space_min[r1], no_free_space_max[r1]);
-
-    //FILE *save_file = fopen("history.txt", "a");
-    //fprintf(save_file, "\n SPACES: %d \n", spaces);
-    //fclose(save_file);
 
     if (spaces < 2) {    // if free space for virtual particles was not found:
         if (particle_on_the_line > -1) {
@@ -817,7 +827,9 @@ void find_place_for_particle(int &i) {
                 }
             }
 
-
+			printf("\n A = %.15le, L = %.15le\n ", A, L);
+			printf("\n %d particle: x = %.15le, y = %.15le, z = %.15le \n", i, particles[i].x, particles[i].y, particles[i].z);
+			printf("\n %d particle: vx = %.15le, vy = %.15le, vz = %.15le \n", i, particles[i].vx, particles[i].vy, particles[i].vz);
             printf("\n");
         }
     }
@@ -885,6 +897,7 @@ void destroy_virt_particle(int &i) {
         boxes_yz[y_box][z_box][x_box] = p_box;
     }
 
+	particles[new_i].t = particles[i].t;
     clear_particle_events(new_i);
 
     particles[i].i_copy = -1;
@@ -952,7 +965,7 @@ void change_with_virt_particles(int &im, int &jm) {
 
     destroy_virt_particle(im);
 
-    clear_particle_events(im);
+    //clear_particle_events(im);
 }
 
 
@@ -1317,6 +1330,7 @@ void load_seed(std::string file_name) {
         particles[i].dt = 0.0;
     }
 
+	global_E = 0.0;
     short end, x_box, y_box, z_box;
     for (int i = 0; i < NP; i++) {
         fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
@@ -1327,34 +1341,29 @@ void load_seed(std::string file_name) {
         y_box = short((A + dA + particles[i].y) / dA);
         z_box = short((A + dA + particles[i].z) / dA);
 
-		/*
-        printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
-        printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
-        printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
-        printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
-		*/
-
-        if (boxes_yz[y_box][z_box][x_box].x1 < particles[i].x &&
-                boxes_yz[y_box][z_box][x_box].x2 > particles[i].x)
+        if (boxes_yz[y_box][z_box][x_box].x1 <= particles[i].x &&
+                boxes_yz[y_box][z_box][x_box].x2 >= particles[i].x)
             particles[i].x_box = x_box;
         else {
             printf("Particle locates in incorrect place %d", i);
             throw "Particle locates in incorrect place";
         }
 
-        if (boxes_yz[y_box][z_box][x_box].y1 < particles[i].y &&
-                boxes_yz[y_box][z_box][x_box].y2 > particles[i].y)
+        if (boxes_yz[y_box][z_box][x_box].y1 <= particles[i].y &&
+                boxes_yz[y_box][z_box][x_box].y2 >= particles[i].y)
             particles[i].y_box = y_box;
         else {
             printf("Particle locates in incorrect place %d", i);
             throw "Particle locates in incorrect place";
         }
 
-        if (boxes_yz[y_box][z_box][x_box].z1 < particles[i].z &&
-                boxes_yz[y_box][z_box][x_box].z2 > particles[i].z)
+        if (boxes_yz[y_box][z_box][x_box].z1 <= particles[i].z &&
+                boxes_yz[y_box][z_box][x_box].z2 >= particles[i].z)
             particles[i].z_box = z_box;
         else {
-            printf("Particle %d locates in incorrect place", i);
+            printf("\n Particle %d locates in incorrect place", i);
+			printf("\n BOX z: [%.15le; %.15le]", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
+			printf("\n particle Z: %.15le", particles[i].z);
             throw "Particle locates in incorrect place";
         }
 
@@ -1368,14 +1377,6 @@ void load_seed(std::string file_name) {
         particles[i].ti = 1;
         end = particles[i].box_i = ++boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end;
         boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[particles[i].box_i] = i;
-
-		/*
-		printf("\n x, y, z: %le %le %le ", particles[i].x, particles[i].y, particles[i].z);
-		printf("\n vx, vy, vz: %le %le %le ", particles[i].vx, particles[i].vy, particles[i].vz);
-		printf("\n x_box, y_box, z_box: %d %d %d ", x_box, y_box, z_box);
-		printf("\n Y: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
-		printf("\n Z: [%le ; %le] ", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
-		*/
 
         global_E += a1*a1 + a2*a2 + a3*a3;
 
@@ -1398,32 +1399,13 @@ void load_seed(std::string file_name) {
     time_queue[0].im = -1;
     for (int i = 1; i < 30000; ++i) time_queue[i].t = 1.0E+20;
 
-    for (int i = 0; i < NP - 1; ++i)
-        for (int j = i + 1; j < NP; ++j) {
-            double x = particles[i].x - particles[j].x;
-            double y = particles[i].y - particles[j].y;
-            double z = particles[i].z - particles[j].z;
-            double d = x * x + y * y + z*z;
-            if (d < 4.0 - 1.0e-15) {
-                printf("Incorrect distance between particles");
-                throw "Incorrect distance between particles";
-            }
-        }
-
-	/*
-    double E1 = 0.0, E2 = 0.0;
-    for (int i = 0; i < NP; ++i) {
-        E1 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
-    }
-	*/
-
     for (int i = 0; i < NP; ++i) retime(i);
+	for (int i = 0; i < NP; ++i) {
+		create_virt_particle(i);
+		if (particles[i].i_copy > 0) retime(particles[i].i_copy);
+	}
 
-	/*
-    for (int i = 0; i < NP; ++i) {
-        E2 += particles[i].vx*particles[i].vx + particles[i].vy*particles[i].vy + particles[i].vz*particles[i].vz;
-    }
-	*/
+	//printf("\n N = %d, E = %.15le", NP, global_E);
 }
 
 /*
@@ -1662,26 +1644,11 @@ void new_seed(int NN, double etta) {
  */
 bool reform(int &im, int &jm) {
     particle p1 = particles[im];
-    double dx, dy, dz, q1, q2, z;
+	long double q1, q2, z, dx, dy, dz;
     bool need_create_virt_particle = false;
 
     if (jm >= 0) {
         particle p2 = particles[jm];
-
-        if (particles[im].i_copy > 0) {
-            int k = im;
-            if (particles[im].i_copy < NP)
-                k = k - NP;
-            destroy_virt_particle(k);
-            p1.i_copy = -1;
-        }
-        if (particles[jm].i_copy > 0) {
-            int k = jm;
-            if (particles[jm].i_copy < NP)
-                k = k - NP;
-            destroy_virt_particle(k);
-            p2.i_copy = -1;
-        }
 
         p2.x += p2.vx * p2.dt;
         p2.y += p2.vy * p2.dt;
@@ -1731,8 +1698,9 @@ bool reform(int &im, int &jm) {
 		*/
         /////////////////////////////
 
-        q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
-        q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0;
+		//r = dx*dx + dy*dy + dz*dz;
+        q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0L;
+        q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0L;
         z = q2 - q1;
         p1.vx += dx*z;
         p1.vy += dy*z;
@@ -1782,6 +1750,21 @@ bool reform(int &im, int &jm) {
         }
         else
             particles[jm] = p2;
+
+		if (particles[im].i_copy > 0) {
+			int k = im;
+			if (particles[im].i_copy < NP)
+				k = k - NP;
+			destroy_virt_particle(k);
+			p1.i_copy = -1;
+		}
+		if (particles[jm].i_copy > 0) {
+			int k = jm;
+			if (particles[jm].i_copy < NP)
+				k = k - NP;
+			destroy_virt_particle(k);
+			p2.i_copy = -1;
+		}
 
         create_virt_particle(e1);
         create_virt_particle(e2);
@@ -1869,7 +1852,6 @@ bool reform(int &im, int &jm) {
         int e = im;
         if (im >= NP)
             e = im - NP;
-        //printf("\n AAA - need create virt particle \n");
         clear_particle_events(e);
         create_virt_particle(e);
     }
@@ -1888,12 +1870,14 @@ void step() {
 
 	COLL_COUNT = 0;
 
-	while (COLL_COUNT < NP / 2) {
+	while (COLL_COUNT < NP / 2 || jm != -100) {
 		im = time_queue[1].im;
 		jm = time_queue[1].jm;
 
-		if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
-            printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+		//if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
+        //    printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+		iim = im;
+		ijm = jm;
         /////////////////////////
 		/*
         for (int t = 0; t < particles_for_check_count; t++) {
@@ -2007,8 +1991,6 @@ void step() {
         /////////////////////////
     }
 
-    //printf("\n AAAAAAAAAAAAAAAAAAAAAA \n");
-
     particle *p = particles;
     for (i = 0; i < NP*2; ++i, ++p)
         (*p).t -= time;
@@ -2084,55 +2066,56 @@ void profile(double x1, double x2, int steps, std::string file_name) {
 
     fclose(profile_file);
 
-    printf("INFO: Profile completed. Information saved to file:%s\n", file_name.c_str());
+    printf("INFO: Profile completed. Information saved to file: %s\n", file_name.c_str());
 }
 
 void compress(double compress_to_etta) {
-    printf("INFO: Start to change system density...\n");
-    double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
-    double min = 1.0e+100, max = -1.0, x;
-    // задаём плотность с точностью в 12 знаков
-    while (fabs(etta - compress_to_etta) > 1.0e-12) {
-        if (etta < compress_to_etta) {
-            max = -100.0;
-            min = 1.1e+10;
+	printf("INFO: Start to change system density...\n");
+	double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
+	double min = 1.0e+100, max = -1.0, x;
+	// задаём плотность с точностью в 12 знаков
+	while (fabs(etta - compress_to_etta) > 1.0e-12) {
+		if (etta < compress_to_etta) {
+			max = -100.0;
+			min = 1.1e+10;
 
-            for (int i = 0; i < NP; ++i) {
-                x = L + particles[i].x - particles[i].vx * particles[i].t;
-                if (x < min) min = x;
-                if (x > max) max = x;
-            }
+			for (int i = 0; i < NP; ++i) {
+				x = L + particles[i].x - particles[i].vx * particles[i].t;
+				if (x < min) min = x;
+				if (x > max) max = x;
+			}
 
-            min = min - 1.0;
-            max = 2.0 * L - max - 1.0;
-            if (max < min) min = max;
+			min = min - 1.0;
+			max = 2.0 * L - max - 1.0;
+			if (max < min) min = max;
 
-            // сжимаем не впритык к частицам и не слишком быстро
-            min = min / 1.1;
-            if (min < 0.1e-8) min = 0.01e-30;
-            if (min > 0.01) min = 0.01;
-        } else {
-            double L_ideal = ((PI * NP) / compress_to_etta) / (6.0 * A * A) + 1;
-            min = L - L_ideal;
-            if (min < -0.01) min = -0.01; // шаг расширения системы
-        }
-        // изменяем систему
-        L -= min;
+			// сжимаем не впритык к частицам и не слишком быстро
+			min = min / 1.1;
+			if (min < 0.1e-8) min = 0.01e-30;
+			if (min > 0.01) min = 0.01;
+		}
+		else {
+			double L_ideal = ((PI * NP) / compress_to_etta) / (6.0 * A * A) + 1;
+			min = L - L_ideal;
+			if (min < -0.01) min = -0.01; // шаг расширения системы
+		}
+		// изменяем систему
+		L -= min;
 
-        save("tmp");
-        load_seed("tmp");
+		save("tmp");
+		load_seed("tmp");
 
-        for (short i = 0; i < 10; ++i)
-            step();
-        etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
+		for (short i = 0; i < 10; ++i)
+			step();
+		etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 
-        // очистка экрана и вывод информации о прогрессе
-        printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-        printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-        printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-        printf("etta = %.15le, should be equal to %.15le", etta, compress_to_etta);
-    }
-    printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
+		// очистка экрана и вывод информации о прогрессе
+		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("etta = %.15le, should be equal to %.15le", etta, compress_to_etta);
+	}
+	printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
 }
 
 void init(std::string file_name) {
@@ -2159,13 +2142,13 @@ void init(std::string file_name) {
             command_file.getline(parameter, 255, '\n');
             new_seed(NN, etta);
             etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
-			printf("A = %.15le;  L = %.15le; N = %d; \n etta = %.15le; \n", 2.0 * A, 2.0 * L, NP, etta);
+			printf("| A    | %.15le |\n| L    | %.15le |\n| N    | %d                  |\n| etta | %.15le |\n", 2.0 * A, 2.0 * L, NP, etta);
         }
         if (str_command.compare("load") == 0) {
             command_file.getline(parameter, 255, '\n');
             load_seed(parameter);
             double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
-            printf("A=%f  L=%f \n etta=%.15le \n", 2.0 * A, 2.0 * L, etta);
+			printf(" A = %.15le; \n L = %.15le; \n etta = %.15le; \n", 2.0 * A, 2.0 * L, etta);
         }
         if (str_command.compare("step") == 0) {
             command_file >> steps;

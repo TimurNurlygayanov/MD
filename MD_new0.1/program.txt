@@ -1,7 +1,22 @@
-new 8 0.4
+new 8 0.48
+step 10000
+save 0.48000_10000.txt
+image 100 10 image_0.48000_10000.txt
+step 10000
+save 0.48000_20000.txt
+step 10000
+save 0.48000_30000.txt
+step 10000
+save 0.48000_40000.txt
+step 10000
+save 0.48000_50000.txt
+step 10000
+save 0.48000_60000.txt
+
+compress 0.51
 step 1000
-step 1000
+compress 0.52
 step 1000
 save test.txt
 step 1000
-step 10000
+step 1000000
