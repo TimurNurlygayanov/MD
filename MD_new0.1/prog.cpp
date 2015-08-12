@@ -150,6 +150,15 @@ int check_particles() {
         printf("\nENERGY was changed: \n E_seed = %.15le \n E_now= %.15le \n", global_E, E);
         return 1000;
     }
+
+	double Mx = 0.0;
+	for (int i = 0; i < NP; i++) {
+		Mx += (particles[i].y)*particles[i].vz - (particles[i].z)*particles[i].vy;
+	}
+	if (abs(Mx) > 1.0e-14) {
+		printf(" \n Mx = %.15le \n", Mx);
+		return 2501;
+	}
 ///////////////////// ?????????????????????????????????????????????????????????????????????????????????????????????
     for (int i = 0; i < last; i++) {
         if ((time_queue[i].im >= NP) && (particles[time_queue[i].im-NP].i_copy == -1)) {
@@ -1405,7 +1414,12 @@ void load_seed(std::string file_name) {
 		if (particles[i].i_copy > 0) retime(particles[i].i_copy);
 	}
 
-	//printf("\n N = %d, E = %.15le", NP, global_E);
+	double Mx = 0.0;
+	for (int i = 0; i < NP; i++) {
+		Mx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
+	}
+
+	printf("\n Mx = %.15le\n", Mx);
 }
 
 /*
@@ -1486,9 +1500,9 @@ void new_seed(int NN, double etta) {
     for (int i = 0; i < 2 * NN; i++)
         for (int j = 0; j < NN; j++)
             for (int k = 0; k < NN / 2; k++) {
-                vx = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  задаем скорость.
-                vy = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  она будет одинакова для нескольких частиц сразу(с небольшим отклонением)
-                vz = double(rand() % 50 + 1) / double(rand() % 1000 + 1) - double(rand() % 50 + 1) / double(rand() % 1000 + 1); //  чтобы был равен нулю импульс и момент импульса системы.
+                vx = double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)) - double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)); //  задаем скорость.
+                vy = double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)) - double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)); //  она будет одинакова для нескольких частиц сразу(с небольшим отклонением)
+                vz = double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)) - double(rand() % 1000 + 1) / (1000.0 + double(rand() % 100)); //  чтобы был равен нулю импульс и момент импульса системы.
 
                 for (int ii = -1; ii < 2; ii += 2) {
                     if ((i == 0) && (ii > 0)) continue;
@@ -1620,6 +1634,13 @@ void new_seed(int NN, double etta) {
         particles[ii].z = particles[ii].z*Betta;
     }
 
+	double Mx = 0.0;
+	for (int i = 0; i < NP; i++) {
+		Mx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
+	}
+
+	printf("\n Mx = %.15le\n", Mx);
+
     // сохранить систему по старому алгоритму
     // загрузить систему по новому алгоритму
     FILE *save_file = fopen("new.txt", "w+");
@@ -1644,11 +1665,13 @@ void new_seed(int NN, double etta) {
  */
 bool reform(int &im, int &jm) {
     particle p1 = particles[im];
-	long double q1, q2, z, dx, dy, dz;
+	double q1, q2, z, dx, dy, dz;
     bool need_create_virt_particle = false;
 
     if (jm >= 0) {
         particle p2 = particles[jm];
+
+		double dt = p2.dt;
 
         p2.x += p2.vx * p2.dt;
         p2.y += p2.vy * p2.dt;
@@ -1684,6 +1707,8 @@ bool reform(int &im, int &jm) {
             }
         }
 
+		double E1 = p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz + p2.vx*p2.vx + p2.vy*p2.vy + p2.vz*p2.vz;
+		double r = dx*dx + dy*dy + dz*dz;
         /////////////////////////////
 		/*
         for (int t = 0; t < particles_for_check_count; t++) {
@@ -1699,8 +1724,8 @@ bool reform(int &im, int &jm) {
         /////////////////////////////
 
 		//r = dx*dx + dy*dy + dz*dz;
-        q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0L;
-        q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0L;
+        q1 = (dx * p1.vx + dy * p1.vy + dz * p1.vz) / 4.0;
+        q2 = (dx * p2.vx + dy * p2.vy + dz * p2.vz) / 4.0;
         z = q2 - q1;
         p1.vx += dx*z;
         p1.vy += dy*z;
@@ -1709,6 +1734,19 @@ bool reform(int &im, int &jm) {
         p2.vx += dx*z;
         p2.vy += dy*z;
         p2.vz += dz*z;
+
+		double E2 = p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz + p2.vx*p2.vx + p2.vy*p2.vy + p2.vz*p2.vz;
+
+		if (abs(E1 - E2) > 1.0e-14) {
+			if (r == 4.0) {
+				printf("\n r = %.15le \n", r);
+				printf("\n E1 = %.15le, E2 = %.15le \n", E1, E2);
+				printf("\n p1.vx = %.15le, p1.vy = %.15le, p1.vz = %.15le\n", p1.vx, p1.vy, p1.vz);
+				printf("\n p2.vx = %.15le, p2.vy = %.15le, p2.vz = %.15le\n", p2.vx, p2.vy, p2.vz);
+				printf("\n p1 = %d, p2 = %d, dt = %.15le\n", im, jm, dt);
+				printf("a");
+			}
+		}
 
         /////////////////////////////
 		/*
