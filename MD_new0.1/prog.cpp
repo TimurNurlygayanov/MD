@@ -155,7 +155,7 @@ int check_particles() {
 	for (int i = 0; i < NP; i++) {
 		Mx += (particles[i].y)*particles[i].vz - (particles[i].z)*particles[i].vy;
 	}
-	if (abs(Mx) > 1.0e-14) {
+	if (abs(Mx) > 1.0e-12) {
 		printf(" \n Mx = %.15le \n", Mx);
 		return 2501;
 	}
@@ -545,6 +545,12 @@ void retime(int &i) {
         particles[jm].z += particles[jm].vz * dt;
 
         clear_particle_events(jm);
+
+		if (i > NP) {
+			printf("after retime for jm h1");
+			check_particles();
+			printf("h2");
+		}
     }
 
     particles[i].dt = dt_min;
@@ -1804,8 +1810,16 @@ bool reform(int &im, int &jm) {
 			p2.i_copy = -1;
 		}
 
+		printf("a1");
+		if (im > NP || jm > NP) check_particles();
+		printf("a2");
+
         create_virt_particle(e1);
         create_virt_particle(e2);
+
+		printf("b1");
+		if (im > NP || jm > NP) check_particles();
+		printf("b2");
     } else
     if (jm == -1) {
         p1.vx = -p1.vx;
@@ -1913,9 +1927,12 @@ void step() {
 		jm = time_queue[1].jm;
 
 		//if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
-        //    printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+        printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
 		iim = im;
 		ijm = jm;
+
+		check_particles();
+
         /////////////////////////
 		/*
         for (int t = 0; t < particles_for_check_count; t++) {
@@ -1972,6 +1989,12 @@ void step() {
         particles[im] = p1;
         need_virt_particle_retime = reform(im, jm);
 
+		if (im > NP || jm > NP) {
+			printf("after the reform: f1");
+			check_particles();
+			printf("f2");
+		}
+
         if (im >= NP) {
             if (particles[im].i_copy > -1)
                 retime(im);
@@ -1986,6 +2009,12 @@ void step() {
                 retime(particles[im].i_copy);
             }
         }
+
+		if (im > NP || jm > NP) {
+			printf("after the retime1: g1");
+			check_particles();
+			printf("g2");
+		}
 
         if (jm >= 0) {
             ++COLL_COUNT;
@@ -2002,6 +2031,13 @@ void step() {
                     retime(particles[jm].i_copy);
             }
         }
+
+		if (im > NP || jm > NP) {
+			printf("after the retime2: g1  %d \n", COLL_COUNT);
+			printf("im = %d, jm = %d", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm);
+			check_particles();
+			printf("g2");
+		}
 
         /////////////////////////
 		/*
