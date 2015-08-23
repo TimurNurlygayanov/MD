@@ -76,6 +76,8 @@ int particles_for_check_count = 0;
 
 int iim, ijm;
 
+double Lx = 0.0;
+
 
 void print_time_line() {
     for (int i = 0; i <= last; i++) {
@@ -84,17 +86,42 @@ void print_time_line() {
     }
 }
 
+double get_maximum_particle_time() {
+	double t_max = -1.0e+20;
+
+	for (int i = 0; i < NP; ++i) {
+		if (particles[i].t > t_max) {
+			t_max = particles[i].t;
+		}
+	}
+
+	return t_max;
+}
 
 int check_particles() {
     double E = 0.0;
+	//double Mx = 0.0;
 
     //printf(" \n CHECK SYSTEM \n");
+	//double dt = 0.0;
+	//double t_global = get_maximum_particle_time();
 
     for (int i = 0; i < NP; i++) {
         particle p1 = particles[i];
         Box p1_box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
 
+		//dt = t_global - p1.t;
+		//p1.x += p1.vx * dt;
+		//p1.y += p1.vy * dt;
+		//p1.z += p1.vz * dt;
+
+		//if (dt < 0.0) {
+		//	printf("\n >> particle %d, dt = %.15le", i, dt);
+		//}
+
         E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
+
+		//Mx += p1.y*p1.vz - p1.z*p1.vy;
 
         if ((p1.x_box > K2) || (p1.y_box > K) || (p1.z_box > K) ||
             (p1.x_box < 0) || (p1.y_box < 0) || (p1.z_box < 0)) {
@@ -151,14 +178,18 @@ int check_particles() {
         return 1000;
     }
 
-	double Mx = 0.0;
-	for (int i = 0; i < NP; i++) {
-		Mx += (particles[i].y)*particles[i].vz - (particles[i].z)*particles[i].vy;
-	}
+	//printf("\n particle 2563: x %.15le, y %.15le, z %15.le\n", particles[2563].x, particles[2563].y, particles[2563].z);
+	//printf("\n particle 2531: vx %.15le, vy %.15le, vz %15.le\n", particles[2563].vx, particles[2563].vy, particles[2563].vz);
+	//printf("\n particle 2531: x %.15le, y %.15le, z %15.le\n", particles[2531].x, particles[2531].y, particles[2531].z);
+	//printf("\n particle 2531: vx %.15le, vy %.15le, vz %15.le\n", particles[2531].vx, particles[2531].vy, particles[2531].vz);
+	
+	/*
 	if (abs(Mx) > 1.0e-12) {
 		printf(" \n Mx = %.15le \n", Mx);
 		return 2501;
 	}
+	*/
+
 ///////////////////// ?????????????????????????????????????????????????????????????????????????????????????????????
     for (int i = 0; i < last; i++) {
         if ((time_queue[i].im >= NP) && (particles[time_queue[i].im-NP].i_copy == -1)) {
@@ -337,6 +368,8 @@ void retime(int &i) {
     Box p1_box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
     int jm;
     double dt, dt_min;
+
+	//printf("\n retime for particle %d \n ", i);
 
     clear_particle_events(i);
 
@@ -546,15 +579,25 @@ void retime(int &i) {
 
         clear_particle_events(jm);
 
-		if (i > NP) {
-			printf("after retime for jm h1");
-			check_particles();
-			printf("h2");
-		}
+		/*
+		printf("after retime for jm h1: jm = %d \n", jm);
+		check_particles();
+		printf("h2");
+		*/
     }
 
+	//printf("\n Before \n");
+	//check_particles();
+
     particles[i].dt = dt_min;
+
+	//check_particles();
+
     add_event(i, jm);
+
+	//printf("\n After \n");
+	//check_particles();
+	//printf("\n NO \n");
 
     //////////////////
 	/*
@@ -567,6 +610,9 @@ void retime(int &i) {
     }
 	*/
     //////////////////
+
+
+	//printf("\nretime result: %d %d, %.15le\n ", i, jm, dt_min);
 
     if (dt_min < -1.0e-11) {
 		printf("\n p1.x = %.15le, p1.y = %.15le, p1.z = %.15le \n", p1.x, p1.y, p1.z);
@@ -1690,6 +1736,9 @@ bool reform(int &im, int &jm) {
 
         if (im >= NP) {
             int k = im - NP;
+
+			//printf("\n %d speed difference: %.5le, %.5le, %.5le \n", im, p1.vx/ particles[k].vx, p1.vy / particles[k].vy, p1.vz / particles[k].vz);
+
             p1.vy = particles[k].vy;
             p1.vz = particles[k].vz;
 
@@ -1702,6 +1751,9 @@ bool reform(int &im, int &jm) {
         }
         if (jm >= NP) {
             int k = jm - NP;
+
+			//printf("\n %d speed difference: %.5le, %.5le, %.5le \n", jm, p2.vx / particles[k].vx, p2.vy / particles[k].vy, p2.vz / particles[k].vz);
+
             p2.vy = particles[k].vy;
             p2.vz = particles[k].vz;
 
@@ -1810,16 +1862,20 @@ bool reform(int &im, int &jm) {
 			p2.i_copy = -1;
 		}
 
+		/*
 		printf("a1");
 		if (im > NP || jm > NP) check_particles();
 		printf("a2");
+		*/
 
         create_virt_particle(e1);
         create_virt_particle(e2);
 
+		/*
 		printf("b1");
 		if (im > NP || jm > NP) check_particles();
 		printf("b2");
+		*/
     } else
     if (jm == -1) {
         p1.vx = -p1.vx;
@@ -1927,11 +1983,11 @@ void step() {
 		jm = time_queue[1].jm;
 
 		//if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
-        printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+        //printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
 		iim = im;
 		ijm = jm;
 
-		check_particles();
+		//check_particles();
 
         /////////////////////////
 		/*
@@ -1987,13 +2043,24 @@ void step() {
         }
 
         particles[im] = p1;
-        need_virt_particle_retime = reform(im, jm);
 
+		/*
+		if (im > NP || jm > NP) {
+			printf("before the reform: f1");
+			check_particles();
+			printf("f2");
+		}
+		*/
+
+		need_virt_particle_retime = reform(im, jm);
+
+		/*
 		if (im > NP || jm > NP) {
 			printf("after the reform: f1");
 			check_particles();
 			printf("f2");
 		}
+		*/
 
         if (im >= NP) {
             if (particles[im].i_copy > -1)
@@ -2010,11 +2077,13 @@ void step() {
             }
         }
 
+		/*
 		if (im > NP || jm > NP) {
 			printf("after the retime1: g1");
 			check_particles();
 			printf("g2");
 		}
+		*/
 
         if (jm >= 0) {
             ++COLL_COUNT;
@@ -2032,12 +2101,14 @@ void step() {
             }
         }
 
+		/*
 		if (im > NP || jm > NP) {
 			printf("after the retime2: g1  %d \n", COLL_COUNT);
-			printf("im = %d, jm = %d", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm);
+			//printf("im = %d, jm = %d", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm);
 			check_particles();
 			printf("g2");
 		}
+		*/
 
         /////////////////////////
 		/*
@@ -2234,7 +2305,22 @@ void init(std::string file_name) {
 
             for (i = 0; i < steps; ++i) {
                 step();
-				check_particles();
+				//check_particles();
+
+				double dt = 0.0;
+				double t_global = get_maximum_particle_time();
+				particle p1;
+				for (int i = 0; i < NP; ++i) {
+					p1 = particles[i];
+
+					dt = t_global - p1.t;
+					p1.x += p1.vx * dt;
+					p1.y += p1.vy * dt;
+					p1.z += p1.vz * dt;
+
+					Lx += p1.y*p1.vz - p1.z*p1.vy;
+				}
+				
 
                 printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
                 printf("%d / %d", i + 1, steps);
@@ -2245,6 +2331,8 @@ void init(std::string file_name) {
 
             printf("\n INFO: finished %d collisions per particle \n", steps);
             printf("Total Time = %f seconds. \n", double(result / CLOCKS_PER_SEC));
+
+			printf("\n Lx = %.15le \n", Lx);
         }
         if (str_command.compare("image") == 0) {
             command_file >> steps; // число соударений на одну частицу за время измерений
