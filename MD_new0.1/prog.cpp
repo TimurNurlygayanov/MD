@@ -615,9 +615,13 @@ void retime(int &i) {
 	//printf("\nretime result: %d %d, %.15le\n ", i, jm, dt_min);
 
     if (dt_min < -1.0e-11) {
+		printf("\n retime result: %d %d, %.15le\n ", i, jm, dt_min);
 		printf("\n p1.x = %.15le, p1.y = %.15le, p1.z = %.15le \n", p1.x, p1.y, p1.z);
 		printf("\n p1.x_box = %d, p1.y_box = %d, p1.z_box = %d", p1.x_box, p1.z_box, p1.y_box);
 		printf("\n im = %d, jm = %d, dt = %.15le, A = %.15le", i, jm, dt_min, A);
+		printf("\n p1.box.x = [%.15le; %15le]", boxes_yz[p1.y_box][p1.z_box][p1.x_box].x1, boxes_yz[p1.y_box][p1.z_box][p1.x_box].x2);
+		printf("\n p1.box.y = [%.15le; %15le]", boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1, boxes_yz[p1.y_box][p1.z_box][p1.x_box].y2);
+		printf("\n p1.box.z = [%.15le; %15le]", boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1, boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2);
         printf("QQQQQQQQQQQQQQ");
     }
 }
@@ -1340,6 +1344,94 @@ void create_virt_particle(int &i) {
 }
 
 
+void load_information_about_one_particle(FILE *loading_file) {
+	double a1, a2, a3;
+	int i, i_copy, x_box, y_box, z_box, end;
+
+	fscanf(loading_file, "%d %d\n", &i, &i_copy);
+	particles[i].i_copy = i_copy;
+	fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
+	particles[i].x = a1 - L;
+	particles[i].y = a2 - A;
+	particles[i].z = a3 - A;
+	x_box = short((L + dL + particles[i].x) / dL);
+	y_box = short((A + dA + particles[i].y) / dA);
+	z_box = short((A + dA + particles[i].z) / dA);
+
+	if (y_box < 0) y_box = 0;
+	if (y_box > K) y_box = K;
+	if (z_box < 0) z_box = 0;
+	if (z_box > K) z_box = K;
+
+	particles[i].x_box = x_box;
+	particles[i].y_box = y_box;
+	particles[i].z_box = z_box;
+
+	if (i < NP) {
+		if (boxes_yz[y_box][z_box][x_box].x1 <= particles[i].x &&
+			boxes_yz[y_box][z_box][x_box].x2 >= particles[i].x)
+			particles[i].x_box = x_box;
+		else {
+			printf("Particle locates in incorrect place %d", i);
+			throw "Particle locates in incorrect place";
+		}
+
+		if (boxes_yz[y_box][z_box][x_box].y1 <= particles[i].y &&
+			boxes_yz[y_box][z_box][x_box].y2 >= particles[i].y)
+			particles[i].y_box = y_box;
+		else {
+			printf("Particle locates in incorrect place %d", i);
+			printf("\n BOX y: [%.15le; %.15le]", boxes_yz[y_box][z_box][x_box].y1, boxes_yz[y_box][z_box][x_box].y2);
+			printf("\n particle y: %.15le", particles[i].y);
+			throw "Particle locates in incorrect place";
+		}
+
+		if (boxes_yz[y_box][z_box][x_box].z1 <= particles[i].z &&
+			boxes_yz[y_box][z_box][x_box].z2 >= particles[i].z)
+			particles[i].z_box = z_box;
+		else {
+			printf("\n Particle %d locates in incorrect place", i);
+			printf("\n BOX z: [%.15le; %.15le]", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
+			printf("\n particle Z: %.15le", particles[i].z);
+			throw "Particle locates in incorrect place";
+		}
+	}
+
+	fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
+
+	particles[i].vx = a1;
+	particles[i].vy = a2;
+	particles[i].vz = a3;
+	particles[i].t = 0.0;
+	particles[i].dt = 0.0;
+	particles[i].ti = 1;
+	end = particles[i].box_i = ++boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end;
+	boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[particles[i].box_i] = i;
+
+	global_E += a1*a1 + a2*a2 + a3*a3;
+
+	/*
+	if (end > 7) {
+		printf("Error: Too many particles in one box");
+		printf("\n x_box, y_box, z_box = %d %d %d , end = %d \n", x_box, y_box, z_box, end);
+		throw "Error: Too many particles in one box";
+	}
+	*/
+	for (short t = 0; t < particles[i].box_i; ++t)
+		for (short d = t + 1; d <= particles[i].box_i; ++d)
+			if (boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[t] == boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[d])
+			{
+				printf("\n Duplicated particles in one box: %d \n", i);
+
+				printf("a");
+
+				for (int j = 0; j < boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end; ++j)
+					printf("%d ", boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[j]);
+
+				throw "Duplicated particles in one box";
+			}
+}
+
 
 /*
  функция загрузки данных о системе из файла.
@@ -1347,10 +1439,13 @@ void create_virt_particle(int &i) {
  */
 void load_seed(std::string file_name) {
     double a1, a2, a3, x, y, z;
-    int i;
+    int i, count_of_virt_particles;
     FILE *loading_file = fopen(file_name.c_str(), "r");
+
     fscanf(loading_file, "%i\n", &i);
     NP = i;
+	fscanf(loading_file, "%i\n", &i);
+	count_of_virt_particles = i;
     fscanf(loading_file, "%le\n", &a1);
     A = a1 / 2.0;
     A2 = a1;
@@ -1392,67 +1487,10 @@ void load_seed(std::string file_name) {
     }
 
 	global_E = 0.0;
-    short end, x_box, y_box, z_box;
-    for (int i = 0; i < NP; i++) {
-        fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
-        particles[i].x = a1 - L;
-        particles[i].y = a2 - A;
-        particles[i].z = a3 - A;
-        x_box = short((L + dL + particles[i].x) / dL);
-        y_box = short((A + dA + particles[i].y) / dA);
-        z_box = short((A + dA + particles[i].z) / dA);
-
-        if (boxes_yz[y_box][z_box][x_box].x1 <= particles[i].x &&
-                boxes_yz[y_box][z_box][x_box].x2 >= particles[i].x)
-            particles[i].x_box = x_box;
-        else {
-            printf("Particle locates in incorrect place %d", i);
-            throw "Particle locates in incorrect place";
-        }
-
-        if (boxes_yz[y_box][z_box][x_box].y1 <= particles[i].y &&
-                boxes_yz[y_box][z_box][x_box].y2 >= particles[i].y)
-            particles[i].y_box = y_box;
-        else {
-            printf("Particle locates in incorrect place %d", i);
-            throw "Particle locates in incorrect place";
-        }
-
-        if (boxes_yz[y_box][z_box][x_box].z1 <= particles[i].z &&
-                boxes_yz[y_box][z_box][x_box].z2 >= particles[i].z)
-            particles[i].z_box = z_box;
-        else {
-            printf("\n Particle %d locates in incorrect place", i);
-			printf("\n BOX z: [%.15le; %.15le]", boxes_yz[y_box][z_box][x_box].z1, boxes_yz[y_box][z_box][x_box].z2);
-			printf("\n particle Z: %.15le", particles[i].z);
-            throw "Particle locates in incorrect place";
-        }
-
-        fscanf(loading_file, "%le %le %le\n", &a1, &a2, &a3);
-
-        particles[i].vx = a1;
-        particles[i].vy = a2;
-        particles[i].vz = a3;
-        particles[i].t = 0.0;
-        particles[i].dt = 0.0;
-        particles[i].ti = 1;
-        end = particles[i].box_i = ++boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].end;
-        boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[particles[i].box_i] = i;
-
-        global_E += a1*a1 + a2*a2 + a3*a3;
-
-        if (end > 7) {
-            printf("Error: Too many particles in one box");
-            throw "Error: Too many particles in one box";
-        }
-        for (short t = 0; t < particles[i].box_i; ++t)
-            for (short d = t + 1; d <= particles[i].box_i; ++d)
-                if (boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[t] == boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[d])
-                {
-                    printf("Duplicated particles in one box");
-                    throw "Duplicated particles in one box";
-                }
+    for (int i = 0; i < NP + count_of_virt_particles; i++) {
+		load_information_about_one_particle(loading_file);
     }
+
     fclose(loading_file);
 
     last = 1;
@@ -1462,16 +1500,16 @@ void load_seed(std::string file_name) {
 
     for (int i = 0; i < NP; ++i) retime(i);
 	for (int i = 0; i < NP; ++i) {
-		create_virt_particle(i);
 		if (particles[i].i_copy > 0) retime(particles[i].i_copy);
 	}
 
-	double Mx = 0.0;
+	/*
+	double Lx = 0.0;
 	for (int i = 0; i < NP; i++) {
-		Mx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
+		Lx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
 	}
-
-	printf("\n Mx = %.15le\n", Mx);
+	printf("\n Lx = %.15le\n", Lx);
+	*/
 }
 
 /*
@@ -1481,22 +1519,58 @@ void load_seed(std::string file_name) {
  file_name - имя файла, в который будет записана информация
  */
 void save(std::string file_name) {
-    double x, y, z;
+	int images[7000];
+	int count_of_images = 0;
+    double x, y, z, dt;
+	double t_global = get_maximum_particle_time();
+
+	// RU: мы должны сохранить информацию об образах частиц чтобы
+	// не пересоздавать образы при каждой загрузке системы из сохраненного состояния.
+	// EN: we need to save all virtual particles (images) because we
+	// don't want to create all virtual particles during the load_seed().
+	for (int i = 0; i < NP; ++i) {
+		if (particles[i].i_copy > 0) {
+			images[count_of_images] = particles[i].i_copy;
+			count_of_images += 1;
+		}
+	}
 
     FILE *save_file = fopen(file_name.c_str(), "w+");
+
+	// RU: сохраняем информацию о количестве частиц и размерах системы
+	// EN: save information about count of particles and size of the system
     fprintf(save_file, "%d\n", NP);
+	fprintf(save_file, "%d\n", count_of_images);
     fprintf(save_file, "%.15le\n", A * 2.0);
     fprintf(save_file, "%.15le\n", L * 2.0);
+
+	// RU: сохраняем координаты всех частиц и их скорости: x,y,x,vx,vy,vz
+	// EN: we need to save all coordinates of particles: x,y,z,vx,vy,vz
     for (int i = 0; i < NP; ++i) {
-        x = L + particles[i].x - particles[i].vx * particles[i].t;
-        y = A + particles[i].y - particles[i].vy * particles[i].t;
-        z = A + particles[i].z - particles[i].vz * particles[i].t;
+		fprintf(save_file, "%d %d\n", i, particles[i].i_copy);
+
+		dt = t_global - particles[i].t;
+        x = L + particles[i].x + particles[i].vx * dt;
+        y = A + particles[i].y + particles[i].vy * dt;
+        z = A + particles[i].z + particles[i].vz * dt;
         fprintf(save_file, "%.15le %.15le %.15le\n", x, y, z);
         fprintf(save_file, "%.15le %.15le %.15le\n", particles[i].vx, particles[i].vy, particles[i].vz);
-
-        if (-particles[i].t > particles[i].dt)
-            printf("Error: Sync of system events failed\n");
     }
+
+	// RU: мы так же сохраняем координаты всех виртуальных частиц (образов)
+	// EN: we also need to save all coordinates of virtual particles (images)
+	for (int i = 0; i < count_of_images; ++i) {
+		int k = images[i];
+		fprintf(save_file, "%d %d\n", k, particles[k].i_copy);
+
+		dt = t_global - particles[k].t;
+		x = L + particles[k].x + particles[k].vx * dt;
+		y = A + particles[k].y + particles[k].vy * dt;
+		z = A + particles[k].z + particles[k].vz * dt;
+		fprintf(save_file, "%.15le %.15le %.15le\n", x, y, z);
+		fprintf(save_file, "%.15le %.15le %.15le\n", particles[k].vx, particles[k].vy, particles[k].vz);
+	}
+
     fclose(save_file);
 }
 
@@ -1686,25 +1760,30 @@ void new_seed(int NN, double etta) {
         particles[ii].z = particles[ii].z*Betta;
     }
 
-	double Mx = 0.0;
+	double Lx = 0.0;
 	for (int i = 0; i < NP; i++) {
-		Mx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
+		Lx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
 	}
 
-	printf("\n Mx = %.15le\n", Mx);
+	printf("\n Lx = %.15le\n", Lx);
 
     // сохранить систему по старому алгоритму
     // загрузить систему по новому алгоритму
+	/*
     FILE *save_file = fopen("new.txt", "w+");
     fprintf(save_file, "%d\n", NP);
     fprintf(save_file, "%.15le\n", A);
     fprintf(save_file, "%.15le\n", L);
+	*/
+	A2 = A;
+	A = A / 2.0;
+	L = L / 2.0;
     for (int i = 0; i < NP; i++) {
-        fprintf(save_file, "%.15le %.15le %.15le\n", particles[i].x, particles[i].y, particles[i].z);
-        fprintf(save_file, "%.15le %.15le %.15le\n", particles[i].vx, particles[i].vy, particles[i].vz);
+		particles[i].x -= L;
+		particles[i].y -= A;
+		particles[i].z -= A;
     }
-    fclose(save_file);
-
+	save("new.txt");
     load_seed("new.txt");
 }
 
@@ -1984,8 +2063,6 @@ void step() {
 
 		//if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
         //printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
-		iim = im;
-		ijm = jm;
 
 		//check_particles();
 
@@ -2215,19 +2292,34 @@ void profile(double x1, double x2, int steps, std::string file_name) {
 }
 
 void compress(double compress_to_etta) {
-	printf("INFO: Start to change system density...\n");
+	int k;
 	double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 	double min = 1.0e+100, max = -1.0, x;
+	double t_global, dt;
+
+	printf("INFO: Start to change system density...\n");
+
 	// задаём плотность с точностью в 12 знаков
 	while (fabs(etta - compress_to_etta) > 1.0e-12) {
 		if (etta < compress_to_etta) {
 			max = -100.0;
 			min = 1.1e+10;
 
+			t_global = get_maximum_particle_time();
+
 			for (int i = 0; i < NP; ++i) {
-				x = L + particles[i].x - particles[i].vx * particles[i].t;
+				dt = t_global - particles[i].t;
+				x = L + particles[i].x + particles[i].vx * dt;
 				if (x < min) min = x;
 				if (x > max) max = x;
+
+				if (particles[i].i_copy > 0) {
+					k = particles[i].i_copy;
+					dt = t_global - particles[k].t;
+					x = L + particles[k].x + particles[k].vx * dt;
+					if (x < min) min = x;
+					if (x > max) max = x;
+				}
 			}
 
 			min = min - 1.0;
@@ -2284,7 +2376,7 @@ void init(std::string file_name) {
 
             command_file >> NN;
             command_file >> etta;
-            command_file.getline(parameter, 255, '\n');
+            command_file.getline(parameter, 255, '\n');  // завершить считывание строки
             new_seed(NN, etta);
             etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 			printf("| A    | %.15le |\n| L    | %.15le |\n| N    | %d                  |\n| etta | %.15le |\n", 2.0 * A, 2.0 * L, NP, etta);
@@ -2297,7 +2389,7 @@ void init(std::string file_name) {
         }
         if (str_command.compare("step") == 0) {
             command_file >> steps;
-            command_file.getline(parameter, 255, '\n');
+            command_file.getline(parameter, 255, '\n');  // завершить считывание строки
 
             printf(" INFO: Step start. \n");
 
@@ -2307,6 +2399,7 @@ void init(std::string file_name) {
                 step();
 				//check_particles();
 
+				/*
 				double dt = 0.0;
 				double t_global = get_maximum_particle_time();
 				particle p1;
@@ -2320,6 +2413,7 @@ void init(std::string file_name) {
 
 					Lx += p1.y*p1.vz - p1.z*p1.vy;
 				}
+				*/
 				
 
                 printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
@@ -2356,7 +2450,7 @@ void init(std::string file_name) {
         if (str_command.compare("compress") == 0) {
             double etta;
             command_file >> etta; // требуемая плотность
-            command_file.getline(parameter, 255, '\n');
+			command_file.getline(parameter, 255, '\n');  // завершить считывание строки
             compress(etta);
         }
         if (str_command.empty()) break;
