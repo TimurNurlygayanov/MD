@@ -1,0 +1,51 @@
+<!doctype html>
+{% extends "bootstrap/base.html" %}
+
+{% block head %}
+
+{{ super() }}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-table.css') }}">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<script src="{{ url_for('static', filename='bootstrap-table.js') }}"></script>
+
+{% endblock %}
+
+{% block content %}
+
+{% if username %}
+  <h1>Hello {{ username }}!</h1>
+{% else %}
+  <h1>ERROR</h1>
+{% endif %}
+
+<form class="form-vertical" method="POST">
+
+  <div class="form-group">
+
+    <div class="container">
+
+        <div class="panel panel-default">
+            <div class="panel-heading"> <center> List Of Experiments </center> </div>
+
+            <table data-toggle="table" data-search='true' data-pagination="true" data-side-pagination='server' data-page-list="[10, 25, 50, 100]" pageSize=1 data-url="/experiment_list">
+              <thead>
+                <tr>
+                  <th data-field="name" data-radio="true"> Experiment Name </th>
+                  <th data-field="author">Author</th>
+                  <th data-field="date">Date</th>
+                  <th data-field="description" data-visible="true">Description</th>
+                </tr>
+              </thead>
+            </table>
+
+        </div>
+
+        <input type="submit" value="Continue This Experiment">
+        <input type="submit" value="Start New Experiment">
+
+    </div>
+  </div>
+</form>
+
+{% endblock %}

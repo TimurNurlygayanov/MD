@@ -2329,12 +2329,12 @@ void compress(double compress_to_etta) {
 			// сжимаем не впритык к частицам и не слишком быстро
 			min = min / 1.1;
 			if (min < 0.1e-8) min = 0.01e-30;
-			if (min > 0.01) min = 0.01;
+			if (min > 0.01) min = 1.0e-4;
 		}
 		else {
 			double L_ideal = ((PI * NP) / compress_to_etta) / (6.0 * A * A) + 1;
 			min = L - L_ideal;
-			if (min < -0.01) min = -0.01; // шаг расширения системы
+			if (min < -0.01) min = -1.0e-4; // шаг расширения системы
 		}
 		// изменяем систему
 		L -= min;
