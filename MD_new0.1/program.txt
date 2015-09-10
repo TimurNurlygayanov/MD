@@ -3,25 +3,17 @@ step 10
 save test001.txt
 load test001.txt
 step 100
-save test001.txt
-load test001.txt
-step 1000
-save test001.txt
-load test001.txt
-step 1000
-compress 0.41
-save save_file_0.41000_00000.txt
-step 1000
-compress 0.42
+image 1000 10 image_file_0.40000_100.txt
+compress 0.42 0.000001 100
 save save_file_0.42000_00000.txt
 step 1000
-compress 0.43
+compress 0.43 0.000001 100
 save save_file_0.43000_00000.txt
 step 1000
-compress 0.44
+compress 0.44 0.000001 100
 save save_file_0.44000_00000.txt
 step 1000
-compress 0.45
+compress 0.45 0.000001 100
 save save_file_0.45000_00000.txt
 step 10000
 save save_file_0.45000_10000.txt
@@ -35,7 +27,7 @@ image 1000 10 image_file_0.45000_40000.txt
 step 10000
 save save_file_0.45000_50000.txt
 image 1000 10 image_file_0.45000_50000.txt
-compress 0.46
+compress 0.46 0.000001 100
 step 10000
 save save_file_0.46000_10000.txt
 step 10000
@@ -48,7 +40,7 @@ image 1000 10 image_file_0.46000_40000.txt
 step 10000
 save save_file_0.46000_50000.txt
 image 1000 10 image_file_0.46000_50000.txt
-compress 0.47
+compress 0.47 0.000001 100
 step 10000
 save save_file_0.47000_10000.txt
 step 10000
