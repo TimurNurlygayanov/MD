@@ -121,18 +121,16 @@ int check_particles() {
 
         E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
 
-		//Mx += p1.y*p1.vz - p1.z*p1.vy;
-
         if ((p1.x_box > K2) || (p1.y_box > K) || (p1.z_box > K) ||
             (p1.x_box < 0) || (p1.y_box < 0) || (p1.z_box < 0)) {
-            return 400;
+            throw "Particle locates in incorrect cell.";
         }
 
         if (((abs(p1.x) - L) > 1.0e-14) ||
 			((abs(p1.y) - A) > 1.0e-14) ||
 			((abs(p1.z) - A) > 1.0e-14)) {
             printf(" \n Particle %d, %.15le, %.15le, %.15le, A = %.15le, %.15le \n ", i, p1.x, p1.y, p1.z, A, p1.z - A);
-            return 500;
+            throw "Particle is out of the system boundaries.";
         }
 
         if ((p1.x < p1_box.x1) || (p1.x > p1_box.x2) ||
@@ -149,7 +147,7 @@ int check_particles() {
 
             printf("p1.dt = %.15le, p.im = %d, p1.jm = %d \n", p1.t, time_queue[p1.ti].im, time_queue[p1.ti].jm);
 
-            return 1;
+            throw "Particle is out of the cell boundary.";
         }
 
         if ((p1.i_copy > -1) && (particles[i+NP].i_copy == -1)) return 2;
@@ -164,18 +162,18 @@ int check_particles() {
                 printf(" %d ", boxes_yz[p1.y_box][p1.z_box][p1.x_box].particles[t]);
             }
 
-            return 1010;
+            throw "Particle doesn't store in the cell.";
         }
         if (time_queue[p1.ti].im != i && time_queue[p1.ti].jm != i) {
             printf("\n >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ");
             printf("\n i = %d ; im = %d ; jm = %d ; ti = %d ", i, time_queue[p1.ti].im, time_queue[p1.ti].jm, p1.ti);
-            return 3;
+            throw "Particle has no correct link to the event.";
         }
     }
 
     if (abs(E - global_E) > 0.1e-8) {
         printf("\nENERGY was changed: \n E_seed = %.15le \n E_now= %.15le \n", global_E, E);
-        return 1000;
+        throw "ENERGY was changed.";
     }
 
 	//printf("\n particle 2563: x %.15le, y %.15le, z %15.le\n", particles[2563].x, particles[2563].y, particles[2563].z);
@@ -2394,7 +2392,6 @@ void init(std::string file_name) {
             new_seed(NN, etta);
             etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 			printf("| A    | %.15le |\n| L    | %.15le |\n| N    | %d                  |\n| etta | %.15le |\n", 2.0 * A, 2.0 * L, NP, etta);
-			printf("K = %d, K2 = %d \n", K, K2);
         }
         if (str_command.compare("load") == 0) {
             command_file.getline(parameter, 255, '\n');
@@ -2409,8 +2406,6 @@ void init(std::string file_name) {
             printf(" INFO: Step start. \n");
 
             start = clock();
-
-			printf("K = %d, K2 = %d \n", K, K2);
 
             for (i = 0; i < steps; ++i) {
                 step();
@@ -2481,7 +2476,7 @@ void init(std::string file_name) {
 }
 
 
-int main(array<System::String ^> ^args)
+int main()
 {
     //K = 3;
     //K2 = 8;
