@@ -1001,10 +1001,10 @@ void change_with_virt_particles(int &im, int &jm) {
     y_box = particles[f].y_box;
     z_box = particles[f].z_box;
 
-    if (y_box == 0) y_box = 1;
-    if (y_box == K) y_box = K - 1;
-    if (z_box == 0) z_box = 1;
-    if (z_box == K) z_box = K - 1;
+    if (y_box <= 0) y_box = 1;
+    if (y_box >= K) y_box = K - 1;
+    if (z_box <= 0) z_box = 1;
+    if (z_box >= K) z_box = K - 1;
 
     particles[im].x_box = particles[f].x_box;
     particles[im].y_box = y_box;
@@ -1353,9 +1353,9 @@ void load_information_about_one_particle(FILE *loading_file) {
 	particles[i].x = a1 - L;
 	particles[i].y = a2 - A;
 	particles[i].z = a3 - A;
-	x_box = short((L + dL + particles[i].x) / dL);
-	y_box = short((A + dA + particles[i].y) / dA);
-	z_box = short((A + dA + particles[i].z) / dA);
+	x_box = short(a1 / dL) + 1;
+	y_box = short(a2 / dA) + 1;
+	z_box = short(a3 / dA) + 1;
 
 	if (y_box < 0) y_box = 0;
 	if (y_box > K) y_box = K;
@@ -1372,6 +1372,9 @@ void load_information_about_one_particle(FILE *loading_file) {
 			particles[i].x_box = x_box;
 		else {
 			printf("Particle locates in incorrect place %d", i);
+			printf("\n a1 = %.15le, x = %.15le, L = %.15le, dL = %.15le \n", a1, particles[i].x, L, dL);
+			printf("\n x_box = %d, BOX x: [%.15le; %.15le]", x_box, boxes_yz[y_box][z_box][x_box].x1, boxes_yz[y_box][z_box][x_box].x2);
+			printf("\n particle x: %.15le", particles[i].x);
 			throw "Particle locates in incorrect place";
 		}
 
@@ -1450,11 +1453,15 @@ void load_seed(std::string file_name) {
     A2 = a1;
     fscanf(loading_file, "%le\n", &a1);
     L = a1 / 2.0;
+
+	// EN: search for the appropriate values for dA, dL, K, K2
+	// RU: ищем подходящее значение для dA, dL, K, K2
     dA = 2.5;
     dL = 2.5;
-
 	K = short(A2 / dA) + 1;
 	K2 = short(2.0 * L / dL) + 1;
+	dA = A2 / (K - 1);
+	dL = 2.0*L / (K2 - 1);
 
     y = z = -A - dA;
     x = -L - dL;
@@ -1772,9 +1779,10 @@ void new_seed(int NN, double etta) {
 	A2 = A;
 	dA = 2.5;
 	dL = 2.5;
-
 	K = short(A / dA) + 1;
 	K2 = short(L / dL) + 1;
+	dA = A / (K - 1);
+	dL = L / (K2 - 1);
 
 	A = A / 2.0;
 	L = L / 2.0;

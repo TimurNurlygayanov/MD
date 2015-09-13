@@ -1,4 +1,5 @@
 new 8 0.40000
+save test000.txt
 step 10
 save test001.txt
 load test001.txt
