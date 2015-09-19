@@ -1,50 +1,6 @@
-﻿Сборка начата 13.09.2015 21:08:15.
+﻿Сборка начата 19.09.2015 1:06:55.
      1>Проект "C:\MD\MD_new0.1\MD_new0.1.vcxproj" в узле 2 (целевые объекты Build).
-     1>ClCompile:
-         C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /AI"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\\" /AI"C:\Program Files\Windows Kits\8.1\References\CommonConfiguration\Neutral" /AI"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\Facades\\" /Zi /clr /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _UNICODE /D UNICODE /EHa /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"Debug\MD_new0.1.pch" /Fo"Debug\\" /Fd"Debug\vc140.pdb" /TP /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\mscorlib.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.dll" /FU"C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Xml.dll" /analyze- /errorReport:prompt /clr:nostdlib prog.cpp
-         prog.cpp
-     1>prog.cpp(633): warning C4101: z: неиспользованная локальная переменная
-     1>prog.cpp(633): warning C4101: y: неиспользованная локальная переменная
-     1>prog.cpp(987): warning C4101: box_i: неиспользованная локальная переменная
-     1>prog.cpp(1221): warning C4244: инициализация: преобразование "double" в "int", возможна потеря данных
-     1>prog.cpp(1037): warning C4101: y2: неиспользованная локальная переменная
-     1>prog.cpp(1036): warning C4101: t11: неиспользованная локальная переменная
-     1>prog.cpp(1037): warning C4101: z2: неиспользованная локальная переменная
-     1>prog.cpp(1036): warning C4101: t22: неиспользованная локальная переменная
-     1>prog.cpp(1036): warning C4101: t2: неиспользованная локальная переменная
-     1>prog.cpp(1036): warning C4101: t1: неиспользованная локальная переменная
-     1>prog.cpp(1037): warning C4101: x2: неиспользованная локальная переменная
-     1>prog.cpp(1348): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1350): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1400): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1443): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>prog.cpp(1445): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1447): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1449): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1452): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>prog.cpp(1441): warning C4101: a3: неиспользованная локальная переменная
-     1>prog.cpp(1441): warning C4101: a2: неиспользованная локальная переменная
-     1>prog.cpp(1545): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>prog.cpp(1607): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-     1>prog.cpp(1608): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-     1>prog.cpp(2260): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>prog.cpp(2282): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>prog.cpp(2474): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>prog.cpp(2489): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-       Link:
+     1>Link:
          C:\Program Files\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\MD\Debug\MD_new0.1.exe" /INCREMENTAL /NOLOGO /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\MD\Debug\MD_new0.1.pdb" /ASSEMBLYDEBUG /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /FIXED:NO /NXCOMPAT /MACHINE:X86 Debug\app.res
          Debug\AssemblyInfo.obj
          Debug\prog.obj
@@ -55,4 +11,4 @@
 
 Сборка успешно завершена.
 
-Затраченное время: 00:00:01.59
+Затраченное время: 00:00:00.48

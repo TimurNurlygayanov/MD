@@ -613,6 +613,7 @@ void retime(int &i) {
 	//printf("\nretime result: %d %d, %.15le\n ", i, jm, dt_min);
 
     if (dt_min < -1.0e-11) {
+		printf("\n iim = %d ijm = %d \n", iim, ijm);
 		printf("\n retime result: %d %d, %.15le\n ", i, jm, dt_min);
 		printf("\n p1.x = %.15le, p1.y = %.15le, p1.z = %.15le \n", p1.x, p1.y, p1.z);
 		printf("\n p1.x_box = %d, p1.y_box = %d, p1.z_box = %d", p1.x_box, p1.z_box, p1.y_box);
@@ -1410,13 +1411,13 @@ void load_information_about_one_particle(FILE *loading_file) {
 
 	global_E += a1*a1 + a2*a2 + a3*a3;
 
-	/*
+
 	if (end > 7) {
 		printf("Error: Too many particles in one box");
 		printf("\n x_box, y_box, z_box = %d %d %d , end = %d \n", x_box, y_box, z_box, end);
 		throw "Error: Too many particles in one box";
 	}
-	*/
+	
 	for (short t = 0; t < particles[i].box_i; ++t)
 		for (short d = t + 1; d <= particles[i].box_i; ++d)
 			if (boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[t] == boxes_yz[particles[i].y_box][particles[i].z_box][particles[i].x_box].particles[d])
@@ -1509,14 +1510,6 @@ void load_seed(std::string file_name) {
 	for (int i = 0; i < NP; ++i) {
 		if (particles[i].i_copy > 0) retime(particles[i].i_copy);
 	}
-
-	/*
-	double Lx = 0.0;
-	for (int i = 0; i < NP; i++) {
-		Lx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
-	}
-	printf("\n Lx = %.15le\n", Lx);
-	*/
 }
 
 /*
@@ -1785,6 +1778,10 @@ void new_seed(int NN, double etta) {
 	A = A / 2.0;
 	L = L / 2.0;
     for (int i = 0; i < NP; i++) {
+		particles[i].t = 0.0;
+		particles[i].dt = 0.0;
+		particles[i].ti = 0;
+
 		particles[i].x -= L;
 		particles[i].y -= A;
 		particles[i].z -= A;
@@ -2070,10 +2067,22 @@ void step() {
 		im = time_queue[1].im;
 		jm = time_queue[1].jm;
 
-		//if (im == 3058 || im == 2826 || jm == 3058 || jm == 2826)
-        //printf("\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+		iim = im;
+		ijm = jm;
 
-		//check_particles();
+		/*
+		if (im == 113 || im == 132 || jm == 113 || jm == 132) {
+			printf("\n\n Next event: %d %d %le\n", time_queue[1].im, time_queue[1].jm, particles[im].dt);
+
+			Box b = boxes_yz[particles[im].y_box][particles[im].z_box][particles[im].x_box];
+			printf("particle %d z = %.5le, z_box [%.5le; %.5le]", im, particles[im].z, b.z1, b.z2);
+
+			b = boxes_yz[particles[jm].y_box][particles[jm].z_box][particles[jm].x_box];
+			printf("particle %d z = %.5le, z_box [%.5le; %.5le]", jm, particles[jm].z, b.z1, b.z2);
+		}
+		*/
+
+		check_particles();
 
         /////////////////////////
 		/*
@@ -2130,23 +2139,7 @@ void step() {
 
         particles[im] = p1;
 
-		/*
-		if (im > NP || jm > NP) {
-			printf("before the reform: f1");
-			check_particles();
-			printf("f2");
-		}
-		*/
-
 		need_virt_particle_retime = reform(im, jm);
-
-		/*
-		if (im > NP || jm > NP) {
-			printf("after the reform: f1");
-			check_particles();
-			printf("f2");
-		}
-		*/
 
         if (im >= NP) {
             if (particles[im].i_copy > -1)
@@ -2163,14 +2156,6 @@ void step() {
             }
         }
 
-		/*
-		if (im > NP || jm > NP) {
-			printf("after the retime1: g1");
-			check_particles();
-			printf("g2");
-		}
-		*/
-
         if (jm >= 0) {
             ++COLL_COUNT;
 
@@ -2186,15 +2171,6 @@ void step() {
                     retime(particles[jm].i_copy);
             }
         }
-
-		/*
-		if (im > NP || jm > NP) {
-			printf("after the retime2: g1  %d \n", COLL_COUNT);
-			//printf("im = %d, jm = %d", time_queue[particles[jm].ti].im, time_queue[particles[jm].ti].jm);
-			check_particles();
-			printf("g2");
-		}
-		*/
 
         /////////////////////////
 		/*
