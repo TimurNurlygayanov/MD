@@ -1,4 +1,4 @@
-new 8 0.40000
+new 8 0.51000
 step 1000
 compress 0.4001 0.001 10
 save save_file_0.41000_00000.txt

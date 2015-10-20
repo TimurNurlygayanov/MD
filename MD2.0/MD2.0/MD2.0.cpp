@@ -810,6 +810,13 @@ void find_place_for_particle(int &i) {
 
 
 void destroy_virt_particle(int &i) {
+
+	if (i == 4486) {
+		printf("\n destroy virt particle! \n");
+		printf("p.x = %.15le, p.y = %.15le, p.z = %.15le\n", particles[i].x, particles[i].y, particles[i].z);
+		printf("p.vx = %.16le, p.vy = %.16le, p.vz = %.16le\n", particles[i].vx, particles[i].vy, particles[i].vz);
+	}
+
 	if (i >= NP) {
 		printf("\n %d particle \n", i);
 		printf(" i_copy = %d   particle icopy = %d \n", particles[i].i_copy, particles[i - NP].i_copy);
@@ -893,6 +900,10 @@ void create_virt_particle(int &i) {
 		((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0))) {
 
 		dt_min = 1.0e+20;
+
+		if (i == 4486) {
+			printf("\n Create virt particle --> \n");
+		}
 
 		y = A + particles[i].y;
 		z = A + particles[i].z;
@@ -1710,9 +1721,18 @@ bool reform(int &im, int &jm) {
 					++p1.y_box;
 					p1.y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1;
 					if ((p1.y_box == K) && (im < NP)) {
+						if (im == 4486) {
+							printf("\n before change with virt particle: p1.x = %.15le p1.y = %.15le p1.z = %.15le\n", p1.x, p1.y, p1.z);
+						}
+						
 						change_with_virt_particles(im, jm);
 						p1 = particles[im];
 						need_create_virt_particle = true;
+
+						if (im == 4486) {
+							printf("\n after change with virt particle: p1.x = %.15le p1.y = %.15le p1.z = %.15le\n", p1.x, p1.y, p1.z);
+							printf("\n i_copy = %d \n", particles[im].i_copy);
+						}
 					}
 				}
 				if (jm == -7) {
@@ -1734,6 +1754,12 @@ bool reform(int &im, int &jm) {
 					}
 				}
 				if (jm < -10) {
+
+					if (jm == -15) particles[im].y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1;
+					if (jm == -16) particles[im].y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y2;
+					if (jm == -17) particles[im].z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1;
+					if (jm == -18) particles[im].z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2;
+
 					create_virt_particle(im);
 					p1 = particles[im];
 				}
@@ -1781,6 +1807,10 @@ void step() {
 	while (COLL_COUNT < NP / 2 || jm != -100) {
 		im = time_queue[1].im;
 		jm = time_queue[1].jm;
+
+		if ((im == 4486) || (jm == 4486) || (im == NP + 4486) || (jm == NP + 4486)) {
+			printf("\n im = %d, jm = %d \n", im, jm);
+		}
 
 		delete_event(1);
 
@@ -2138,7 +2168,7 @@ void init(std::string file_name) {
 			printf("'compress_two_walls' instead. You can also use 'compress_left_wall'");
 			printf("\nor 'compress_right_wall' commands to control system density.\n");
 		}
-		if (str_command.compare("compress_two_walls") == 0) {
+		if ((str_command.compare("compress_two_walls") == 0) || (str_command.compare("compresst") == 0)) {
 			double etta, delta_etta;
 			command_file >> etta; // требуемая плотность
 			command_file >> delta_etta;  // минимальное допустимое значение изменения плотности
@@ -2148,7 +2178,7 @@ void init(std::string file_name) {
 
 			print_system_parameters();
 		}
-		if (str_command.compare("compress_left_wall") == 0) {
+		if ((str_command.compare("compress_left_wall") == 0) || (str_command.compare("compressl") == 0)) {
 			double etta, delta_etta;
 			command_file >> etta; // требуемая плотность
 			command_file >> delta_etta;  // минимальное допустимое значение изменения плотности
@@ -2158,7 +2188,7 @@ void init(std::string file_name) {
 
 			print_system_parameters();
 		}
-		if (str_command.compare("compress_right_wall") == 0) {
+		if ((str_command.compare("compress_right_wall") == 0) || (str_command.compare("compressr") == 0)) {
 			double etta, delta_etta;
 			command_file >> etta; // требуемая плотность
 			command_file >> delta_etta;  // минимальное допустимое значение изменения плотности
