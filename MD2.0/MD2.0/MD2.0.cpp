@@ -1647,7 +1647,7 @@ void new_seed(int NN, double etta) {
 	// "расширяем" систему до необходимой плотности.
 	for (int ii = 0; ii < NP; ii++) {
 		particles[ii].x = particles[ii].x*Betta;   // множитель Betta - это коэффициент расширения
-		particles[ii].y = particles[ii].y*Betta;   // на него умножаются все координаты и параметры объема
+		particles[ii].y = particles[ii].y*Betta;   // на него умножаются все координаты и параметры объёма
 		particles[ii].z = particles[ii].z*Betta;
 	}
 
