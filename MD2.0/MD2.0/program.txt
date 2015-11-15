@@ -1,8 +1,7 @@
-load new_20000.txt
-step 30000000
-compress 0.4001 0.001 10
-save save_file_0.41000_00000.txt
-step 1000
+new 8 0.50000
+step 300
+compress_two_walls 0.503423 0.000001 10
+step 1000999999999999
 compress 0.42 0.000001 10
 save save_file_0.42000_00000.txt
 step 1000

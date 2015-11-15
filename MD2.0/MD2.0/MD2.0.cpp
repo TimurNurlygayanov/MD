@@ -11,10 +11,6 @@
 #include <fstream>
 #include <math.h>
 #include <cmath>
-//#include <vector>
-//#include <exception>
-
-//using namespace System;
 
 #define _CRT_SECURE_NO_WARNINGS
 
@@ -1380,8 +1376,6 @@ void load_seed(std::string file_name) {
 		retime(i);
 		if (particles[i].i_copy > 0) retime(particles[i].i_copy);
 	}
-
-	printf("\n System was successfully loaded from file '%s' \n", file_name.c_str());
 }
 
 
@@ -2095,16 +2089,23 @@ type - тип сжатия:
 	   1 - пододвигать только правую стенку
 	   2 - пододвигать одновременно обе стенки на одинаковое расстояние
 */
-void compress(double compress_to_etta, double delta_etta, int steps, int type) {
+void compress(double compress_to_etta, double delta_L, int steps, int type) {
 	int m;
 	double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 	double min = 1.0e+100, max = -1.0, x, dL, dx;
 	double t_global, dt;
-	double delta_L = fabs(L - 2.0 - ((PI*NP) / (etta + delta_etta)) / (6.0 * A * A) + 1.0);
 	double L_ideal = ((PI * NP) / compress_to_etta) / (6.0 * A * A) + 1;
 
 	printf("\n INFO: Start to change system density... \n");
-	printf("etta = %.16le, should be equal to %.15le", etta, compress_to_etta);
+
+	printf(" \n  Maximum delta_L = %.15le \n", delta_L);
+	printf("  Program will wait %d collissions per particle between each change in density. \n", steps);
+	printf("  Type of compression: ");
+	if (type == 0) printf("only position of left wall will be changed");
+	if (type == 1) printf("only position of right wall will be changed");
+	if (type == 2) printf("position of both walls will be changed \n\n");
+
+	printf("etta = %.15le, should be equal to %.15le \n", etta, compress_to_etta);
 
 	// задаём плотность с точностью в 12 знаков
 	while (fabs(etta - compress_to_etta) > 1.0e-12) {
@@ -2141,10 +2142,10 @@ void compress(double compress_to_etta, double delta_etta, int steps, int type) {
 
 			// сжимаем не впритык к частицам и не слишком быстро
 			dL = dL / 1.1;
-			if (dL < 0.1e-8) dL = 0.01e-30;
-			if (dL > delta_L) dL = delta_L;
+			if (dL < 0.1e-12) dL = 0.01e-30; // не двигаем стенку если частицы близко
+			if (dL > delta_L) dL = delta_L;  // сдвигаем стенку не больше чем на delta_L
 
-			dx = dL / 2.0;
+			dx = dL / 2.0;  // рассчитываем смещение для всех частиц
 
 			// если следующее смещение стенки сожмёт систему больше чем требуется
 			// то необходимо задать точное значение L, чтобы плотность совпала с требуемой
@@ -2186,6 +2187,7 @@ void compress(double compress_to_etta, double delta_etta, int steps, int type) {
 		save("tmp");
 		load_seed("tmp");
 
+		// после каждого смещения стенки делаем указанное количество соударений на частицу в системе
 		for (short i = 0; i < steps; ++i)
 			step();
 
@@ -2193,12 +2195,12 @@ void compress(double compress_to_etta, double delta_etta, int steps, int type) {
 		etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 
 		// очистка экрана и вывод информации о прогрессе
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		printf("etta = %.16le, should be equal to %.16le", etta, compress_to_etta);
+		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("etta = %.15le, should be equal to %.15le   \n", etta, compress_to_etta);
 	}
-	printf("\n INFO: System density was sucessfully changed to %.16le \n", etta);
+	printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
 }
 
 
@@ -2229,6 +2231,8 @@ void init(std::string file_name) {
 		if (str_command.compare("load") == 0) {
 			command_file.getline(parameter, 255, '\n');
 			load_seed(parameter);
+
+			printf("\n System was successfully loaded from file '%s' \n", file_name.c_str());
 
 			print_system_parameters();
 		}

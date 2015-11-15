@@ -1,0 +1,45 @@
+load new_20000.txt
+step 300000000
+compress 0.4001 0.001 10
+save save_file_0.41000_00000.txt
+step 1000
+compress 0.42 0.000001 10
+save save_file_0.42000_00000.txt
+step 1000
+compress 0.43 0.000001 10
+save save_file_0.43000_00000.txt
+step 1000
+compress 0.44 0.000001 10
+save save_file_0.44000_00000.txt
+step 1000
+compress 0.45 0.000001 10
+save save_file_0.45000_00000.txt
+compress 0.46 0.000001 10
+step 10000
+save save_file_0.46000_10000.txt
+compress 0.47 0.000001 10
+step 10000
+save save_file_0.47000_10000.txt
+compress 0.48 0.000001 10
+step 10000
+save save_file_0.48000_10000.txt
+compress 0.49 0.000001 10
+step 10000
+save save_file_0.49000_10000.txt
+compress 0.50 0.000001 10
+step 10000
+save save_file_0.50000_10000.txt
+compress 0.51 0.000001 10
+step 10000
+save save_file_0.51000_10000.txt
+image 2000 10 image_file_0.51000_50000.txt
+load save_file_0.51000_10000.txt
+step 10000
+save save_file_0.51000_20000.txt
+step 10000
+save save_file_0.51000_30000.txt
+step 10000
+save save_file_0.51000_40000.txt
+step 10000
+save save_file_0.51000_50000.txt
+image 2000 10 image_file_0.51000_50000.txt

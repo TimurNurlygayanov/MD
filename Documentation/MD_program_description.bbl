@@ -1,0 +1,70 @@
+\begin{thebibliography}{1}
+\def\selectlanguageifdefined#1{
+\expandafter\ifx\csname date#1\endcsname\relax
+\else\language\csname l@#1\endcsname\fi}
+\ifx\undefined\url\def\url#1{{\small #1}}\else\fi
+\ifx\undefined\BibUrl\def\BibUrl#1{\url{#1}}\else\fi
+\ifx\undefined\BibAnnote\long\def\BibAnnote#1{(#1)}\else\fi
+\ifx\undefined\BibEmph\def\BibEmph#1{\emph{#1}}\else\fi
+
+\bibitem{Veshnev_Nurlygayanov_Cristalization_of_hard_spheres_near_the_hard_wall_ru_2011}
+\selectlanguageifdefined{russian}
+В.П.~Вешнев~Т.А.~Нурлыгаянов. Кристаллизация
+  твердых сфер вблизи стенки~// Письма в ЖТФ.
+\newblock 2011.
+\newblock Т.~37, {№}~18.
+
+\bibitem{Miller_Luding_Event_driven_molecular_dynamics_in_parallel}
+\selectlanguageifdefined{russian}
+S.~Miller~S.~Luding. Event-driven molecular dynamics in parallel~// Journal of
+  Computational Physics.
+\newblock 2003.
+\newblock Т. 193.
+\newblock {с.}~306–316.
+
+\bibitem{Rapaport_The_Event_Driven_Approach_to_N_Body_Simulation}
+\selectlanguageifdefined{russian}
+Rapaport~Dennis~C. The Event-Driven Approach to N-Body Simulation~// Progress
+  of Theoretical Physics Supplement.
+\newblock 2009.
+\newblock {№}~178.
+\newblock {С.}~5--14.
+
+\bibitem{Belkin_MMD_2006}
+\selectlanguageifdefined{russian}
+Белкин~А.~А. ОБ ОДНОЙ МОДИФИКАЦИИ МЕТОДА
+  МОЛЕКУЛЯРНОЙ ДИНАМИКИ~// Сибирский журнал
+  индустриальной математики.
+\newblock 2006.  Октябрь–декабрь.
+\newblock Т.~IX, {№}~4(28).
+\newblock {С.}~27--32.
+
+\bibitem{Rosenbluth_Chem_Phys_22_881_1954}
+\selectlanguageifdefined{russian}
+Rosenbluth~Marshall~N., Rosenbluth~Arianna~W. Further Results on Monte Carlo
+  Equations of State~// J. Chem. Phys. 22, 881 (1954);
+  http://dx.doi.org/10.1063/1.1740207.
+\newblock 1954.
+
+\bibitem{Wood_and_Jacobson_1957}
+\selectlanguageifdefined{russian}
+Wood~W.~W., Jacobson~J.~D. Preliminary Results from a Recalculation of the
+  Monte Carlo Equation of State of Hard Spheres~// J. Chem. Phys.
+\newblock 1957.
+\newblock Т.~27.
+\newblock {с.}~1207.
+
+\bibitem{Alder_and_Wainwright_Phase_Transition_for_a_Hard_Sphere_System}
+\selectlanguageifdefined{russian}
+Alder~B.~J., Wainwright~T.~E. Phase Transition for a Hard Sphere System~// J.
+  Chem. Phys.
+\newblock 1957.
+\newblock Т.~27.
+\newblock {с.}~1208.
+
+\bibitem{Dzonkali_1989_Physics_T1}
+\selectlanguageifdefined{russian}
+Джанколи~Д. Физика. Т. I.
+\newblock Мир, 1989.
+
+\end{thebibliography}
