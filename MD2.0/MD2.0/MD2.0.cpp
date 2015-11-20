@@ -9,28 +9,30 @@
 #include "stdafx.h"
 #include <time.h>
 #include <fstream>
-#include <math.h>
+//#include <math.h>  - на случай компиляции в Linux
 #include <cmath>
-
-#define _CRT_SECURE_NO_WARNINGS
-
 /*
 ОБЪЯВЛЕНИЕ ПЕРЕМЕНЫХ
 */
 
-// длина стороны кубической ячейки, на которые разбивается объём 
+// количество ячеек по Y, Z и X(K2), на которые разбивается объём
+// количество ячеек расчитывает динамически при загрузке системы
+// или при посеве.
 short K, K2;
 
 // число частиц во всём объёме
 int NP = 6976;
 
+// глобальный счётчик столкновений в системе
 int COLL_COUNT = 0;
 
-// delete this dirty string
 #define PI 3.141592653589793238462
 
 // параметры объёма, задаются в load()
-double A, A2, dA, L, dL, global_E = 0.0;
+double A, A2, dA, L, dL;
+
+// Глобальная переменная для подсчёта общей кинетической энергии всех частиц
+double global_E = 0.0;
 
 // индекс последнего элемента в очереди событий.
 int last;
@@ -42,14 +44,20 @@ typedef struct Event_ {
 } Event;
 
 // очередь событий - оптимально 8192*2 элемента
+// (это должно быть число-степень двойки, большее чем максимальное число частиц)
 Event time_queue[16384];
 
 // объект "частица"
-// x,y,z,vx,vy,vz,t - particle coordinats.
-// dt - delta time for the next event of this particle.
-// kv - velocity koeficient.
+// x, y, z - координаты частицы
+// vx, vy, vz - проекции скоростей частицы
+// t - собственное время частицы
+// dt - время до ближайшего события этой частицы
+// x_box, y_box, z_box - номер ячейки, в которой находится частица
+// ti - номер события частицы в дереве событий
+// box_i - номер частицы в ячейке
+// i_copy - номер образа данной частицы, равно -1 если образа не существует
 typedef struct particle_ {
-	double x, y, z, vx, vy, vz, t, dt, kv;
+	double x, y, z, vx, vy, vz, t, dt;
 	int x_box, y_box, z_box, ti, box_i, i_copy;
 } particle;
 
@@ -59,6 +67,9 @@ particle particles[16384];
 
 // клетка. Объём системы разделён на множество клеток,
 // каждая клетка содержит в себе несколько виртуальных частиц
+// x1, y1, z1, x2, y2, z2 - координаты конца и начала каждой ячейки
+// particles[100] - список всех частиц, находящихся в данной ячейке
+// end - индекс последней частицы в списке частиц данной ячейки
 typedef struct Box_ {
 	double x1, y1, z1, x2, y2, z2;
 	int particles[100];
@@ -70,21 +81,23 @@ Box boxes_yz[16][16][64];
 
 
 // массив с номерами частиц, для которых надо сохранять историю событий
+// используется на случай отладки программы для сохранения истории событий
+// выбранных частиц
 int particles_for_check[100];
 int particles_for_check_count = 0;
 
-
+/*
+   Эта функция выводит на экран параметры текущей системы:
+   A - размер системы (области объёма, где может находиться центр частицы) по Y и Z.
+       здесь мы умножем А на 2.0, т.к. центр моделируемой системы находится в 0,
+	   а периодические границы находятся в плоскостях y = A, y = -A, z = A, z = -A.
+   L
+   N - число частиц в системе
+   etta - средняя относительная плотность системы
+*/
 void print_system_parameters() {
 	long double etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 	printf("\n\n| A    | %.16le |\n| L    | %.16le |\n| N    | %d                   |\n| etta | %.16le |\n", 2.0 * A, 2.0 * L, NP, etta);
-}
-
-
-void print_time_line() {
-	for (int i = 0; i <= last; i++) {
-		fprintf(stderr, "EVENT:");
-		fprintf(stderr, "%d %d %d %.5le", i, time_queue[i].im, time_queue[i].jm, time_queue[i].t);
-	}
 }
 
 
@@ -227,22 +240,43 @@ int get_up(int i, double &t) {
 /*
 функция добавления события в очередь событий
 параметры:
-e - новое событие (см. подробнее структуру типа Event)
+i - частица, с участием которой произойдёт новое событие
+j - номер частицы с которой столкнётся частица i или номер события
+    соударения со стенкой или прохождения через периодические
+	граничные условия или между ячейками системы
 */
 void add_event(int &i, int &j) {
+	/*
+	   Рассчитываем полное время нового события от начала отсчёта
+	   глобального времени системы, таким образом мы получаем время t,
+	   сравнивая которое мы можем определить какое из событий в системе
+	   произойдёт раньше
+	*/
 	double t = particles[i].t + particles[i].dt;
 
+	/*
+	   Находим позицию в дереве времён для нового события.
+	   Изначально помещаем это событие вниз дерева и позволяем
+	   ему подняться по дереву, если данное событие произойдёт раньше чем
+	   другие события
+	*/
 	particles[i].ti = get_up(last, t);
 
+	/*
+	   Если новое событие - это событие столкновения двух частиц, то
+	   необходимо для второй частицы сохранить данные о её новом событии
+	*/
 	if (j >= 0) {
 		particles[j].dt = particles[i].dt;
 		particles[j].ti = particles[i].ti;
 	}
 
+	// записываем новое событие в выбранную ячейку в дереве времён
 	time_queue[particles[i].ti].im = i;
 	time_queue[particles[i].ti].jm = j;
 	time_queue[particles[i].ti].t = t;
 
+	// увеличиваем число событий на 1
 	last++;
 }
 
@@ -421,10 +455,13 @@ void retime(int &i) {
 	double temp, dx, dy, dz, dvx, dvy, dvz, d, dv, bij;
 	int s, n, r, q, w;
 
+	// Проходим по ячейкам, ближайшим к ячейке, в которой находится частица i
 	for (r = p1.x_box - 1; r < p1.x_box + 2; ++r)
 		for (q = p1.y_box - 1; q < p1.y_box + 2; ++q)
 			for (w = p1.z_box - 1; w < p1.z_box + 2; ++w) {
 
+				// если индекс ячейки выходит за границу системы то
+				// переходим на следующий шаг цикла
 				if (q == -1) {
 					continue;
 				}
@@ -458,19 +495,35 @@ void retime(int &i) {
 					}
 					printf("stop");
 				}
-
+				
+				// проходим по всем частицам в выбранной ячейке и проверяем возможность
+				// столкновения этих частиц с частицей i
 				for (s = 0; s <= boxes_yz[q][w][r].end; ++s) {
 					n = boxes_yz[q][w][r].particles[s];
 
+					// не рассчитываем столкновения частицы с собственным образом
 					if (n == p1.i_copy) continue;
 
+					// сохраняем в переменную p все данные частицы n, чтобы далее
+					// чтобы далее записывать все операции короче и без обращения
+					// в глобальную память
 					particle p = particles[n];
 
+					// рассчитываем разницу собственного времени двух частиц,
+					// это необходимо чтобы синхронизовать их между собой и рассчитывать
+					// возможность и время столкновения в системе, где обе частицы будут
+					// иметь одинаковое собственное время
 					temp = p1.t - p.t;
 
 					dvx = p.vx - p1.vx;
 					dvy = p.vy - p1.vy;
 					dvz = p.vz - p1.vz;
+
+					// перемещаем частицу p во время частицы p1 (i-тая частица)
+					// мы можем это делать так как собственное время частицы p1 гарантированно
+					// либо больше либо равно собственному времени частицы p, т.к. с частицей
+					// p1 только что произошло событие и собственное время частицы p1 совпадает
+					// с глобальным временем в системе
 					dx = p.x + p.vx * temp - p1.x;
 					dy = p.y + p.vy * temp - p1.y;
 					dz = p.z + p.vz * temp - p1.z;
@@ -478,24 +531,37 @@ void retime(int &i) {
 					bij = dx * dvx + dy * dvy + dz*dvz;
 					if (bij < 0.0) {
 						dv = dvx * dvx + dvy * dvy + dvz*dvz;
+						// рассчитываем дискриминант в уравнении для вычисления времени соударения
 						d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
 
+						// если дискриминант больше нуля то соударение возможно
 						if (d > 0.0) {
 							dt = -(sqrt(d) + bij) / dv;
 
 							/*
 							Сценарии, при котором возможны отрицательные времена:
 							1. Образ, вставленный в систему для мгновенного соударения может проникать
-							в другие частицы, после мгновенного соударения с частицей из объема этот
+							в другие частицы, после мгновенного соударения с частицей из объёма этот
 							образ будет уничтожен.
 							2. Частица n1 сталкивается с частицей n2, мы создаем образ для частицы n1,
 							для которого не находится места и мы сталкиваем его с другой частицей n3,
 							в результате чего скорость частицы n1 снова меняется и время соударения
 							частиц n1 и n2 может быть отрицательным (-1*10-14) из за погрешности
 							в расчете координат в 15ом знаке.
+
+							В любом случае мы не должны разрешать отрицательные времёна
+							и если отклонение от нуля мало то полагаем время соударения равным нулю,
+							т.е. частицы уже соприкасаются между собой.
 							*/
 							if (dt > -1.0e-12 && dt < 1.0e-15) dt = 0.0;
 
+							/*
+							 к разнице в собственном времени частиц прибавляем время до их соударения,
+							 в результате получаем время dt через которое это соударение произойдёт для
+							 частицы p, таким образом мы получаем возможность сравнить время только что
+							 рассчитанного соударения со временем ближайшего события для частицы p и
+							 принять решение - должны ли мы перезаписать событие для частицы p или нет.
+							*/
 							temp += dt;
 
 							if ((dt < dt_min) && (dt >= 0.0) &&
@@ -528,6 +594,11 @@ void retime(int &i) {
 
 	add_event(i, jm);
 
+	/*
+	   в случае если при расчёте ближайшего события мы получили отрицательное время
+	   необходимо прервать выполение программы и распечатать отладочгую информацию
+	   о рассчитанном событии
+	*/
 	if (dt_min < -1.0e-11) {
 		printf("\n retime result: %d %d, %.16le\n ", i, jm, dt_min);
 		printf("\n p1.x = %.16le, p1.y = %.16le, p1.z = %.16le \n", p1.x, p1.y, p1.z);
@@ -668,7 +739,7 @@ void find_place_for_particle(int &i) {
 
 	// BUG: потенциальная проблема перебирать частицы начаиная с 0 до конца системы
 	// т.к. мы остановим цикл при обнаружении первой подходящей частицы, что увеличивает
-	// вероятность того что такая частица будет найдена вблизи левой идеальной стенки.
+	// вероятность того что такая частица будет найдена вблизи "левой" идеальной стенки.
 	// необходимо составлять список всех подходящих частиц и случайно выбирать одну из них.
 	for (int x_box = 0; x_box <= K2; ++x_box)
 		for (int y_box = particles[i].y_box - 1; y_box < particles[i].y_box + 2; ++y_box) {
@@ -824,10 +895,6 @@ void find_place_for_particle(int &i) {
 			
 			r = search_collission_for_new_virtual_particle(i);
 
-			// EN: randomize rand function
-			// RU: перемешиваем генератор случайных чисел
-			srand(time(NULL));
-
 			while (r == -1 && u < 1000)
 			{
 				// выбираем случайную позицию по Х для образа в системе
@@ -883,10 +950,6 @@ void find_place_for_particle(int &i) {
 
 void destroy_virt_particle(int &i) {
 
-	//FILE *history_file = fopen("history.txt", "a");
-	//fprintf(history_file, "destroy virt_particle %d, x = %.15le, y = %.15le, z = %.15le\n", i, particles[i].x, particles[i].y, particles[i].z);
-	//fclose(history_file);
-
 	if (i >= NP) {
 		printf("\n %d particle \n", i);
 		printf(" i_copy = %d   particle icopy = %d \n", particles[i].i_copy, particles[i - NP].i_copy);
@@ -925,10 +988,6 @@ void destroy_virt_particle(int &i) {
 void change_with_virt_particles(int &im, int &jm) {
 	int y_box, z_box;
 	int f = im + NP;
-
-	//FILE *history_file = fopen("history.txt", "a");
-	//fprintf(history_file, "changing with virt_particle %d, x = %.15le, y = %.15le, z = %.15le\n", im, particles[im].x, particles[im].y, particles[im].z);
-	//fclose(history_file);
 
 	double dt = particles[im].t - particles[f].t;
 	particles[im].x = particles[f].x + dt*particles[f].vx;
@@ -988,10 +1047,6 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 
 	destroy_virt_particle(i);
 
-	//FILE *history_file = fopen("history.txt", "a");
-	//fprintf(history_file, "trying to create virt_particle %d, x = %.15le, y = %.15le, z = %.15le\n", i, particles[i].x, particles[i].y, particles[i].z);
-	//fclose(history_file);
-
 	if ((need_to_check == false) ||
 		(((particles[i].y <= 1.0 - A) && (particles[i].vy < 0.0)) ||
 		 ((particles[i].y >= A - 1.0) && (particles[i].vy > 0.0)) ||
@@ -999,10 +1054,6 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		 ((particles[i].z >= A - 1.0) && (particles[i].vz > 0.0)))) {
 
 		dt_min = 1.0e+20;
-
-		//FILE *history_file = fopen("history.txt", "a");
-		//fprintf(history_file, "creating virt_particle %d \n", i, particles[i].x, particles[i].y, particles[i].z);
-		//fclose(history_file);
 
 		y = A + particles[i].y;
 		z = A + particles[i].z;
@@ -1153,6 +1204,8 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 			}
 		}
 
+		// если новый образ пересекается с уже существующими частицами или образами,
+		// необходимо найти другое место для нового образа
 		if (search == true) {
 
 			find_place_for_particle(new_i);
@@ -1445,7 +1498,8 @@ void save(std::string file_name) {
 
 // процедура нового посева системы.
 // получает в качестве параметров
-// NN - число частиц в ребре
+// NN - число частиц в ребре объёмо центрированного кристалла, на основе
+//      которого делается изначальный посев
 // etta - начальная плотность
 void new_seed(int NN, double etta) {
 	int KZ = 2;
@@ -1485,10 +1539,14 @@ void new_seed(int NN, double etta) {
 
 	L0 = L0*KZ;
 	L = L0 * Betta;  // множитель Betta - это коэффициент расширения
-	A = A0 * Betta;  // на него умножаются все координаты и параметры объема
+	A = A0 * Betta;  // на него умножаются все координаты и параметры объёма
 
 	NA = 0;
 
+	/*
+	   "Перемешиваем" генератор случайных чисел, чтобы при каждом запуске приложения
+	   получаемые псевдослучайные числа были новыми
+	*/
 	srand(time(NULL));
 
 	for (int i = 0; i < 2 * NN; i++)
@@ -1645,11 +1703,11 @@ void new_seed(int NN, double etta) {
 		particles[ii].z = particles[ii].z*Betta;
 	}
 
+	// Рассчитываем и выводит момент импульса Lx системы после посева:
 	double Lx = 0.0;
 	for (int i = 0; i < NP; i++) {
 		Lx += (particles[i].y + A)*particles[i].vz - (particles[i].z + A)*particles[i].vy;
 	}
-
 	printf("\n Lx = %.15le\n", Lx);
 
 	A2 = A;
@@ -1856,12 +1914,6 @@ bool reform(int &im, int &jm) {
 					}
 				}
 				if (jm < -10) {
-
-					//if (jm == -15) particles[im].y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y1 + 1.0;
-					//if (jm == -16) particles[im].y = boxes_yz[p1.y_box][p1.z_box][p1.x_box].y2 - 1.0;
-					//if (jm == -17) particles[im].z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1 + 1.0;
-					//if (jm == -18) particles[im].z = boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2 - 1.0;
-
 					// создаём образ не проверяя положение частицы:
 					create_virt_particle(im, false);
 					p1 = particles[im];
@@ -1913,11 +1965,6 @@ void step() {
 	while (COLL_COUNT < NP / 2 || jm != -100) {
 		im = time_queue[1].im;
 		jm = time_queue[1].jm;
-
-		//check_particles();
-		//FILE *history_file = fopen("history.txt", "a");
-		//fprintf(history_file, "im = %d, jm = %d, p[im].icopy = %d, p[jm].i_copy = %d, dt = %.16le\n", im, particles[im].i_copy, jm, particles[jm].i_copy, particles[im].dt);
-		//fclose(history_file);
 
 		delete_event(1);
 
@@ -2042,6 +2089,8 @@ void image(int steps, short accuracy, std::string file_name) {
 Аргументы:
 x1 - начальная X координата "среза"
 x2 - конечная X координата "среза"
+dots_per_particle - количество снятий данных через равное количество соударений в системе
+steps - число соударений между двумя снятиями данных о положении частиц в выбранном слое
 file_name - имя файла для сохранения данных
 */
 void profile(double x1, double x2, int dots_per_particle, int steps, std::string file_name) {
@@ -2081,7 +2130,7 @@ void profile(double x1, double x2, int dots_per_particle, int steps, std::string
 с заданным максимальным шагом по плотности.
 Аргументы:
 compress_to_etta - итоговая плотность
-delta_etta - максимальный разрешённый шаг по плотности
+delta_L - максимальный разрешённый шаг по L
 steps - количество соударений на одну частицу в системе между
         маленькими сжатиями по плотности
 type - тип сжатия:
@@ -2194,10 +2243,6 @@ void compress(double compress_to_etta, double delta_L, int steps, int type) {
 		// рассчитываем плотность после сжатия
 		etta = (PI * NP) / (6.0 * A * A * (L - 1.0));
 
-		// очистка экрана и вывод информации о прогрессе
-		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
-		//printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
 		printf("etta = %.15le, should be equal to %.15le   \n", etta, compress_to_etta);
 	}
 	printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
@@ -2338,7 +2383,6 @@ int main()
 {
 	FILE *history_file = fopen("history.txt", "w+");
 	fclose(history_file);
-
 
 	init("program.txt");
 	return 0;
