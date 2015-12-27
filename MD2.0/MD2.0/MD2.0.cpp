@@ -55,6 +55,7 @@ Event time_queue[16384];
 typedef struct particle_ {
 	double x, y, z, vx, vy, vz, t, dt;
 	int x_box, y_box, z_box, ti, box_i, i_copy;
+	bool collission_only;
 } particle;
 
 // массив частиц, размер массива N*2 + округление
@@ -104,16 +105,36 @@ void print_system_parameters() {
 */
 double get_maximum_particle_time() {
 	double t_max = -1.0e+20;
+	int u = 0;
 
 	for (int i = 0; i < NP; ++i) {
-		if (particles[i].t > t_max)
+		if (particles[i].t > t_max) {
 			t_max = particles[i].t;
-		if ((particles[i].i_copy >= 0) && (particles[particles[i].i_copy].t > t_max))
-			t_max = particles[i].t;
+			u = i;
+		}
+		if ((particles[i].i_copy >= 0) && (particles[particles[i].i_copy].t > t_max)) {
+			t_max = particles[particles[i].i_copy].t;
+			u = particles[i].i_copy;
+		}
 	}
 
+	//printf("\n MAX time = %d %.15le \n", u, t_max);
 	return t_max;
 }
+
+double get_minimum_particle_time() {
+	double t_min = 1.0e+20;
+
+	for (int i = 0; i < NP; ++i) {
+		if (particles[i].t < t_min)
+			t_min = particles[i].t;
+		if ((particles[i].i_copy >= 0) && (particles[particles[i].i_copy].t < t_min))
+			t_min = particles[particles[i].i_copy].t;
+	}
+
+	return t_min;
+}
+
 
 /*
    Функция для проверки состояния системы, в ней мы провекряем, что
@@ -141,6 +162,25 @@ int check_particles() {
 		p1.z += p1.vz * dt;
 
 		E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
+
+		for (int j = i + 1; j < NP; j++) {
+			particle p2 = particles[j];
+
+			dt = t_global - p2.t;
+			p2.x += p2.vx * dt;
+			p2.y += p2.vy * dt;
+			p2.z += p2.vz * dt;
+
+			double dx = p1.x - p2.x;
+			double dy = p1.y - p2.y;
+			double dz = p1.z - p2.z;
+			double r = dx*dx + dy*dy + dz*dz;
+
+			if ((r < 4.0) && (4.0 - 1.0e-5 - r > 0.0)) {
+				printf("\n\n particles %d %d r = %.15le", i, j, r);
+				throw "Particles overlaps!";
+			}
+		}
 
 		// проверяем индексы ячеек для всех частиц
 		if ((p1.x_box > K2) || (p1.y_box > K) || (p1.z_box > K) ||
@@ -182,6 +222,7 @@ int check_particles() {
 			throw "Particle has incorrect image!";
 		}
 
+		/*
 		// Проверяем что частица записана в одную из ячеек в системе
 		bool w = false;
 		for (int ty = 0; ty <= boxes_yz[p1.y_box][p1.z_box][p1.x_box].end; ++ty) {
@@ -194,13 +235,16 @@ int check_particles() {
 
 			throw "Particle doesn't store in the cell.";
 		}
+		*/
 
+		/*
 		// Проверяем на правильное ли событие в линейке времён ссылается частица
 		if (time_queue[p1.ti].im != i && time_queue[p1.ti].jm != i) {
 			Event e = time_queue[p1.ti];
 			printf("\n i = %d ; im = %d ; jm = %d ; ti = %d ", i, e.im, e.jm, p1.ti);
 			throw "Particle has no correct link to the event.";
 		}
+		*/
 	}
 
 	// Проверяем текущее значение глобальной кинетической энергии системы со
@@ -413,8 +457,8 @@ void clear_particle_events(int &i) {
 void retime(int &i) {
 	particle p1 = particles[i];
 	Box p1_box = boxes_yz[p1.y_box][p1.z_box][p1.x_box];
-	int jm;  // переменная для сохранения типа ближайшего события
-	double dt, dt_min;  // переменные для рассчёта времени для ближайшего события
+	int jm = -1;  // переменная для сохранения типа ближайшего события
+	double dt, dt_min = 1.0e+20;  // переменные для рассчёта времени для ближайшего события
 
 	clear_particle_events(i);
 
@@ -499,7 +543,7 @@ void retime(int &i) {
 		}
 	}
 
-	double temp, dx, dy, dz, dvx, dvy, dvz, d, dv, bij;
+	double temp, dx, dy, dz, dvx, dvy, dvz, d, dv, bij, dr;
 	int s, n, r, q, w;
 
 	// Проходим по ячейкам, ближайшим к ячейке, в которой находится частица i
@@ -531,7 +575,7 @@ void retime(int &i) {
 					if (n == p1.i_copy) continue;
 
 					/*
-					  Cохраняем в переменную p все данные частицы n, чтобы далее
+					  Cохраняем в переменную p все данные частицы n,
 					  чтобы далее записывать все операции короче и без обращения
 					  в глобальную память
 					*/
@@ -561,14 +605,44 @@ void retime(int &i) {
 					dz = p.z + p.vz * temp - p1.z;
 
 					bij = dx * dvx + dy * dvy + dz*dvz;
+
+					
+					/*
+					//if (i == 3761 || i == 3957 || n == 3761 || n == 3957 || i == NP + 3761 || i == NP + 3957 || n == NP + 3761 || n == NP + 3957) {
+						FILE *history_file = fopen("history.txt", "a");
+						fprintf(history_file, "\n %d %d bij = %.15le\n", i, n, bij);
+						fprintf(history_file, "\n %d %d R = %.15le\n", i, n, dx*dx + dy*dy + dz*dz);
+						fclose(history_file);
+					}
+					*/
+					
+
 					if (bij < 0.0) {
 						dv = dvx * dvx + dvy * dvy + dvz*dvz;
+						dr = 4.0 - dx * dx - dy * dy - dz * dz;
 						// рассчитываем дискриминант в уравнении для вычисления времени соударения
-						d = bij * bij + dv * (4.0 - dx * dx - dy * dy - dz * dz);
+						d = bij * bij + dv * dr;
+
+						/*
+						//if (i == 3761 || i == 3957 || n == 3761 || n == 3957 || i == NP + 3761 || i == NP + 3957 || n == NP + 3761 || n == NP + 3957) {
+						if (i == 13500) {
+							FILE *history_file = fopen("history.txt", "a");
+							fprintf(history_file, " %d %d d = %.15le\n", i, n, d);
+							fprintf(history_file, " %d %d dv = %.15le\n", i, n, dv);
+							fclose(history_file);
+						}
+						*/
 
 						// если дискриминант больше нуля то соударение возможно
 						if (d > 0.0) {
 							dt = -(sqrt(d) + bij) / dv;
+
+							//if (i == 3761 || i == 3957 || n == 3761 || n == 3957 || i == NP + 3761 || i == NP + 3957 || n == NP + 3761 || n == NP + 3957) {
+							if (i == 13500) {
+								FILE *history_file = fopen("history.txt", "a");
+								fprintf(history_file, " %d %d dt = %.15le\n", i, n, dt);
+								fclose(history_file);
+							}
 
 							/*
 							   Сценарии, при котором возможны отрицательные времена:
@@ -578,14 +652,14 @@ void retime(int &i) {
 							    2. Частица n1 сталкивается с частицей n2, мы создаем образ для частицы n1,
 							    для которого не находится места и мы сталкиваем его с другой частицей n3,
 							    в результате чего скорость частицы n1 снова меняется и время соударения
-							    частиц n1 и n2 может быть отрицательным (-1*10-14) из за погрешности
+							    частиц n1 и n2 может быть отрицательным (но не меньшим -1*10e-10) из за погрешности
 							    в расчете координат в 15ом знаке.
 
 							   В любом случае мы не должны разрешать отрицательные времёна
 							   и если отклонение от нуля мало то полагаем время соударения равным нулю,
 							   т.е. частицы уже соприкасаются между собой.
 							*/
-							if (dt > -1.0e-12 && dt < 1.0e-15) dt = 0.0;
+							if ((dr > 0.0 && dr < 1.0e-14) || (dt > -1.0e-12 && dt < 1.0e-15)) dt = 0.0;
 
 							/*
 							   К разнице в собственном времени частиц прибавляем время до их соударения,
@@ -596,7 +670,15 @@ void retime(int &i) {
 							*/
 							temp += dt;
 
-							if ((dt < dt_min) && (dt >= 0.0) &&
+							/*
+							if (i == 3761 || i == 3957 || n == 3761 || n == 3957 || i == NP + 3761 || i == NP + 3957 || n == NP + 3761 || n == NP + 3957) {
+								FILE *history_file = fopen("history.txt", "a");
+								fprintf(history_file, " %d %d temp = %.15le\n", i, n, temp);
+								fclose(history_file);
+							}
+							*/
+
+							if ((dt < dt_min || (jm < 0 && p1.collission_only == true)) && (dt >= 0.0) &&
 								((temp < p.dt) || ((abs(temp - p.dt) < 0.1E-15) &&
 									(time_queue[p.ti].im == n) &&
 									(time_queue[p.ti].jm == -100)))) {
@@ -615,6 +697,44 @@ void retime(int &i) {
 	*/
 	if (jm >= 0) {
 		dt = p1.t - particles[jm].t;
+
+		/*
+		printf("\n %d %d DIFF: %.15le", i, jm, dt);
+
+		printf("\n before check");
+		double t_global = get_maximum_particle_time();
+		for (int i = 0; i < NP; i++) {
+			particle p1 = particles[i];
+
+			double dt = t_global - p1.t;
+			p1.x += p1.vx * dt;
+			p1.y += p1.vy * dt;
+			p1.z += p1.vz * dt;
+
+			for (int j = i + 1; j < NP; j++) {
+				particle p2 = particles[j];
+
+				dt = t_global - p2.t;
+				p2.x += p2.vx * dt;
+				p2.y += p2.vy * dt;
+				p2.z += p2.vz * dt;
+
+				double dx = p1.x - p2.x;
+				double dy = p1.y - p2.y;
+				double dz = p1.z - p2.z;
+				double r = dx*dx + dy*dy + dz*dz;
+
+				if ((r < 4.0) && (4.0 - 1.0e-5 - r > 0.0)) {
+					printf("\n\n particles %d %d r = %.15le", i, j, r);
+					printf("\n particle %d t = %.15le particle event %d %d %.15le", i, p1.t, time_queue[p1.ti].im, time_queue[p1.ti].jm, time_queue[p1.ti].t);
+					printf("\n particle %d t = %.15le particle event %d %d %.15le", j, p2.t, time_queue[p2.ti].im, time_queue[p2.ti].jm, time_queue[p2.ti].t);
+					throw "Particles overlaps!";
+				}
+			}
+		}
+		printf("\n after check");
+		*/
+
 		if (dt < 0.0 && dt > -1.0e-15)
 			dt = 0.0;
 
@@ -625,7 +745,40 @@ void retime(int &i) {
 		particles[jm].z += particles[jm].vz * dt;
 
 		/*
-		   Перед тем как добавить новое событе соударения двух частиц чистим
+		printf("\n before check");
+		//double t_global = get_maximum_particle_time();
+		for (int i = 0; i < NP; i++) {
+			particle p1 = particles[i];
+
+			double dt = t_global - p1.t;
+			p1.x += p1.vx * dt;
+			p1.y += p1.vy * dt;
+			p1.z += p1.vz * dt;
+
+			for (int j = i + 1; j < NP; j++) {
+				particle p2 = particles[j];
+
+				dt = t_global - p2.t;
+				p2.x += p2.vx * dt;
+				p2.y += p2.vy * dt;
+				p2.z += p2.vz * dt;
+
+				double dx = p1.x - p2.x;
+				double dy = p1.y - p2.y;
+				double dz = p1.z - p2.z;
+				double r = dx*dx + dy*dy + dz*dz;
+
+				if ((r < 4.0) && (4.0 - 1.0e-5 - r > 0.0)) {
+					printf("\n\n particles %d %d r = %.15le", i, j, r);
+					throw "Particles overlaps!";
+				}
+			}
+		}
+		printf("\n after check");
+		*/
+
+		/*
+		   Перед тем как добавить новое событие соударения двух частиц чистим
 		   линейку времен для второй частицы, которая будет учавствовать в новом соударении
 		*/
 		clear_particle_events(jm);
@@ -635,9 +788,17 @@ void retime(int &i) {
 
 	add_event(i, jm);
 
+	for (int h = 0; h < particles_for_check_count; h++) {
+		if (i == particles_for_check[h] || jm == particles_for_check[h] || i == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
+			FILE *history_file = fopen("history.txt", "a");
+			fprintf(history_file, "\n\n retime result %d:  %d, dt = %.15le\n", i, jm, particles[i].dt);
+			fclose(history_file);
+		}
+	}
+
 	/*
 	   В случае если при расчёте ближайшего события мы получили отрицательное время
-	   необходимо прервать выполение программы и распечатать отладочную информацию
+	   необходимо прервать выполнение программы и распечатать отладочную информацию
 	   о рассчитанном событии
 	*/
 	if (dt_min < -1.0e-11) {
@@ -651,14 +812,6 @@ void retime(int &i) {
 		printf("\n p1.box.z = [%.16le; %.16le]", boxes_yz[p1.y_box][p1.z_box][p1.x_box].z1, boxes_yz[p1.y_box][p1.z_box][p1.x_box].z2);
 		throw "dt < 0!";
 	}
-
-	
-	if (i == 6467 || i == NP+6467) {
-		FILE *history_file = fopen("history.txt", "a");
-		fprintf(history_file, "retime for %d result: %d %d, dt = %.15le\n", i, i, jm, dt_min);
-		fclose(history_file);
-	}
-	
 }
 
 
@@ -969,12 +1122,14 @@ void find_place_for_particle(int &i) {
 
 	if (spaces < 2) {    // Если свободное место для нового образа не найдено, то:
 
+		int f = i - NP;
+		particles[f].collission_only = true;
+		particles[i].collission_only = true;
 		/*
 		   Проверяем, можем ли мы столкнуть новый образ с какой-то частицей,
 		   которая мешала его вставить в систему
 		*/
 		if (particle_on_the_line > -1) {
-
 			particles[i].x = particle_x_for_collission;
 
 			particle p = particles[particle_on_the_line];
@@ -991,8 +1146,8 @@ void find_place_for_particle(int &i) {
 			return;
 		}
 		else {  // если такой частицы нет, то ищем другие варианты
-			int r = -1, u = 0;
-			
+			int r, u = 0;
+
 			r = search_collission_for_new_virtual_particle(i);
 
 			// пробуем найти соударения для нового образа в системе тысячу раз
@@ -1081,11 +1236,12 @@ void destroy_virt_particle(int &i) {
 	}
 	if (particles[i].i_copy == -1) return;
 
-	
-	if (i == 6467) {
-		FILE *history_file = fopen("history.txt", "a");
-		fprintf(history_file, "destroing virt particle %d\n", i);
-		fclose(history_file);
+	for (int h = 0; h < particles_for_check_count; h++) {
+		if (i == particles_for_check[h]) {
+			FILE *history_file = fopen("history.txt", "a");
+			fprintf(history_file, "\n\n destroing virt particle %d \n", i);
+			fclose(history_file);
+		}
 	}
 
 	int new_i = i + NP;
@@ -1110,6 +1266,7 @@ void destroy_virt_particle(int &i) {
 	clear_particle_events(new_i);  // очищаем события, связанные с этим образом
 
 	particles[i].i_copy = -1;
+	particles[i].collission_only = false;
 	particles[new_i].i_copy = -1;
 }
 
@@ -1126,13 +1283,15 @@ void change_with_virt_particles(int &im, int &jm) {
 	int y_box, z_box;
 	int f = im + NP;  // рассчитываем номер образа данной частицы
 
-	
-	if (im == 6467) {
-		FILE *history_file = fopen("history.txt", "a");
-		fprintf(history_file, "changing with virt particle %d %d\n", im, jm);
-		fclose(history_file);
+	printf("\n change with virt particle %d %d \n", im, jm);
+
+	for (int h = 0; h < particles_for_check_count; h++) {
+		if (im == particles_for_check[h] || jm == particles_for_check[h] || im == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
+			FILE *history_file = fopen("history.txt", "a");
+			fprintf(history_file, "\n\n change with virt particle %d, %d\n", im, jm);
+			fclose(history_file);
+		}
 	}
-	
 
 	double dt = particles[im].t - particles[f].t;
 	particles[im].x = particles[f].x + dt*particles[f].vx;
@@ -1212,14 +1371,15 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 
 	destroy_virt_particle(i);
 
-	
-	if (i == 6467) {
+	/*
+	if (i == 1717 || i == 1971 || i == NP + 1717 || i == NP + 1971) {
 		FILE *history_file = fopen("history.txt", "a");
 		fprintf(history_file, "trying to create virt particle %d\n", i);
 		fprintf(history_file, "particle %d x = %.15le, y = %.15le, z = %.15le\n", i, particles[i].x, particles[i].y, particles[i].z);
 		fprintf(history_file, "particle %d vx = %.15le, vy = %.15le, vz = %.15le\n", i, particles[i].vx, particles[i].vy, particles[i].vz);
 		fclose(history_file);
 	}
+	*/
 	
 	
 
@@ -1229,13 +1389,13 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		 ((particles[i].z <= 1.0 - A + 1.0e-14) && (particles[i].vz < 0.0)) ||
 		 ((particles[i].z >= A - 1.0 - 1.0e-14) && (particles[i].vz > 0.0)))) {
 
-		
-		if (i == 6467) {
-			FILE *history_file = fopen("history.txt", "a");
-			fprintf(history_file, "creating virt particle %d\n", i);
-			fclose(history_file);
+		for (int h = 0; h < particles_for_check_count; h++) {
+			if (i == particles_for_check[h]) {
+				FILE *history_file = fopen("history.txt", "a");
+				fprintf(history_file, "\n\n creating virt particle %d \n", i);
+				fclose(history_file);
+			}
 		}
-		
 
 		dt_min = 1.0e+20;
 
@@ -1408,6 +1568,8 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		/* синхронизируем время образа со временем частицы */
 		particles[new_i].t = particles[i].t;
 
+		particles[new_i].collission_only = false;
+
 		// проверка того что новый образ не пересекается с уже существующими частицами
 		bool search = false;
 		for (short r = x_box - 1; r < x_box + 2; ++r) {
@@ -1452,11 +1614,13 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		// необходимо найти другое место для нового образа
 		if (search == true) {
 
-			if (i == 6467) {
+			/*
+			if (i == 1717 || i == 1971 || i == NP + 1717 || i == NP + 1971) {
 				FILE *history_file = fopen("history.txt", "a");
 				fprintf(history_file, "searching place for virt particle %d\n", i);
 				fclose(history_file);
 			}
+			*/
 
 			find_place_for_particle(new_i);
 
@@ -1470,7 +1634,7 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 			z_box = short((A + dA + particles[new_i].z) / dA);
 
 			/*
-			   Если новые координаты ячейки выъодят за пределы системы,
+			   Если новые координаты ячейки выходят за пределы системы,
 			   то поместить "образ" в граничную ячейку (например, если
 			   координата образа по Y больше, чем A+1 - такое возможно,
 			   если частица имеет большую скорость).
@@ -1685,13 +1849,16 @@ void load_seed(std::string file_name) {
 
 	// EN: search for the appropriate values for dA, dL, K, K2
 	// RU: ищем подходящее значение для dA, dL, K, K2
+	// по y берём с запасом, чтобы не возникали ошибки с пересением границ ячеек
+	// при создании образа, для которого не нашлось свободного места и который
+	// должен сразу столкнуться до того как произойдёт событие с частицей
 	dA = 2.5;
 	dL = 2.5;
-	K = short(A2 / dA) + 1;        // количество ячеек по Y и Z
-	K2 = short(2.0 * L / dL) + 1;  // количество ячеек по X
-	dA = A2 / (K - 1);             // точные размеры ячеек по X, Y и Z
-	dL = 2.0*L / (K2 - 1);         // выбранные так, чтобы, ячейки совпадали
-	                               // с размерами объёма
+	K = short((A2 + 4.0) / dA) + 1;        // количество ячеек по Y и Z
+	K2 = short(2.0 * L / dL) + 1;          // количество ячеек по X
+	dA = (A2 + 4.0) / (K - 1);             // точные размеры ячеек по X, Y и Z
+	dL = 2.0*L / (K2 - 1);                 // выбранные так, чтобы, ячейки совпадали
+	                                       // с размерами объёма
 
 	/*
 	  После того как мы рассчитали количество ячеек и их размеры
@@ -1700,7 +1867,7 @@ void load_seed(std::string file_name) {
 	  использоваться для рассчёта времени до пересечения границ
 	  ячеек частицами, которые находятся в этих ячейках.
 	*/
-	y = z = -A - dA;
+	y = z = -A - 2.0 - dA;
 	x = -L - dL;
 	for (int i = 0; i <= K; i++) {
 		for (int j = 0; j <= K; j++) {
@@ -1736,6 +1903,7 @@ void load_seed(std::string file_name) {
 		particles[i].i_copy = -1;
 		particles[i].ti = 0;
 		particles[i].dt = 0.0;
+		particles[i].collission_only = false;
 	}
 
     /*
@@ -2371,6 +2539,33 @@ bool reform(int &im, int &jm) {
 }
 
 
+void check_overlap() {
+	double time = get_maximum_particle_time();
+
+	for (int i = 0; i < particles_for_check_count; i++) {
+		for (int j = i + 1; j < particles_for_check_count; j++) {
+			particle p01 = particles[particles_for_check[i]];
+			particle p02 = particles[particles_for_check[j]];
+
+			double dt01 = time - p01.t;
+			double dt02 = time - p02.t;
+			double ddx = p01.x + p01.vx*dt01 - p02.x - p02.vx*dt02;
+			double ddy = p01.y + p01.vy*dt01 - p02.y - p02.vy*dt02;
+			double ddz = p01.z + p01.vz*dt01 - p02.z - p02.vz*dt02;
+			double rr = ddx*ddx + ddy*ddy + ddz*ddz;
+
+			if (rr < 4.0 - 1.0e-14) {
+				printf("\n r = %.15le ", rr);
+				printf("\n dt01 = %.15le < p01.dt = %.15le ? \n ", dt01, p01.dt);
+				printf("\n dt02 = %.15le < p02.dt = %.15le ? \n ", dt02, p02.dt);
+
+				throw "ALARM";
+			}
+		}
+	}
+}
+
+
 /*
    Функция "шаг", основной цикл программы,
    производит рассчёт динамики системы в течении 1 соударения
@@ -2379,7 +2574,7 @@ bool reform(int &im, int &jm) {
 void step() {
 	particle p1;
 	int i, im, jm;
-	double time = 0.0;
+	double time = get_maximum_particle_time();
 	bool need_virt_particle_retime;
 
 	COLL_COUNT = 0;
@@ -2390,14 +2585,18 @@ void step() {
 		im = time_queue[1].im;
 		jm = time_queue[1].jm;
 
-		
-		if (im == 6467 || jm == 6467 || im == NP+6467 || jm == NP+6467) {
-			FILE *history_file = fopen("history.txt", "a");
-			fprintf(history_file, "\n\n event %d, %d; dt = %.16le\n", im, jm, particles[im].dt);
-			fprintf(history_file, "particle 6467 position: x = %.16le y = %.16le z = %.16le \n", particles[6467].x, particles[6467].y, particles[6467].z);
-			fclose(history_file);
-		}
+		//printf("\n im %d jm %d", im, jm, particles[im].dt);
+		//check_particles();
 
+		check_overlap();
+		for (int h = 0; h < particles_for_check_count; h++) {
+			if (im == particles_for_check[h] || jm == particles_for_check[h] || im == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
+				FILE *history_file = fopen("history.txt", "a");
+				fprintf(history_file, "\n\n event %d, %d; dt = %.16le\n", im, jm, particles[im].dt);
+				fclose(history_file);
+			}
+		}
+		
 
 		// удаляем первое событие
 		delete_event(1);
@@ -2437,12 +2636,6 @@ void step() {
 		if ((p1.i_copy > -1) && (jm > -2)) {
 			double delta = p1.t - particles[p1.i_copy].t;
 
-			if (im == 6467 || jm == 6467 || im == NP + 6467 || jm == NP + 6467) {
-				FILE *history_file = fopen("history.txt", "a");
-				fprintf(history_file, "delta = %.15le\n", delta);
-				fclose(history_file);
-			}
-
 			particles[p1.i_copy].x += particles[p1.i_copy].vx * delta;
 			particles[p1.i_copy].y += particles[p1.i_copy].vy * delta;
 			particles[p1.i_copy].z += particles[p1.i_copy].vz * delta;
@@ -2452,8 +2645,22 @@ void step() {
 
 		particles[im] = p1;
 
+		/*
+		if (im < NP) {
+			printf("\n before reform");
+			check_overlap();
+		}
+		*/
+
 		// Производим изменения в системе согласно произошедшему событию
 		need_virt_particle_retime = reform(im, jm);
+
+		/*
+		if (im < NP) {
+			printf("\n after reform");
+			check_overlap();
+		}
+		*/
 
 		if (im >= NP) {
 			if (particles[im].i_copy > -1)
@@ -2493,15 +2700,12 @@ void step() {
 		}
 	}
 
+	//printf("\n Sync! \n");
+	//check_particles();
 	/*
-	   Запускаем глобальную синхронизацию частиц по собственному времени,
-	   это нужно чтобы глобальное время системы стало равно нулю.
-
-	   После этой процедуры собственное время частицы может быть меньше нуля,
-	   что означает, что её необходимо передвинуть на |t|, чтобы она находилась
-	   в том же времени. Отрицательное собственное время частицы означает что
-	   время её ближайшего события больше, чем текущее глобальное время системы.
+	   Запускаем глобальную синхронизацию частиц по собственному времени
     */
+	time = get_minimum_particle_time();
 	particle *p = particles;
 	for (i = 0; i < NP * 2; ++i, ++p)
 		(*p).t -= time;
@@ -2510,6 +2714,9 @@ void step() {
 	for (i = 1; i < last; ++i, ++t)
 		(*t).t -= time;
 	time = 0.0;
+
+	//printf("\n After sync \n");
+	//check_particles();
 }
 
 
@@ -2579,6 +2786,127 @@ void image(int steps, short accuracy, std::string file_name) {
 	fclose(profile_file);
 
 	printf("\n INFO: Image completed. Information saved to file: %s \n", file_name.c_str());
+}
+
+
+
+void function_g(int steps_count, double x1, double x2, std::string file_name) {
+
+	int Ni = 0;
+	long int g_data[1000];
+
+	for (int i = 0; i < 1000; i++)
+		g_data[i] = 0;
+
+	for (int w = 0; w < steps_count; w++) {
+		step();
+
+		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("%d / %d", w+1, steps_count);
+
+		double t_global = get_maximum_particle_time();
+
+		for (int i = 0; i < NP; i++) {
+			particle p1 = particles[i];
+
+			double dt = t_global - p1.t;
+			p1.x = p1.x + p1.vx * dt;
+			p1.y = p1.y + p1.vy * dt;
+			p1.z = p1.z + p1.vz * dt;
+
+			if ((L + p1.x >= x1) && (L + p1.x <= x2) &&
+				(p1.y < A - 5.0) && (p1.y > 5.0 - A) &&
+				(p1.z < A - 5.0) && (p1.z > 5.0 - A))
+			{
+				Ni += 1;
+
+				for (int j = i+1; j < NP; j++) {
+					particle p2 = particles[j];
+
+					double dt = t_global - p2.t;
+					p2.x = p2.x + p2.vx * dt;
+					p2.y = p2.y + p2.vy * dt;
+					p2.z = p2.z + p2.vz * dt;
+
+					double dx = p1.x - p2.x;
+					double dy = p1.y - p2.y;
+					double dz = p1.z - p2.z;
+					double r = sqrt(dx*dx + dy*dy + dz*dz);
+
+					if (r < 10.0L) {
+						int u = int(r * 100);
+
+						g_data[u] = g_data[u] + 1;
+					}
+				}
+			}
+		}
+	}
+
+	FILE *data_file = fopen(file_name.c_str(), "w+");
+	fprintf(data_file, "%d\n", steps_count);
+
+	for (int i = 0; i < 1000; i++)
+	    fprintf(data_file, "%.5le\n", double(g_data[i]) / ((double(Ni)/steps_count) * 4 * PI * double(i * i / 10000.0)));
+	fclose(data_file);
+
+}
+
+
+
+void count_of_nearest_particles(int steps_count, double x1, double x2, std::string file_name) {
+
+	double Ni = 0, count_of_particles = 0;
+
+	for (int w = 0; w < steps_count; w++) {
+		step();
+
+		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("%d / %d", w + 1, steps_count);
+
+		double t_global = get_maximum_particle_time();
+
+		for (int i = 0; i < NP; i++) {
+			particle p1 = particles[i];
+
+			double dt = t_global - p1.t;
+			p1.x = p1.x + p1.vx * dt;
+			p1.y = p1.y + p1.vy * dt;
+			p1.z = p1.z + p1.vz * dt;
+
+			if ((L + p1.x >= x1) && (L + p1.x <= x2) &&
+				(p1.y < A - 5.0) && (p1.y > 5.0 - A) &&
+				(p1.z < A - 5.0) && (p1.z > 5.0 - A))
+			{
+				Ni += 1;
+
+				for (int j = 0; j < NP; j++) {
+					if (i == j) continue;
+
+					particle p2 = particles[j];
+
+					double dt = t_global - p2.t;
+					p2.x = p2.x + p2.vx * dt;
+					p2.y = p2.y + p2.vy * dt;
+					p2.z = p2.z + p2.vz * dt;
+
+					double dx = p1.x - p2.x;
+					double dy = p1.y - p2.y;
+					double dz = p1.z - p2.z;
+					double r = sqrt(dx*dx + dy*dy + dz*dz);
+
+					if (r < 3.0L) {
+						count_of_particles += 1;
+					}
+				}
+			}
+		}
+	}
+
+	FILE *data_file = fopen(file_name.c_str(), "w+");
+	fprintf(data_file, "%.15le\n", double(count_of_particles / Ni));
+	fclose(data_file);
+
 }
 
 
@@ -2858,6 +3186,8 @@ void init(std::string file_name) {
 				if (i % 1000 == 0) {
 					FILE *history_file = fopen("history.txt", "w+");
 					fclose(history_file);
+
+					check_particles();
 				}
 			}
 
@@ -2899,6 +3229,24 @@ void init(std::string file_name) {
 			command_file.getline(parameter, 255, '\n');
 			save(parameter);
 			printf("\n INFO: particles coordinates saved to '%s' \n", parameter);
+		}
+		if (str_command.compare("function_g") == 0) {
+			double x1, x2;
+			command_file >> steps;
+			command_file >> x1;
+			command_file >> x2;
+			command_file.getline(parameter, 255, '\n');
+			function_g(steps, x1, x2, parameter);
+			printf("\n Function g finished \n");
+		}
+		if (str_command.compare("count_of_nearest_particles") == 0) {
+			double x1, x2;
+			command_file >> steps;
+			command_file >> x1;
+			command_file >> x2;
+			command_file.getline(parameter, 255, '\n');
+			count_of_nearest_particles(steps, x1, x2, parameter);
+			printf("\n Function count_of_nearest_particles finished \n");
 		}
 		// если необходимо изменить плотность системы
 		if (str_command.compare("compress") == 0) {
@@ -2962,6 +3310,11 @@ int main()
 {
 	FILE *history_file = fopen("history.txt", "w+");
 	fclose(history_file);
+
+	particles_for_check[0] = 3254;
+	particles_for_check[1] = 6974;
+	particles_for_check[2] = 13500;
+	particles_for_check_count = 2;
 
 	init("program.txt");
 	return 0;
