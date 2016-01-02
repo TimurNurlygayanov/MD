@@ -1,85 +1,87 @@
-﻿Сборка начата 27.12.2015 21:08:48.
+﻿Сборка начата 01.01.2016 13:16:54.
      1>Проект "C:\MD\MD2.0\MD2.0\MD2.0.vcxproj" в узле 2 (целевые объекты Build).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl- /O2 /Oi /Ot /GL /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /EHsc /MD /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Yu"stdafx.h" /Fp"x64\Release\MD2.0.pch" /Fo"x64\Release\\" /Fd"x64\Release\vc140.pdb" /Gd /TP /errorReport:prompt MD2.0.cpp
          MD2.0.cpp
      1>MD2.0.cpp(642): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(793): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(802): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(1241): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1251): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(1290): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1318): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(1394): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1293): warning C4101: z_box: неиспользованная локальная переменная
+     1>MD2.0.cpp(1293): warning C4101: y_box: неиспользованная локальная переменная
+     1>MD2.0.cpp(1411): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(1693): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1695): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+     1>MD2.0.cpp(1720): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1697): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1724): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1767): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1794): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1829): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1856): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(1837): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1864): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1840): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1867): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1843): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1870): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1847): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1874): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
-     1>MD2.0.cpp(1958): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(1985): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(2051): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-     1>MD2.0.cpp(2052): warning C4244: =: преобразование "double" в "int", возможна потеря данных
-     1>MD2.0.cpp(2591): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(2078): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+     1>MD2.0.cpp(2079): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+     1>MD2.0.cpp(2797): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(2774): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(2866): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(2843): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(2926): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(2903): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(2950): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(2927): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-         C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(3211): warning C4244: аргумент: преобразование "__int64" в "short", возможна потеря данных
-     1>MD2.0.cpp(3211): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3222): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3236): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3234): warning C4244: аргумент: преобразование "__int64" в "short", возможна потеря данных
+     1>MD2.0.cpp(3234): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
      1>MD2.0.cpp(3245): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3266): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3279): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3292): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
-     1>MD2.0.cpp(3178): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type '__int64'
-         MD2.0.cpp(3178): note: consider using '%lld' in the format string
-         MD2.0.cpp(3178): note: consider using '%Id' in the format string
-         MD2.0.cpp(3178): note: consider using '%I64d' in the format string
-     1>MD2.0.cpp(3178): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type '__int64'
-         MD2.0.cpp(3178): note: consider using '%lld' in the format string
-         MD2.0.cpp(3178): note: consider using '%Id' in the format string
-         MD2.0.cpp(3178): note: consider using '%I64d' in the format string
-     1>MD2.0.cpp(3184): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(3259): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3268): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3289): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3302): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3315): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+     1>MD2.0.cpp(3201): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type '__int64'
+         MD2.0.cpp(3201): note: consider using '%lld' in the format string
+         MD2.0.cpp(3201): note: consider using '%Id' in the format string
+         MD2.0.cpp(3201): note: consider using '%I64d' in the format string
+     1>MD2.0.cpp(3201): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 2 has type '__int64'
+         MD2.0.cpp(3201): note: consider using '%lld' in the format string
+         MD2.0.cpp(3201): note: consider using '%Id' in the format string
+         MD2.0.cpp(3201): note: consider using '%I64d' in the format string
+     1>MD2.0.cpp(3207): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(3194): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type '__int64'
-         MD2.0.cpp(3194): note: consider using '%lld' in the format string
-         MD2.0.cpp(3194): note: consider using '%Id' in the format string
-         MD2.0.cpp(3194): note: consider using '%I64d' in the format string
-     1>MD2.0.cpp(3298): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(3217): warning C4477: 'printf' : format string '%d' requires an argument of type 'int', but variadic argument 1 has type '__int64'
+         MD2.0.cpp(3217): note: consider using '%lld' in the format string
+         MD2.0.cpp(3217): note: consider using '%Id' in the format string
+         MD2.0.cpp(3217): note: consider using '%I64d' in the format string
+     1>MD2.0.cpp(3321): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-     1>MD2.0.cpp(3308): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>MD2.0.cpp(3331): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          C:\Program Files (x86)\Windows Kits\10\Include\10.0.10150.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\MD\MD2.0\x64\Release\MD2.0.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\MD\MD2.0\x64\Release\MD2.0.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG:incremental /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\MD\MD2.0\x64\Release\MD2.0.lib" /MACHINE:X64 x64\Release\MD2.0.obj
          x64\Release\stdafx.obj
          Создание кода
-         1 of 168 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+         3 of 167 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
            0 functions were new in current compilation
-           6 functions had inline decision re-evaluated but remain unchanged
+           11 functions had inline decision re-evaluated but remain unchanged
          Создание кода завершено
          MD2.0.vcxproj -> C:\MD\MD2.0\x64\Release\MD2.0.exe
      1>Сборка проекта "C:\MD\MD2.0\MD2.0\MD2.0.vcxproj" завершена (целевые объекты Build).
 
 Сборка успешно завершена.
 
-Затраченное время: 00:00:01.02
+Затраченное время: 00:00:01.52

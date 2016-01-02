@@ -1,32 +1,7 @@
-new 8 0.60000
-step 500000
-save 0.6000_500000.txt
-load 0.6000_500000.txt
-image 1000 10 profile_0.60_500000.txt
-step 500000
-save 0.6000_1000000.txt
-image 1000 10 profile_0.60_1000000.txt
-new 8 0.50000
-step 500000
-save 0.5000_500000.txt
-image 1000 10 profile_0.50_500000.txt
-load 0.5000_500000.txt
-step 500000
-image 1000 10 profile_0.50_1000000.txt
-save 0.5000_1000000.txt
-new 8 0.45000
-step 500000
-save 0.45000_500000.txt
-image 1000 10 profile_0.450_500000.txt
-load 0.45000_500000.txt
-step 500000
-save 0.45000_1000000.txt
-image 1000 10 profile_0.450_1000000.txt
-new 8 0.52000
-step 500000
-save 0.52000_500000.txt
-image 1000 10 profile_0.520_500000.txt
-load 0.52000_500000.txt
-step 500000
-save 0.52000_1000000.txt
-image 1000 10 profile_0.520_1000000.txt
+new 8 0.51000
+step 10000
+save 05100_10000.txt
+image 2000 20 profile_0.51000_10000.txt
+step 100000
+save 05100_110000.txt
+image 2000 20 profile_0.51000_110000.txt

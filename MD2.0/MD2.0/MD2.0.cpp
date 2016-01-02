@@ -698,6 +698,11 @@ void retime(int &i) {
 	if (jm >= 0) {
 		dt = p1.t - particles[jm].t;
 
+		if (i == 4467 && jm == 10002) {
+			printf("\n DIFF = %.15le \n", dt);
+			printf("p0.x = %.15le, p0.y = %.15le, p0.z = %.15le\n ", particles[jm].x, particles[jm].y, particles[jm].z);
+		}
+
 		/*
 		printf("\n %d %d DIFF: %.15le", i, jm, dt);
 
@@ -743,6 +748,10 @@ void retime(int &i) {
 		particles[jm].x += particles[jm].vx * dt;
 		particles[jm].y += particles[jm].vy * dt;
 		particles[jm].z += particles[jm].vz * dt;
+
+		if (i == 4467 && jm == 10002) {
+			printf("p0.x = %.15le, p0.y = %.15le, p0.z = %.15le\n ", particles[jm].x, particles[jm].y, particles[jm].z);
+		}
 
 		/*
 		printf("\n before check");
@@ -792,6 +801,7 @@ void retime(int &i) {
 		if (i == particles_for_check[h] || jm == particles_for_check[h] || i == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
 			FILE *history_file = fopen("history.txt", "a");
 			fprintf(history_file, "\n\n retime result %d:  %d, dt = %.15le\n", i, jm, particles[i].dt);
+			fprintf(history_file, "particle %d p.x = %.15le, p.y = %.15le, p.z = %.15le\n", i, particles[i].x, particles[i].y, particles[i].z);
 			fclose(history_file);
 		}
 	}
@@ -1283,7 +1293,25 @@ void change_with_virt_particles(int &im, int &jm) {
 	int y_box, z_box;
 	int f = im + NP;  // рассчитываем номер образа данной частицы
 
+	particle p = particles[im];
+	particle p0 = particles[f];
+	Box b0 = boxes_yz[p0.y_box][p0.z_box][p0.x_box];
+
+	// Очищаем информацию об этом образе из списка частиц в ячейке системы
+	if (b0.particles[p0.box_i] == f)
+	{
+		int j = b0.particles[p0.box_i] = b0.particles[b0.end];
+		particles[j].box_i = p0.box_i;
+		--b0.end;
+		boxes_yz[p0.y_box][p0.z_box][p0.x_box] = b0;
+	}
+
 	printf("\n change with virt particle %d %d \n", im, jm);
+	printf(" A = %.15le \n", A);
+	printf(" p.x = %.5le; p.y = %.5le; p.z = %.5le \n", p.x, p.y, p.z);
+	printf(" p.i_copy %d \n", p.i_copy);
+	printf(" p0.x = %.5le; p0.y = %.5le; p0.z = %.5le \n", p0.x, p0.y, p0.z);
+	printf(" p0.i_copy %d \n", p0.i_copy);
 
 	for (int h = 0; h < particles_for_check_count; h++) {
 		if (im == particles_for_check[h] || jm == particles_for_check[h] || im == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
@@ -1293,63 +1321,52 @@ void change_with_virt_particles(int &im, int &jm) {
 		}
 	}
 
-	double dt = particles[im].t - particles[f].t;
-	particles[im].x = particles[f].x + dt*particles[f].vx;
-	particles[im].y = particles[f].y + dt*particles[f].vy;
-	particles[im].z = particles[f].z + dt*particles[f].vz;
+	double dt = p.t - p0.t;
 
-	// записываем её в новую ячейку
-	y_box = particles[f].y_box;
-	z_box = particles[f].z_box;
+	p0.x = p0.x + dt*p0.vx;
+	p0.y = p0.y + dt*p0.vy;
+	p0.z = p0.z + dt*p0.vz;
+	p0.t = p.t;
+	clear_particle_events(f);
 
-	if (y_box <= 0) y_box = 1;
-	if (y_box >= K) y_box = K - 1;
-	if (z_box <= 0) z_box = 1;
-	if (z_box >= K) z_box = K - 1;
+	printf(" dt %.5le \n", dt);
+	printf(" p.x = %.5le; p.y = %.5le; p.z = %.5le \n", p.x, p.y, p.z);
+	printf(" p.i_copy %d \n", p.i_copy);
+	printf(" p0.x = %.5le; p0.y = %.5le; p0.z = %.5le \n", p0.x, p0.y, p0.z);
+	printf(" p0.i_copy %d \n", p0.i_copy);
 
-	particles[im].x_box = particles[f].x_box;
-	particles[im].y_box = y_box;
-	particles[im].z_box = z_box;
+	if (p0.y_box <= 0) p0.y_box = 1;
+	if (p0.y_box >= K) p0.y_box = K - 1;
+	if (p0.z_box <= 0) p0.z_box = 1;
+	if (p0.z_box >= K) p0.z_box = K - 1;
+	if (jm == -5) p.y_box = 0;
+	if (jm == -6) p.y_box = K;
+	if (jm == -7) p.z_box = 0;
+	if (jm == -8) p.z_box = K;
 
 	/*
 	   При обмене виртуального образа на частицу ставим частицу точно на границу ячейки,
 	   чтобы избегать накопления ошибок.
 	*/
-	Box b = boxes_yz[y_box][z_box][particles[f].x_box];
-	if (particles[im].y > b.y2) particles[im].y = b.y2;
-	else if (particles[im].y < b.y1) particles[im].y = b.y1;
-	if (particles[im].z > b.z2) particles[im].z = b.z2;
-	else if (particles[im].z < b.z1) particles[im].z = b.z1;
+	if (p0.y > b0.y2) p0.y = b0.y2;
+	else if (p0.y < b0.y1) p0.y = b0.y1;
+	if (p0.z > b0.z2) p0.z = b0.z2;
+	else if (p0.z < b0.z1) p0.z = b0.z1;
 
-	/*
-	   Проверяем что мы разместили частицу в правильной ячейке
-	*/
-	if (((particles[im].x < b.x1) && (abs(particles[im].x - b.x1) > 1.0e-14)) ||
-		((particles[im].x > b.x2) && (abs(particles[im].x - b.x2) > 1.0e-14)) ||
-		((particles[im].y < b.y1) && (abs(particles[im].y - b.y1) > 1.0e-14)) ||
-		((particles[im].y > b.y2) && (abs(particles[im].y - b.y2) > 1.0e-14)) ||
-		((particles[im].z < b.z1) && (abs(particles[im].z - b.z1) > 1.0e-14)) ||
-		((particles[im].z > b.z2) && (abs(particles[im].z - b.z2) > 1.0e-14))) {
-		printf("\n particle %d i_copy %d x = %.15le, y = %.15le, z = %.15le \n",
-			   im, particles[im].i_copy, particles[im].x, particles[im].y, particles[im].z);
-		printf(" particle %d x = %.15le, y = %.15le, z = %.15le \n",
-			   f, particles[f].x, particles[f].y, particles[f].z);
-		printf("box x [%.15le; %.15le] \n", b.x1, b.x2);
-		printf("box y [%.15le; %.15le] \n", b.y1, b.y2);
-		printf("box z [%.15le; %.15le] \n", b.z1, b.z2);
+	b0 = boxes_yz[p.y_box][p.z_box][p.x_box];
+	b0.end += 1;
+	b0.particles[b0.end] = f;
+	boxes_yz[p.y_box][p.z_box][p.x_box] = b0;
+	p0.box_i = b0.end;
 
-		printf("\n\n particle %d t = %.15le, particle %d t = %.15le \n",
-			   im, particles[im].t, f, particles[f].t);
-		printf(" particle %d t+dt = %.15le, particle %d t+dt = %.15le \n",
-			   im, particles[im].t + particles[im].dt, f, particles[f].t + particles[f].dt);
-		printf(" particle %d event: %d %d %.15le \n", f, time_queue[particles[f].ti].im,
-			   time_queue[particles[f].ti].jm, time_queue[particles[f].ti].t);
+	p.collission_only = false;
+	p0.collission_only = false;
 
-		throw "stop";
-	}
+	particles[im] = p0;
+	particles[f] = p;
 
-	// удаляем образ частицы
-	destroy_virt_particle(im);
+	particles[im].i_copy = f;
+	particles[f].i_copy = im;
 }
 
 
@@ -1542,7 +1559,7 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		z_box = short((A + dA + particles[new_i].z) / dA);
 
 		/*
-		   Если новые координаты ячейки выъодят за пределы системы,
+		   Если новые координаты ячейки выходят за пределы системы,
 		   то поместить "образ" в граничную ячейку (например, если
 		   координата образа по Y больше, чем A+1 - такое возможно,
 		   если частица имеет большую скорость).
@@ -1672,6 +1689,16 @@ void create_virt_particle(int &i, bool need_to_check=true) {
 		*/
 		particles[new_i].i_copy = i;
 		particles[i].i_copy = new_i;
+
+		for (int h = 0; h < particles_for_check_count; h++) {
+			if (i == particles_for_check[h]) {
+				FILE *history_file = fopen("history.txt", "a");
+				fprintf(history_file, " p.x = %.5le, p.y = %.5le, p.z = %.5le \n", particles[i].x, particles[i].y, particles[i].z);
+				fprintf(history_file, " p.vx = %.5le, p.vy = %.5le, p.vz = %.5le \n", particles[i].vx, particles[i].vy, particles[i].vz);
+				fprintf(history_file, " p0.x = %.5le, p0.y = %.5le, p0.z = %.5le \n", particles[new_i].x, particles[new_i].y, particles[new_i].z);
+				fclose(history_file);
+			}
+		}
 	}
 }
 
@@ -2307,7 +2334,7 @@ void new_seed(int NN, double etta) {
 bool reform(int &im, int &jm) {
 	particle p1 = particles[im];
 	double q1, q2, z, dx, dy, dz;
-	bool need_create_virt_particle = false;
+	bool need_retime_for_virt_particle = false;
 
 	/*
 	   Если jm >= 0 то наступившее событие - это соударение двух
@@ -2445,7 +2472,7 @@ bool reform(int &im, int &jm) {
 					if ((p1.y_box == 0) && (im < NP)) {
 						change_with_virt_particles(im, jm);
 						p1 = particles[im];
-						need_create_virt_particle = true;
+						need_retime_for_virt_particle = true;
 					}
 				}
 				if (jm == -6) {
@@ -2454,7 +2481,7 @@ bool reform(int &im, int &jm) {
 					if ((p1.y_box == K) && (im < NP)) {
 						change_with_virt_particles(im, jm);
 						p1 = particles[im];
-						need_create_virt_particle = true;
+						need_retime_for_virt_particle = true;
 					}
 				}
 				if (jm == -7) {
@@ -2463,7 +2490,7 @@ bool reform(int &im, int &jm) {
 					if ((p1.z_box == 0) && (im < NP)) {
 						change_with_virt_particles(im, jm);
 						p1 = particles[im];
-						need_create_virt_particle = true;
+						need_retime_for_virt_particle = true;
 					}
 				}
 				if (jm == -8) {
@@ -2472,7 +2499,7 @@ bool reform(int &im, int &jm) {
 					if ((p1.z_box == K) && (im < NP)) {
 						change_with_virt_particles(im, jm);
 						p1 = particles[im];
-						need_create_virt_particle = true;
+						need_retime_for_virt_particle = true;
 					}
 				}
 				if (jm < -10) {
@@ -2520,6 +2547,7 @@ bool reform(int &im, int &jm) {
 		   после произошедшего с ней события, то вызываем функцию
 		   по созданию "образов".
 		*/
+		/*
 		if (need_create_virt_particle == true) {
 			int e = im;
 			if (im >= NP)
@@ -2527,12 +2555,13 @@ bool reform(int &im, int &jm) {
 			clear_particle_events(e);
 			create_virt_particle(e);
 		}
+		*/
 
 		/*
-		  Возвращаем флаг создания образа, чтобы перерасчитать
+		  Возвращаем флаг, чтобы перерасчитать
 		  события для нового образа.
 		*/
-		return need_create_virt_particle;
+		return need_retime_for_virt_particle;
 }
 
 
@@ -2584,7 +2613,7 @@ void step() {
 
 		//printf("\n im %d jm %d", im, jm, particles[im].dt);
 		//check_particles();
-
+		/*
 		check_overlap();
 		for (int h = 0; h < particles_for_check_count; h++) {
 			if (im == particles_for_check[h] || jm == particles_for_check[h] || im == NP + particles_for_check[h] || jm == NP + particles_for_check[h]) {
@@ -2593,6 +2622,7 @@ void step() {
 				fclose(history_file);
 			}
 		}
+		*/
 		
 
 		// удаляем первое событие
@@ -2641,13 +2671,6 @@ void step() {
 		}
 
 		particles[im] = p1;
-
-		/*
-		if (im < NP) {
-			printf("\n before reform");
-			check_overlap();
-		}
-		*/
 
 		// Производим изменения в системе согласно произошедшему событию
 		need_virt_particle_retime = reform(im, jm);
@@ -3308,10 +3331,10 @@ int main()
 	FILE *history_file = fopen("history.txt", "w+");
 	fclose(history_file);
 
-	particles_for_check[0] = 3254;
+	particles_for_check[0] = 3026;
 	particles_for_check[1] = 6974;
 	particles_for_check[2] = 13500;
-	particles_for_check_count = 2;
+	particles_for_check_count = 1;
 
 	init("program.txt");
 	return 0;
