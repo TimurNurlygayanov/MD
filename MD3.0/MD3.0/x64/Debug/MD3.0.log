@@ -1,0 +1,61 @@
+﻿  MD3.0.cpp
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(163): warning C4244: инициализация: преобразование "__int64" в "double", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(164): warning C4244: инициализация: преобразование "__int64" в "double", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(165): warning C4244: инициализация: преобразование "__int64" в "double", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(202): warning C4477: "printf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "1" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(202): warning C4477: "printf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "2" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(202): warning C4477: "printf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "3" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(688): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(690): warning C4477: "fprintf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "2" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(690): warning C4477: "fprintf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "3" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(690): warning C4477: "fprintf": в строке форматирования "%.15le" требуется аргумент типа "double", но вариативный аргумент "4" имеет тип "double *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(826): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "3" имеет тип "int *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(826): warning C4313: printf: конфликт "%d" в строке формата с аргументом 3 типа "int *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(827): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "3" имеет тип "int *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(827): warning C4313: printf: конфликт "%d" в строке формата с аргументом 3 типа "int *"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(895): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(898): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(904): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(892): warning C4101: i_copy: неиспользованная локальная переменная
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1046): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1054): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1057): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1060): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1193): note:  см. объявление "fscanf"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1162): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1228): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1229): warning C4244: =: преобразование "double" в "int", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1809): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(1962): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2248): warning C4244: аргумент: преобразование "__int64" в "short", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2248): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2259): warning C4244: аргумент: преобразование "__int64" в "int", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "__int64"
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%lld" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%Id" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%I64d" в строке форматирования
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "2" имеет тип "__int64"
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%lld" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%Id" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2215): note: рекомендуется использовать "%I64d" в строке форматирования
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2221): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2231): warning C4477: "printf": в строке форматирования "%d" требуется аргумент типа "int", но вариативный аргумент "1" имеет тип "__int64"
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2231): note: рекомендуется использовать "%lld" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2231): note: рекомендуется использовать "%Id" в строке форматирования
+  c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2231): note: рекомендуется использовать "%I64d" в строке форматирования
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2335): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+c:\md\md3.0\md3.0\md3.0\md3.0.cpp(2345): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
+  MD3.0.vcxproj -> C:\MD\MD3.0\MD3.0\x64\Debug\MD3.0.exe

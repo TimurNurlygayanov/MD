@@ -1,0 +1,23 @@
+new 8 0.45000
+step 10000
+save 04500_10000.txt
+compress_two_walls 0.46 0.001 5 100 1000
+save 04600_00000.txt
+step 100000
+save 04600_100000.txt
+step 100000
+save 04600_200000.txt
+compress_two_walls 0.47 0.002 5 10 1000
+save 04700_00000.txt
+step 100000
+save 04700_100000.txt
+compress_left_wall 0.48 0.002 5 10 1000
+save 04800_00000.txt
+step 100000
+save 04800_100000.txt
+compress_right_wall 0.49 0.002 5 10 1000
+save 04900_00000.txt
+step 100000
+save 04900_100000.txt
+step 100000
+save 04900_200000.txt
