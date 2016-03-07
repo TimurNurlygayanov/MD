@@ -1,4 +1,4 @@
-new 4 0.43000
+new 8 0.43000 25.0
 step 100000
 save 043000_100000.txt
 function_g 10000 40.0 50.0 function_g_fluid_0.430.txt

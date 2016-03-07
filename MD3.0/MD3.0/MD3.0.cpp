@@ -1220,7 +1220,9 @@ NN - число частиц в ребре объёмо центрированного кристалла, на основе
 которого делается изначальный посев
 etta - начальная плотность, которую необходимо задать в системе
 */
-void new_seed(int NN, double etta) {
+void new_seed(int NN, double etta, double A_const) {
+	double X_scale, YZ_scale;
+
 	int KZ = 2;
 
 	double axy, axz, v0x, v0y, v0z, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z;
@@ -1248,25 +1250,32 @@ void new_seed(int NN, double etta) {
 	double etta0 = (4.0 * PI * NP) / (3.0 * A0 * A0 * (L0 - 2.0));
 
 	// Начинаем рассчёт коэффициента расширения системы
-	double Alpha = etta0 / etta;
-	double sk = L0 / (2.0 * Alpha * (L0 - 2.0));
+	//double Alpha = etta0 / etta;
+	//double sk = L0 / (2.0 * Alpha * (L0 - 2.0));
 
 	/*
 	Betta - коэффициент расширения системы из начальной объёмоцентрированной
 	упаковки к частицам, распределённым по всему объёму системы
 	*/
-	Betta = exp((1.0 / 3.0) * log(L0 / (2.0 * Alpha * (L0 - 2.0)) + sk));
+	//Betta = exp((1.0 / 3.0) * log(L0 / (2.0 * Alpha * (L0 - 2.0)) + sk));
 	//Betta = Betta + exp( (1.0 / 3.0) * log( -L0 / (2.0 * Alpha * (L0-2.0)) - sk) );
-
-	Betta = 1.0 / Betta;
+	//Betta = 1.0 / Betta;
 
 	XC = L0 / 2.0; //
 	YC = A0 / 2.0; //  вычисление центра объёма.
 	ZC = A0 / 2.0; //
 
 	L0 = L0*KZ;
-	L = L0 * Betta;  // множитель Betta - это коэффициент расширения
-	A = A0 * Betta;  // на него умножаются все координаты и параметры объёма
+	A = A_const;
+	L = ((4.0 * PI * NP * KZ) / etta) / (3.0 * A * A) + 2.0;
+	YZ_scale = A_const / A0;
+	X_scale = L / L0;
+
+	if (X_scale < 1.0 || YZ_scale < 1.0) {
+		printf("\n Incorrect initial parameters of volume! \n");
+		print_system_parameters();
+		exit(1);
+	}
 
 	NA = 0;
 
@@ -1441,10 +1450,12 @@ void new_seed(int NN, double etta) {
 	на него умножаются все координаты и параметры объёма.
 	*/
 	for (int ii = 0; ii < NP; ii++) {
-		particles[ii].x[0] = particles[ii].x[0]*Betta;
-		particles[ii].y[0] = particles[ii].y[0]*Betta;
-		particles[ii].z[0] = particles[ii].z[0]*Betta;
+		particles[ii].x[0] = particles[ii].x[0]*X_scale;
+		particles[ii].y[0] = particles[ii].y[0]*YZ_scale;
+		particles[ii].z[0] = particles[ii].z[0]*YZ_scale;
 	}
+
+	printf("\n X_scale %.15le \n", X_scale);
 
 	// Рассчитываем и выводим момент импульса Lx системы после посева:
 	double Lx = 0.0;
@@ -1458,9 +1469,6 @@ void new_seed(int NN, double etta) {
 		particles[i].dt = 0.0;
 		particles[i].ti = 0;
 	}
-
-	// поправка для задания точного значения начальной плотности
-	L = ((4.0 * PI * NP) / etta) / (3.0 * A * A) + 2.0;
 
 	/*
 	Cохраняем и загружаем систему из файла чтобы инициализировать
@@ -2237,12 +2245,13 @@ void init(std::string file_name) {
 		// Если необходимо создать новый посев
 		if (str_command.compare("new") == 0) {
 			int NN;
-			double etta;
+			double etta, A_const;
 
 			command_file >> NN;
 			command_file >> etta;
+			command_file >> A_const;
 			command_file.getline(parameter, 255, '\n');  // завершить считывание строки
-			new_seed(NN, etta);
+			new_seed(NN, etta, A_const);
 
 			print_system_parameters();
 		}
