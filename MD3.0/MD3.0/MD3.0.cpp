@@ -25,8 +25,9 @@ int COLL_COUNT = 0;
 bool DIFFUSE_RIGHT_WALL = false;
 
 #define PI 3.141592653589793238462
-const double particle_R = 1.0;
-const double particle_D2 = (2.0*particle_R)*(2.0*particle_R);
+const double particle_R = 0.5;
+const double particle_Rx2 = 2.0*particle_R;
+const double particle_D2 = 4.0*particle_R*particle_R;
 const double particle_R3 = particle_R*particle_R*particle_R;
 const double x_diffuse = 3.0;
 
@@ -97,8 +98,7 @@ N - число частиц в системе
 etta - средняя относительная плотность системы
 */
 void print_system_parameters() {
-	double R3 = particle_R * particle_R * particle_R;
-	long double etta = (4.0 * PI * R3 * NP) / (3.0 * A * A * (L - 2.0*particle_R));
+	long double etta = (4.0 * PI * particle_R3 * NP) / (3.0 * A * A * (L - 2.0*particle_R));
 	printf("\n\n| A    | %.15le \n| L    | %.15le \n", A, L);
 	printf("| N    | %d                 \n", NP);
 	printf("| etta | %.15le \n", etta);
@@ -178,7 +178,6 @@ int check_particles() {
 		E += p1.vx*p1.vx + p1.vy*p1.vy + p1.vz*p1.vz;
 
 		particle p0 = particles[i];
-		double R2 = particle_R*particle_R;
 		for (int j = i + 1; j < NP; j++) {
 			particle p2 = particles[j];
 
@@ -194,7 +193,7 @@ int check_particles() {
 					double dz = p0.z[h1] + p0.vz * dt - p2.z[h2] - p2.vz * dt2;
 					double r = dx*dx + dy*dy + dz*dz;
 
-					if ((r < R2) && (R2 - 1.0e-5 - r > 0.0)) {
+					if ((r < particle_D2) && (particle_D2 - 1.0e-5 - r > 0.0)) {
 						printf("\n\n particles %d[%d] %d[%d] r = %.15le", i, h1, j, h2, r);
 						throw "Particles overlaps!";
 					}
@@ -531,14 +530,14 @@ void retime(int &i) {
 			jm = -5;  // событие пересечения границы Y1 ячейки, в которой находится частица  
 		}
 		if (p1.y_box[0] == 1) {
-			dt = (p1_box.y1 + 2.0*particle_R - p1.y[0]) / p1.vy;
+			dt = (p1_box.y1 + particle_Rx2 - p1.y[0]) / p1.vy;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -12;  // событие рождения образа частицы
 			}
 		}
 		if (p1.y_box[0] == K-1) {
-			dt = (p1_box.y2 - 2.0*particle_R - p1.y[0]) / p1.vy;
+			dt = (p1_box.y2 - particle_Rx2 - p1.y[0]) / p1.vy;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -11;  // событие удаления образа частицы
@@ -552,14 +551,14 @@ void retime(int &i) {
 			jm = -6;  // событие пересечения границы Y2 ячейки, в которой находится частица
 		}
 		if (p1.y_box[0] == K - 1) {
-			dt = (p1_box.y2 - 2.0*particle_R - p1.y[0]) / p1.vy;
+			dt = (p1_box.y2 - particle_Rx2 - p1.y[0]) / p1.vy;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -11;  // событие рождения образа частицы
 			}
 		}
 		if (p1.y_box[0] == 1) {
-			dt = (p1_box.y1 + 2.0*particle_R - p1.y[0]) / p1.vy;
+			dt = (p1_box.y1 + particle_Rx2 - p1.y[0]) / p1.vy;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -12;  // событие удаления образа частицы
@@ -574,14 +573,14 @@ void retime(int &i) {
 			jm = -7;  // событие пересечения границы Z1 ячейки, в которой находится частица
 		}
 		if (p1.z_box[0] == 1) {
-			dt = (p1_box.z1 + 2.0*particle_R - p1.z[0]) / p1.vz;
+			dt = (p1_box.z1 + particle_Rx2 - p1.z[0]) / p1.vz;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -14;  // событие рождения образа частицы
 			}
 		}
 		if (p1.z_box[0] == K - 1) {
-			dt = (p1_box.z2 - 2.0*particle_R - p1.z[0]) / p1.vz;
+			dt = (p1_box.z2 - particle_Rx2 - p1.z[0]) / p1.vz;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -13;  // событие удаления образа частицы
@@ -595,14 +594,14 @@ void retime(int &i) {
 			jm = -8;  // событие пересечения границы Z2 ячейки, в которой находится частица
 		}
 		if (p1.z_box[0] == K - 1) {
-			dt = (p1_box.z2 - 2.0*particle_R - p1.z[0]) / p1.vz;
+			dt = (p1_box.z2 - particle_Rx2 - p1.z[0]) / p1.vz;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -13;  // событие рождения образа частицы
 			}
 		}
 		if (p1.z_box[0] == 1) {
-			dt = (p1_box.z1 + 2.0*particle_R - p1.z[0]) / p1.vz;
+			dt = (p1_box.z1 + particle_Rx2 - p1.z[0]) / p1.vz;
 			if ((dt > 0) && (dt < dt_min)) {
 				dt_min = dt;
 				jm = -14;  // событие удаления образа частицы
@@ -778,6 +777,7 @@ void change_particles(int i, int vp1, int vp2) {
 	int y_box1, z_box1, x_box1, y_box2, z_box2;
 	int j;
 
+	/*
 	if (particles[i].x[vp1] < 0.0) {
 		printf("AAAAAAAA");
 		throw "A";
@@ -786,6 +786,7 @@ void change_particles(int i, int vp1, int vp2) {
 		printf("BBBBBBB");
 		throw "B";
 	}
+	*/
 
 	x_box1 = particles[i].x_box[vp1];
 	y_box1 = particles[i].y_box[vp1];
@@ -872,8 +873,8 @@ void create_virt_particle(int &im, int &jm) {
 
 	switch (jm)
 	{
-		case -11:     // частица на границе Y = А-2
-			particles[im].y[1] = -2.0*particle_R;
+		case -11:     // частица на границе Y = А-2R
+			particles[im].y[1] = -particle_Rx2;
 			particles[im].x[1] = particles[im].x[0];
 			particles[im].z[1] = particles[im].z[0];
 			particles[im].x_box[1] = particles[im].x_box[0];
@@ -887,8 +888,8 @@ void create_virt_particle(int &im, int &jm) {
 			particles[im].box_i[1] = box1.end;
 
 			break;
-		case -12:     // частица на границе Y = 2
-			particles[im].y[1] = A + 2.0*particle_R;
+		case -12:     // частица на границе Y = 2R
+			particles[im].y[1] = A + particle_Rx2;
 			particles[im].x[1] = particles[im].x[0];
 			particles[im].z[1] = particles[im].z[0];
 			particles[im].x_box[1] = particles[im].x_box[0];
@@ -902,8 +903,8 @@ void create_virt_particle(int &im, int &jm) {
 			particles[im].box_i[1] = box1.end;
 
 			break;
-		case -13:     // частица на границе Z = A-2
-			particles[im].z[2] = -2.0*particle_R;
+		case -13:     // частица на границе Z = A-2R
+			particles[im].z[2] = -particle_Rx2;
 			particles[im].x[2] = particles[im].x[0];
 			particles[im].y[2] = particles[im].y[0];
 			particles[im].x_box[2] = particles[im].x_box[0];
@@ -917,8 +918,8 @@ void create_virt_particle(int &im, int &jm) {
 			particles[im].box_i[2] = box1.end;
 
 			break;
-		case -14:     // частица на границе Z = 2
-			particles[im].z[2] = A + 2.0*particle_R;
+		case -14:     // частица на границе Z = 2R
+			particles[im].z[2] = A + particle_Rx2;
 			particles[im].x[2] = particles[im].x[0];
 			particles[im].y[2] = particles[im].y[0];
 			particles[im].x_box[2] = particles[im].x_box[0];
@@ -987,22 +988,22 @@ void load_information_about_one_particle(FILE *loading_file) {
 	particles[i].dt = 0.0;
 	particles[i].ti = 1;
 
-	if (particles[i].y[0] < 2.0*particle_R) {
+	if (particles[i].y[0] < particle_Rx2) {
 		particles[i].x[1] = particles[i].x[0];
 		particles[i].y[1] = particles[i].y[0] + A;
 		particles[i].z[1] = particles[i].z[0];
 	}
-	if (particles[i].y[0] > A - 2.0*particle_R) {
+	if (particles[i].y[0] > A - particle_Rx2) {
 		particles[i].x[1] = particles[i].x[0];
 		particles[i].y[1] = particles[i].y[0] - A;
 		particles[i].z[1] = particles[i].z[0];
 	}
-	if (particles[i].z[0] < 2.0*particle_R) {
+	if (particles[i].z[0] < particle_Rx2) {
 		particles[i].x[2] = particles[i].x[0];
 		particles[i].z[2] = particles[i].z[0] + A;
 		particles[i].y[2] = particles[i].y[0];
 	}
-	if (particles[i].z[0] > A - 2.0*particle_R) {
+	if (particles[i].z[0] > A - particle_Rx2) {
 		particles[i].x[2] = particles[i].x[0];
 		particles[i].z[2] = particles[i].z[0] - A;
 		particles[i].y[2] = particles[i].y[0];
@@ -1019,6 +1020,13 @@ void load_information_about_one_particle(FILE *loading_file) {
 			x_box = short((particles[i].x[j] + dL) / dL);
 			y_box = short((particles[i].y[j] + dA) / dA);
 			z_box = short((particles[i].z[j] + dA) / dA);
+
+			if (particles[i].x[j] < boxes_yz[y_box][z_box][x_box].x1 ||
+				particles[i].x[j] > boxes_yz[y_box][z_box][x_box].x2) {
+				printf("\n %d \n", short((particles[i].x[j] + dL) / dL));
+				throw "aaa";
+			}
+
 
 			if (y_box < 0) y_box = 0;
 			if (z_box < 0) z_box = 0;
@@ -1175,7 +1183,13 @@ void load_seed(std::string file_name) {
 				particles[i].x_max = particles[i].x[0];
 			}
 			else {
-				particles[i].x_max = L - particle_R - x_diffuse + 0.0001*(rand()/10000);
+				double dx = (L - particle_R - particles[i].x[0]) / (rand() / 100.0 + 10.0);
+				particles[i].x_max = particles[i].x[0] + dx;
+
+				if (dx > x_diffuse || dx < 0.0 || particles[i].x_max < particles[i].x[0] || particles[i].x_max > L - particle_R) {
+					printf("\n dx = %.15le \n", dx);
+					throw "alarm";
+				}
 			}
 		}
 		else {
@@ -1276,6 +1290,17 @@ void new_seed(double lamda, double etta) {
 	double y = lamda / 2.0;
 	double z = lamda / 2.0;
 
+	if (x < particle_R || y < particle_R) {
+		printf("\n Incorrect parameters for new seed! \n");
+		if (x < particle_R) {
+			printf("Delta X is to small = %.5le, should be > %.5le. Please change etta0 \n", x, particle_R);
+		}
+		else {
+			printf("Delta Y is to small = %.5le, should be > %.5le. Please change lamda \n", y, particle_R);
+		}
+		throw "incorrect parameters";
+	}
+
 	//srand(time(NULL));  - совсем случайно
 	srand(10);   // - не случайно
 
@@ -1293,9 +1318,9 @@ void new_seed(double lamda, double etta) {
 				for (j3 = 0; j3 < 2; j3++) {
 					j = i + j1 * 4 + j2 * 2 + j3;
 
-					particles[j].x[0] = j1*L + x - 2.0*x*j1;
-					particles[j].y[0] = j2*A + y - 2.0*y*j2;
-					particles[j].z[0] = j3*A + z - 2.0*z*j3;
+					particles[j].x[0] = j1*L + x - 2.0*x*j1; // x or L-x
+					particles[j].y[0] = j2*A + y - 2.0*y*j2; // y or A-y
+					particles[j].z[0] = j3*A + z - 2.0*z*j3; // z or A-z
 
 					if ((j1 + j2 + j3) % 2 == 0) {
 						particles[j].vx = -vx;
@@ -1414,13 +1439,64 @@ void reform(int &im, int &jm, int &vp1, int &vp2) {
 	}
 	else
 	{
-		// соударение с идеальной стенкой
-		if (jm == -1) {
-			particles[im].vx = -particles[im].vx;
-		}
-		else {
-			// события перехода между ячейками системы
-			if (jm > -10) {
+		switch (jm) {
+			case -1:   // соударение с идеальной стенкой
+				particles[im].vx = -particles[im].vx;
+				break;
+			case -11:  // пересечение границы Y = A - 2R
+				if (p1.vy > 0.0) {
+					create_virt_particle(im, jm);
+				}
+				else {
+					particles[im].x[1] = -10.0*particle_R;
+					particles[im].x[3] = -10.0*particle_R;
+
+					clear_cell_from_virt_particle(im, 1);
+					clear_cell_from_virt_particle(im, 3);
+				}
+				break;
+			case -12:  // пересечение границы Y = 2R
+				if (p1.vy < 0.0) {
+					create_virt_particle(im, jm);
+				}
+				else {
+					particles[im].x[1] = -10.0*particle_R;
+					particles[im].x[3] = -10.0*particle_R;
+
+					clear_cell_from_virt_particle(im, 1);
+					clear_cell_from_virt_particle(im, 3);
+				}
+				break;
+			case -13:    // пересечение границы Z = A - 2R
+				if (p1.vz > 0.0) {
+					create_virt_particle(im, jm);
+				}
+				else {
+					particles[im].x[2] = -10.0*particle_R;
+					particles[im].x[3] = -10.0*particle_R;
+
+					clear_cell_from_virt_particle(im, 2);
+					clear_cell_from_virt_particle(im, 3);
+				}
+				break;
+			case -14:  // пересечение границы Z = 2R
+				if (p1.vz < 0.0) {
+					create_virt_particle(im, jm);
+				}
+				else {
+					particles[im].x[2] = -10.0*particle_R;
+					particles[im].x[3] = -10.0*particle_R;
+
+					clear_cell_from_virt_particle(im, 2);
+					clear_cell_from_virt_particle(im, 3);
+				}
+				break;
+			case -20:
+				particles[im].x_max = L - particle_R - 0.999 * x_diffuse + (0.998*x_diffuse*0.0001)*(rand() % 10000);
+				break;
+			case -100:
+				break;
+			default:
 				for (int j = 0; j < 4; ++j) {
 					if (p1.x[j] > 0.0) {
 						Box p1_box = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]];
@@ -1433,47 +1509,49 @@ void reform(int &im, int &jm, int &vp1, int &vp2) {
 						*/
 						int fj = p1_box.particles[end] % NP;
 						int kj = p1_box.particles[end] / NP;
-						
-						
+
+						/*
 						if (p1_box.particles[p1.box_i[j]] % NP != im) {
 							printf("\n p1_box.particles[p1.box_i[j]] = %d   p1_box.particles[p1.box_i[j]] / NP %d \n", p1_box.particles[p1.box_i[j]], p1_box.particles[p1.box_i[j]] % NP);
 							printf("\n %d %d %d  im %d  j %d\n", p1.y_box[j], p1.z_box[j], p1.x_box[j], im, j);
 							throw "EEE";
 						}
-						
+						*/
+
 						p1_box.particles[p1.box_i[j]] = p1_box.particles[end];
 						particles[fj].box_i[kj] = p1.box_i[j];
 						--p1_box.end;
 						boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]] = p1_box;
 
-						if (jm == -2) {
-							--p1.x_box[j];
-							if (p1.x[j] > 0.0) {
-								p1.x[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].x2;
-							}
-						}
-						if (jm == -4) {
-							++p1.x_box[j];
-							if (p1.x[j] > 0.0) {
-								p1.x[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].x1;
-							}
-						}
-
-						if (jm == -5) {
-							--p1.y_box[j];
-							p1.y[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].y2;
-						}
-						if (jm == -6) {
-							++p1.y_box[j];
-							p1.y[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].y1;
-						}
-						if (jm == -7) {
-							--p1.z_box[j];
-							p1.z[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].z2;
-						}
-						if (jm == -8) {
-							++p1.z_box[j];
-							p1.z[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].z1;
+						switch (jm) {
+							case -2:
+								--p1.x_box[j];
+								if (p1.x[j] > 0.0) {
+									p1.x[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].x2;
+								}
+								break;
+							case -4:
+								++p1.x_box[j];
+								if (p1.x[j] > 0.0) {
+									p1.x[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].x1;
+								}
+								break;
+							case -5:
+								--p1.y_box[j];
+								p1.y[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].y2;
+								break;
+							case -6:
+								++p1.y_box[j];
+								p1.y[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].y1;
+								break;
+							case -7:
+								--p1.z_box[j];
+								p1.z[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].z2;
+								break;
+							case -8:
+								++p1.z_box[j];
+								p1.z[j] = boxes_yz[p1.y_box[j]][p1.z_box[j]][p1.x_box[j]].z1;
+								break;
 						}
 
 						/*
@@ -1491,75 +1569,7 @@ void reform(int &im, int &jm, int &vp1, int &vp2) {
 					particles[im].y_box[0] == K || particles[im].z_box[0] == K) {
 					change_with_virt_particles(im, jm);
 				}
-			}
-			// пересечение границы Y = A - 2R
-			if (jm == -11) {
-				if (p1.vy > 0.0) {
-					create_virt_particle(im, jm);
-				}
-				else {
-					particles[im].x[1] = -10.0*particle_R;
-					particles[im].x[3] = -10.0*particle_R;
-
-					clear_cell_from_virt_particle(im, 1);
-					clear_cell_from_virt_particle(im, 3);
-				}
-			}
-			// пересечение границы Y = 2R
-			if (jm == -12) {
-				if (p1.vy < 0.0) {
-					create_virt_particle(im, jm);
-				}
-				else {
-					particles[im].x[1] = -10.0*particle_R;
-					particles[im].x[3] = -10.0*particle_R;
-
-					clear_cell_from_virt_particle(im, 1);
-					clear_cell_from_virt_particle(im, 3);
-				}
-			}
-			// пересечение границы Z = A - 2R
-			if (jm == -13) {
-				if (p1.vz > 0.0) {
-					create_virt_particle(im, jm);
-				}
-				else {
-					particles[im].x[2] = -10.0*particle_R;
-					particles[im].x[3] = -10.0*particle_R;
-
-					clear_cell_from_virt_particle(im, 2);
-					clear_cell_from_virt_particle(im, 3);
-				}
-			}
-			// пересечение границы Z = 2R
-			if (jm == -14) {
-				if (p1.vz < 0.0) {
-					create_virt_particle(im, jm);
-				}
-				else {
-					particles[im].x[2] = -10.0*particle_R;
-					particles[im].x[3] = -10.0*particle_R;
-
-					clear_cell_from_virt_particle(im, 2);
-					clear_cell_from_virt_particle(im, 3);
-				}
-			}
-			if (jm == -20) {
-				int w = rand();
-				if (w % 15 < 10) {
-					particles[im].x_max = L - particle_R - x_diffuse + 0.0001*(rand() % 10000);
-				}
-				if (w % 15 > 12) {
-					particles[im].x_max = L - particle_R - x_diffuse + (x_diffuse*0.00005)*(rand() % 10000);
-				}
-				if (w % 15 >= 10 || w % 15 <= 12) {
-					particles[im].x_max = L - particle_R - x_diffuse + (x_diffuse*0.0001)*(rand() % 10000);
-				}
-
-				if (particles[im].x_max > L || particles[im].x_max < L - particle_R - x_diffuse) {
-					printf("aaaa");
-				}
-			}
+				break;
 		}
 	}
 }
@@ -1964,15 +1974,14 @@ void compress(double compress_to_etta, double delta_L, int KK1, int KK2, int KK3
 
 	printf("\n INFO: Start to change system density... \n");
 
-	printf(" \n  Maximum delta_L = %.15le \n", delta_L);
-	printf("  Program will wait %d collissions per particle between each changes in density. \n", KK1);
-	printf("  Program will wait %d collissions per particle between each %d changes in density. \n", KK3, KK2);
-	printf("  Type of compression: ");
+	printf(" \n Maximum delta_L = %.15le \n", delta_L);
+	printf(" Program will wait %d collissions per particle between each changes in density.\n", KK1);
+	printf(" Program will wait %d collissions per particle between each %d changes in density.\n", KK3, KK2);
+	printf(" Type of compression: ");
 	if (type == 0) printf("only position of left wall will be changed");
 	if (type == 1) printf("only position of right wall will be changed");
-	if (type == 2) printf("position of both walls will be changed \n\n");
-
-	printf("etta = %.15le, should be equal to %.15le \n", etta, compress_to_etta);
+	if (type == 2) printf("position of both walls will be changed");
+	printf("\n\n");
 
 	// задаём плотность с точностью в 12 знаков
 	while (fabs(etta - compress_to_etta) > 1.0e-12) {
@@ -1991,13 +2000,17 @@ void compress(double compress_to_etta, double delta_L, int KK1, int KK2, int KK3
 			for (int i = 0; i < NP; ++i) {
 				dt = t_global - particles[i].t;
 				x = particles[i].x[0] + particles[i].vx * dt;
+
+				if (DIFFUSE_RIGHT_WALL == true && x > L / 2 && particles[i].vx > 0)
+					x = particles[i].x_max;
+				
 				if (x < min) min = x;
 				if (x > max) max = x;
 			}
 
 			
-			//Рассчитываем на сколько близко частицы находятся к первой
-			//и второй идеальным стенкам
+			// Рассчитываем на сколько близко частицы находятся к первой
+			// и второй идеальным стенкам
 			
 			min = min - particle_R;
 			max = L - max - particle_R;
@@ -2014,11 +2027,11 @@ void compress(double compress_to_etta, double delta_L, int KK1, int KK2, int KK3
 			dx = dL / 2.0;  // рассчитываем смещение для всех частиц
 
 			
-			//Если следущее смещение стенки сожмёт систему больше
-			//чем требуется (т.е. относительная плотность частиц в системе etta
-			//будет больше / меньше той, которая была указана а аргументах),
-			//то необходимо задать точное значение L, чтобы плотность совпала
-			//с требуемой плотностью.
+			// Если следущее смещение стенки сожмёт систему больше
+			// чем требуется (т.е. относительная плотность частиц в системе etta
+			// будет больше / меньше той, которая была указана а аргументах),
+			// то необходимо задать точное значение L, чтобы плотность совпала
+			// с требуемой плотностью.
 
 			if (L - dL < L_ideal) {
 				dL = 0.0;
@@ -2057,32 +2070,38 @@ void compress(double compress_to_etta, double delta_L, int KK1, int KK2, int KK3
 
 		// изменяем систему - происходит мгновенное изменение координат двух стенок
 		L -= dL;
-
 		
 		//Сохраняем состояние системы и снова загружаем его пересчитав новые
 		//параметры и проведя необходимую инициализацию
-		
 		save("tmp");
 		load_seed("tmp");
-
 		
 		//После каждого смещения стенки делаем указанное количество соударений
 		//на частицу в системе
-		for (short i = 0; i < KK1; i++)
+		for (short i = 0; i < KK1; i++) {
 			step();
+		}
 
 		compression_steps_done += 1;
 		if (compression_steps_done % KK2 == 0) {
-			for (short i = 0; i < KK3; i++)
+			printf("\r");
+			for (int b = 0; b < 70; b++)
+				printf(" ");
+
+			for (short i = 0; i < KK3; i++) {
 				step();
+
+				for (int b = 0; b < 100; b++)
+					printf("\b");
+				printf("\rrelaxation: %d / %d, current etta=%.15le", i, KK3, etta);
+			}
+			for (int b = 0; b < 100; b++)
+				printf("\b");
 		}
 
 		// рассчитываем плотность после сжатия
-		etta = (4.0 * PI * particle_R3 * NP) / (3.0 * A * A * (L - 2.0*particle_R));
-
-		for (int b = 0; b < 10000; b++)
-		    printf("\b");
-		printf("etta = %.15le, should be equal to %.15le", etta, compress_to_etta);
+		etta = (4.0 * PI * particle_R3 * NP) / (3.0 * A * A * (L - particle_Rx2));
+		printf("\retta = %.15le, should be equal to %.15le", etta, compress_to_etta);
 	}
 
 	printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
@@ -2107,6 +2126,7 @@ void init(std::string file_name) {
 		string str_command = command;
 
 		printf("\n\n<==========================>\n");
+		srand(time(NULL));  // перемешиваем генератор случайных чисел
 
 		// Если необходимо создать новый посев
 		if (str_command.compare("new") == 0) {
@@ -2120,6 +2140,25 @@ void init(std::string file_name) {
 			new_seed(lamda, etta);
 
 			print_system_parameters();
+
+			/*
+			float x, y, z;
+			ofstream myfile;
+			myfile.open("test_F1.save", ios::out | ios::app | ios::binary);
+			if (myfile.is_open()) {
+				for (int k = 0; k < 10002000; k++) {
+					for (int i = 0; i < NP; i++) {
+						x = particles[i].x[0];
+						y = particles[i].y[0];
+						z = particles[i].y[0];
+						myfile.write((char*)&x, sizeof(float));
+						myfile.write((char*)&y, sizeof(float));
+						myfile.write((char*)&z, sizeof(float));
+					}
+				}
+			}
+			myfile.close();
+			*/
 		}
 		// Если необходимо загрузить состояние системы из файла
 		if (str_command.compare("load") == 0) {
@@ -2142,22 +2181,64 @@ void init(std::string file_name) {
 
 			start = clock();
 
+			long int f[100];
+			for (i = 0; i < 100; i++) f[i] = 0;
+			double t_max;
+			double dt, x;
+
 			for (i = 0; i < steps; ++i) {
 				step();
-				//for (int b = 0; b < 100; b++)
-				//    printf("\b");
-				printf("\b\b\b\b\b\b\b\b\b\b\b\\b\b\b\b\b\b\b");
+				for (int b = 0; b < 50; b++)
+					printf("\b");
 				printf("%d / %d", int(i + 1), steps);
 
 				// если мы пишем файл с историей событий,
 				// то очищать его каждые 1000 соударений на частицу,
 				// чтобы он не превышал допустимых размеров.
-				if (i % 10000 == 0) {
+				/*
+				if (i % 100000 == 0) {
 					FILE *history_file = fopen("history.txt", "w+");
 					fclose(history_file);
 
 					check_particles();
 				}
+				*/
+
+				if (DIFFUSE_RIGHT_WALL == true) {
+					t_max = get_maximum_particle_time();
+
+					for (int j = 0; j < NP; j++) {
+						dt = t_max - particles[j].t;
+						x = particles[j].x[0] + particles[j].vx*dt;
+						if (x > L - particle_R - x_diffuse) {
+							f[int(x * 100) / 100] += 1;
+						}
+					}
+
+					if (i % 100 == 0) {
+						long int mean = 0;
+						for (int j = 0; j < 100; j++) {
+							mean += f[j];
+						}
+						mean /= 100;
+
+						for (int j = 0; j < NP; j++) {
+							dt = t_max - particles[j].t;
+							x = particles[j].x[0] + particles[j].vx*dt;
+							if (x > L - particle_R - x_diffuse) {
+								if (f[int(x * 100) / 100] > mean && particles[j].vx < 0.0) {
+									particles[j].x_max = x;
+								}
+								else if (f[int(x * 100) / 100] < mean && particles[j].vx < 0.0) {
+									particles[j].x_max = x + (L - particle_R - x) / 2.0;
+								}
+							}
+						}
+
+						for (int j = 0; j < 100; j++) f[j] = 0;
+					}
+				}
+				
 			}
 
 			end = clock();
@@ -2173,7 +2254,8 @@ void init(std::string file_name) {
 			for (int i = 0; i < NP; i++) {
 				Lx += particles[i].y[0]*particles[i].vz - particles[i].z[0]*particles[i].vy;
 			}
-			printf("\n Lx = %.15le\n", Lx);
+			printf("\n Lx = %.15le \n", Lx);
+			check_particles();
 		}
 		// если необходимо собрать данные по профилю плотности в системе
 		if (str_command.compare("image") == 0) {
