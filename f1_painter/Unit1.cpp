@@ -1,0 +1,117 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <stdio.h>
+#include <math.h>
+#include "Unit1.h"
+#include "Unit2.h"
+#include <vcl\Clipbrd.hpp>
+#include <windows.h>
+#include <string.h>
+#include <cstring.h>
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+int start_x = 50, start_y = 50;
+
+void PixelFill(int x,int y, int f)
+{
+        int c = Form1->Image1->Canvas->Pixels[ x ][ y ];
+        if ( (c != clBlack ) && ( c != RGB(255, f, f) ) )
+        {
+                Form1->Image1->Canvas->Pixels[x][y] = RGB(255, f, f);
+                PixelFill( x-1, y , f);
+                PixelFill( x+1, y , f);
+                PixelFill( x, y+1 , f);
+                PixelFill( x, y-1 , f);
+        }
+}
+
+
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        int max_r = 500;
+        int dr = (max_r-10) / 24;
+        Form1->Image1->Height = max_r;
+        Form1->Image1->Width = max_r;
+        Form1->Image1->Canvas->Refresh();
+
+        Form1->Image1->Canvas->Rectangle(1, 1, max_r-1, max_r-1);
+        for (int i = 0; i < 12; i++) {
+                Form1->Image1->Canvas->Ellipse(5 + i*dr, 5 + i*dr, max_r - i*dr - 5, max_r - i*dr - 5);
+        }
+        for (int i = 0; i < 24; i++) {
+                Form1->Image1->Canvas->MoveTo(max_r/2, max_r/2);
+                Form1->Image1->Canvas->LineTo(max_r/2 + (max_r/2 - 5)*sin(3.14*i*15/180), max_r/2 - (max_r/2 - 5)*cos(3.14*i*15/180) );
+        }
+        Form1->Image1->Canvas->Ellipse(max_r/2 - 5 - dr, max_r/2 - 5 - dr, max_r/2 + 5 + dr, max_r/2 + 5 + dr);
+
+        long int r, max_etta, max_fi, particles_count, n2, res, x, y, total = 0;
+        long int f1[12][12][24], f1_max[12];
+        FILE *file = fopen(Form1->OpenDialog1->FileName.c_str(), "r");
+        fscanf(file, "%ld %ld %ld %ld %ld", &r, &max_etta, &max_fi, &particles_count, &n2);
+
+        for (int i1 = 0; i1 < 12; i1++) {
+                f1_max[i1] = 1;
+        }
+
+        for (int i1 = 0; i1 < r; i1++) {
+                for (int i2 = 0; i2 < max_fi; i2++) {
+                        for (int i3 = 0; i3 < max_etta; i3++) {
+                                fscanf(file, "%ld", &res);
+                                f1[i1][i3][i2] = res;
+                                if (res > f1_max[i3]) f1_max[i3] = res;
+                        }
+                }
+        }
+        fclose(file);
+        for (int i1 = 0; i1 < r; i1++) {
+                for (int i2 = 0; i2 < max_fi; i2++) {
+                        for (int i3 = 0; i3 < max_etta; i3++) {
+                                if (i3 == Form1->TrackBar1->Position) {  // etta = 0, рисуем график
+                                        x = max_r/2 + 5 + (dr/2 + i1*dr)*sin((7 + i3*15)*3.14/180)*cos((7 + i2*15)*3.14/180);
+                                        y = max_r/2 + 5 + (dr/2 + i1*dr)*sin((7 + i3*15)*3.14/180)*sin((7 + i2*15)*3.14/180);
+                                        PixelFill(x, y, 30 + 200.0*(1.0 - double(f1[i1][i3][i2])/f1_max[i3]));
+                                }
+                        }
+                }
+        }
+
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
+
+
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        if ( SavePictureDialog1->Execute() )
+        {
+                Image1->Picture->SaveToFile( SavePictureDialog1->FileName + ".png");
+        }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::Button3Click(TObject *Sender)
+{
+        if (Form1->OpenDialog1->Execute()) {
+                Form1->Button1->Enabled = true;
+                Form1->Button2->Enabled = true;
+        }
+}
+//---------------------------------------------------------------------------
+

@@ -1,0 +1,184 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <stdio.h>
+#include <math.h>
+#include "Unit1.h"
+#include "Unit2.h"
+#include <vcl\Clipbrd.hpp>
+#include <windows.h>
+#include <string.h>
+#include <cstring.h>
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+        : TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+int start_x = 50, start_y = 50;
+
+void clear() {
+        Form1->Edit1->Text = StringReplace(Form1->Edit1->Text, ".", ",", TReplaceFlags() << rfReplaceAll);
+        Form1->Edit2->Text = StringReplace(Form1->Edit2->Text, ".", ",", TReplaceFlags() << rfReplaceAll);
+        double A = StrToFloat(Form1->Edit1->Text);
+        double cell_size = StrToFloat(Form1->Edit2->Text);
+
+        Form1->Image1->Canvas->Rectangle(-1, -1, Form1->Image1->Width + 1, Form1->Image1->Width + 1);
+        Form1->Image1->Width = ceill(A*cell_size) + 2*start_x;
+        Form1->Image1->Height = Form1->Image1->Width;
+        Form1->Image1->Picture->Bitmap->Height = Form1->Image1->Height;
+        Form1->Image1->Picture->Bitmap->Width = Form1->Image1->Width;
+
+        Form1->Image1->Canvas->Refresh();
+        Form1->Image1->Canvas->Rectangle(-1, -1, Form1->Image1->Width + 1, Form1->Image1->Width + 1);
+        Form1->Image1->Canvas->Pen->Color = clSilver;
+
+        int ii = Form1->Image1->Width;
+        while (ii > start_x*2)
+        {
+                Form1->Image1->Canvas->MoveTo(start_x + Form1->Image1->Width - ii, start_y);
+                Form1->Image1->Canvas->LineTo(start_x + Form1->Image1->Width - ii, Form1->Image1->Height - start_y);
+
+                Form1->Image1->Canvas->MoveTo(start_x, ii - start_y);
+                Form1->Image1->Canvas->LineTo(Form1->Image1->Width - start_x, ii - start_y);
+
+                ii = ii - cell_size;
+        }
+
+        Form1->Image1->Canvas->Pen->Color = clBlack;
+        Form1->Image1->Canvas->Pen->Width = 2;
+
+        Form1->Image1->Canvas->MoveTo(start_x - 5, Form1->Image1->Width - start_y + 2);
+        Form1->Image1->Canvas->LineTo(Form1->Image1->Width - start_x/2, Form1->Image1->Width - start_y + 2);
+        Form1->Image1->Canvas->LineTo(Form1->Image1->Width - start_x/2 - 10, Form1->Image1->Width - start_y - 3);
+        Form1->Image1->Canvas->LineTo(Form1->Image1->Width - start_x/2, Form1->Image1->Width - start_y + 2);
+        Form1->Image1->Canvas->LineTo(Form1->Image1->Width - start_x/2 - 10, Form1->Image1->Width - start_y + 7);
+
+        Form1->Image1->Canvas->MoveTo(start_x - 1, Form1->Image1->Width - start_y + 5);
+        Form1->Image1->Canvas->LineTo(start_x - 1, start_y/2);
+        Form1->Image1->Canvas->LineTo(start_x - 6, start_y/2 + 10);
+        Form1->Image1->Canvas->LineTo(start_x - 1, start_y/2);
+        Form1->Image1->Canvas->LineTo(start_x + 4, start_y/2 + 10);
+
+
+        Form1->Image1->Canvas->Font->Size = 12;
+        Form1->Image1->Canvas->TextOutA(start_x - 15, Form1->Image1->Width - start_y + 5, "0");
+        Form1->Image1->Canvas->TextOutA(Form1->Image1->Width - start_x/2, Form1->Image1->Width - start_y + 5, "Y");
+        Form1->Image1->Canvas->TextOutA(start_x - 20, start_y/2 - 5, "Z");
+        ii = 5;
+        while (ii < A+1 ) {
+            Form1->Image1->Canvas->MoveTo(start_x + cell_size*ii, Form1->Image1->Width - start_y - 2);
+            Form1->Image1->Canvas->LineTo(start_x + cell_size*ii, Form1->Image1->Width - start_y + 5);
+
+            Form1->Image1->Canvas->TextOutA(start_x + cell_size*ii - 5, Form1->Image1->Width - start_y + 5, IntToStr(ii));
+
+            Form1->Image1->Canvas->MoveTo(start_x - 5, Form1->Image1->Width - start_y - cell_size*ii);
+            Form1->Image1->Canvas->LineTo(start_x + 2, Form1->Image1->Width - start_y - cell_size*ii);
+
+            Form1->Image1->Canvas->TextOutA(start_x - 25, Form1->Image1->Width - start_y - cell_size*ii - 10, IntToStr(ii));
+
+            ii += 5;
+        }
+
+        Form1->Image1->Canvas->Pen->Width = 1;
+}
+
+
+void paint(const char *filename) {
+        int y, z, g = -1, r = -1, number_of_particles;
+        double IMG_Y;
+        double IMG_Z;
+        Form1->Edit2->Text = StringReplace(Form1->Edit2->Text, ".", ",", TReplaceFlags() << rfReplaceAll);
+        double cell_size = StrToFloat(Form1->Edit2->Text);
+        Form1->Edit1->Text = StringReplace(Form1->Edit1->Text, ".", ",", TReplaceFlags() << rfReplaceAll);
+        double yz_max = cell_size*StrToFloat(Form1->Edit1->Text);
+
+        int start_x = 50, start_y = 50;
+
+        FILE *file = fopen(filename, "r");
+        fscanf(file, "%d", &number_of_particles);
+
+        while (fscanf(file, "%d", &r) + fscanf(file, "%le", &IMG_Y) + fscanf(file, "%le", &IMG_Z) == 3) {
+                y = ceill(IMG_Y*cell_size);
+                z = ceill(IMG_Z*cell_size);
+
+
+                if (g == -1 && y < yz_max/1.5 && y > yz_max/3.0 && z < yz_max/1.5 && z > yz_max/3.0) {
+                    g = r;
+                    Form1->Image1->Canvas->MoveTo(start_x + y, Form1->Image1->Height - start_y - z);
+                }
+
+                if (r == g) {
+                    Form1->Image1->Canvas->LineTo(start_x + y, Form1->Image1->Height - start_y - z);
+                } else {
+                    Form1->Image1->Canvas->Pixels[ start_x + y ][ Form1->Image1->Height - start_y - z ] = Form2->Shape1->Brush->Color;
+                }
+        }
+}
+
+
+
+void __fastcall TForm1::Button1Click(TObject *Sender)
+{
+        const char *searchkey = "*.txt";
+        string name;
+        WIN32_FIND_DATA fd;
+        HANDLE h = FindFirstFile(searchkey,&fd);
+
+        while (True) {
+                clear();
+
+                name = fd.cFileName;
+                name += ".png";
+
+                try {
+                    paint(fd.cFileName);
+                    Form1->Image1->Picture->SaveToFile(name.c_str());
+                } catch(...) {
+                    Form1->Caption = name.c_str();
+                }
+
+                if (FindNextFile(h, &fd) == 0)
+                        break;
+        }
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::Button2Click(TObject *Sender)
+{
+        if ( SavePictureDialog1->Execute() )
+        {
+                Image1->Picture->SaveToFile( SavePictureDialog1->FileName + ".png");
+        }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TForm1::Button8Click(TObject *Sender)
+{
+Form2->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::Button6Click(TObject *Sender)
+{
+        Image1->Picture->Bitmap->Height = Image1->Height;
+        Image1->Picture->Bitmap->Width = Image1->Width;
+        Clipboard()->Assign(Image1->Picture->Bitmap);     
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TForm1::Button7Click(TObject *Sender)
+{
+        clear();
+}
+//---------------------------------------------------------------------------
+

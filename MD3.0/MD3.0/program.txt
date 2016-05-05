@@ -1,39 +1,65 @@
-new 1.07 0.4500
+new 40 1.07 0.45
 step 1000
-compressr 0.4600 0.1e-5 10 20 1000
-step 10000
-image 10000 10 image_diffuse_045000_20000.txt
-step 10000
-image 10000 10 image_diffuse_045000_30000.txt
-step 10000
-image 10000 10 image_diffuse_045000_40000.txt
-step 10000
-image 10000 10 image_diffuse_045000_50000.txt
-step 10000
-image 10000 10 image_diffuse_045000_60000.txt
-step 10000
-image 10000 10 image_diffuse_045000_70000.txt
-step 10000
-image 10000 10 image_diffuse_045000_80000.txt
-step 10000
-image 10000 10 image_diffuse_045000_90000.txt
-step 10000
-image 10000 10 image_diffuse_045000_100000.txt
+save 40x40_0.50_1000.txt
+image 10000 10 image_8x8_0.3_100000.txt
+compress_right_wall 0.4 1.0e-3 10 20 100
+save 8x8_0.40_000.txt
 step 100000
-image 10000 10 image_diffuse_045000_200000.txt
+save 8x8_0.40_100000.txt
+image 10000 10 image_8x8_0.4_100000.txt
+compress_right_wall 0.45 1.0e-3 10 20 100
+save 8x8_0.45_000.txt
 step 100000
-image 10000 10 image_diffuse_045000_300000.txt
+save 8x8_0.45_100000.txt
+image 10000 10 image_8x8_0.45_100000.txt
 step 100000
-image 10000 10 image_diffuse_045000_400000.txt
+save 8x8_0.45_200000.txt
 step 100000
-image 10000 10 image_diffuse_045000_500000.txt
+save 8x8_0.45_300000.txt
 step 100000
-image 10000 10 image_diffuse_045000_600000.txt
+save 8x8_0.45_400000.txt
 step 100000
-image 10000 10 image_diffuse_045000_700000.txt
+save 8x8_0.45_500000.txt
+image 10000 10 image_8x8_0.45_500000.txt
+compress_right_wall 0.50 1.0e-3 10 20 100
+save 8x8_0.50_000.txt
 step 100000
-image 10000 10 image_diffuse_045000_800000.txt
+save 8x8_0.50_100000.txt
+image 10000 10 image_8x8_0.50_100000.txt
 step 100000
-image 10000 10 image_diffuse_045000_900000.txt
+save 8x8_0.50_200000.txt
 step 100000
-image 10000 10 image_diffuse_045000_1000000.txt
+save 8x8_0.50_300000.txt
+step 100000
+save 8x8_0.50_400000.txt
+step 100000
+save 8x8_0.50_500000.txt
+image 10000 10 image_8x8_0.50_500000.txt
+compress_right_wall 0.51 1.0e-3 10 20 100
+save 8x8_0.51_000.txt
+step 100000
+save 8x8_0.51_100000.txt
+image 10000 10 image_8x8_0.51_100000.txt
+step 100000
+save 8x8_0.51_200000.txt
+step 100000
+save 8x8_0.51_300000.txt
+step 100000
+save 8x8_0.51_400000.txt
+step 100000
+save 8x8_0.51_500000.txt
+image 10000 10 image_8x8_0.51_500000.txt
+compress_right_wall 0.52 1.0e-3 10 20 100
+save 8x8_0.52_000.txt
+step 100000
+save 8x8_0.52_100000.txt
+image 10000 10 image_8x8_0.52_100000.txt
+step 100000
+save 8x8_0.52_200000.txt
+step 100000
+save 8x8_0.52_300000.txt
+step 100000
+save 8x8_0.52_400000.txt
+step 100000
+save 8x8_0.52_500000.txt
+image 10000 10 image_8x8_0.52_500000.txt
