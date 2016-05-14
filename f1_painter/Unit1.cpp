@@ -66,22 +66,23 @@ void __fastcall TForm1::Button1Click(TObject *Sender)
         }
 
         for (int i1 = 0; i1 < r; i1++) {
-                for (int i2 = 0; i2 < max_fi; i2++) {
-                        for (int i3 = 0; i3 < max_etta; i3++) {
+                for (int i2 = 0; i2 < max_etta; i2++) {
+                        for (int i3 = 0; i3 < max_fi; i3++) {
                                 fscanf(file, "%ld", &res);
-                                f1[i1][i3][i2] = res;
-                                if (res > f1_max[i3]) f1_max[i3] = res;
+                                f1[i1][i2][i3] = res;
+                                if (res > f1_max[i2]) f1_max[i2] = res;
                         }
                 }
         }
         fclose(file);
         for (int i1 = 0; i1 < r; i1++) {
-                for (int i2 = 0; i2 < max_fi; i2++) {
-                        for (int i3 = 0; i3 < max_etta; i3++) {
-                                if (i3 == Form1->TrackBar1->Position) {  // etta = 0, рисуем график
-                                        x = max_r/2 + 5 + (dr/2 + i1*dr)*sin((7 + i3*15)*3.14/180)*cos((7 + i2*15)*3.14/180);
-                                        y = max_r/2 + 5 + (dr/2 + i1*dr)*sin((7 + i3*15)*3.14/180)*sin((7 + i2*15)*3.14/180);
-                                        PixelFill(x, y, 30 + 200.0*(1.0 - double(f1[i1][i3][i2])/f1_max[i3]));
+                for (int i2 = 0; i2 < max_etta; i2++) {
+                        for (int i3 = 0; i3 < max_fi; i3++) {
+                                if (i2 == Form1->TrackBar1->Position) {  // etta = 0, рисуем график
+                                        x = max_r/2 + (dr/2 + i1*dr)*sin((7 + i2*15)*3.14/180)*cos((7 + i3*15)*3.14/180);
+                                        y = max_r/2 + (dr/2 + i1*dr)*sin((7 + i2*15)*3.14/180)*sin((7 + i3*15)*3.14/180);
+                                        PixelFill(x, y, 30 + 200.0*(1.0 - double(f1[i1][i2][i3])/f1_max[i2]));
+                                        Form1->Image1->Canvas->Pixels[x][y] = clBlack;
                                 }
                         }
                 }

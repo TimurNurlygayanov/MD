@@ -1,65 +1,18 @@
-new 40 1.07 0.45
-step 1000
-save 40x40_0.50_1000.txt
-image 10000 10 image_8x8_0.3_100000.txt
-compress_right_wall 0.4 1.0e-3 10 20 100
-save 8x8_0.40_000.txt
-step 100000
-save 8x8_0.40_100000.txt
-image 10000 10 image_8x8_0.4_100000.txt
-compress_right_wall 0.45 1.0e-3 10 20 100
-save 8x8_0.45_000.txt
-step 100000
-save 8x8_0.45_100000.txt
-image 10000 10 image_8x8_0.45_100000.txt
-step 100000
-save 8x8_0.45_200000.txt
-step 100000
-save 8x8_0.45_300000.txt
-step 100000
-save 8x8_0.45_400000.txt
-step 100000
-save 8x8_0.45_500000.txt
-image 10000 10 image_8x8_0.45_500000.txt
-compress_right_wall 0.50 1.0e-3 10 20 100
-save 8x8_0.50_000.txt
-step 100000
-save 8x8_0.50_100000.txt
-image 10000 10 image_8x8_0.50_100000.txt
-step 100000
-save 8x8_0.50_200000.txt
-step 100000
-save 8x8_0.50_300000.txt
-step 100000
-save 8x8_0.50_400000.txt
-step 100000
-save 8x8_0.50_500000.txt
-image 10000 10 image_8x8_0.50_500000.txt
-compress_right_wall 0.51 1.0e-3 10 20 100
-save 8x8_0.51_000.txt
-step 100000
-save 8x8_0.51_100000.txt
-image 10000 10 image_8x8_0.51_100000.txt
-step 100000
-save 8x8_0.51_200000.txt
-step 100000
-save 8x8_0.51_300000.txt
-step 100000
-save 8x8_0.51_400000.txt
-step 100000
-save 8x8_0.51_500000.txt
-image 10000 10 image_8x8_0.51_500000.txt
-compress_right_wall 0.52 1.0e-3 10 20 100
-save 8x8_0.52_000.txt
-step 100000
-save 8x8_0.52_100000.txt
-image 10000 10 image_8x8_0.52_100000.txt
-step 100000
-save 8x8_0.52_200000.txt
-step 100000
-save 8x8_0.52_300000.txt
-step 100000
-save 8x8_0.52_400000.txt
-step 100000
-save 8x8_0.52_500000.txt
-image 10000 10 image_8x8_0.52_500000.txt
+load 0.5200_2000000.txt
+f1 42.2 42.78 50 200 f1v2_052_2x10e+6collissions_1st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 41.3 42.2 100 100 f1_052_2x10e+6collissions_2st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 40.4 41.3 100 100 f1_052_2x10e+6collissions_3st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 39.5 40.4 100 100 f1_052_2x10e+6collissions_4st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 38.66 39.5 100 100 f1_052_2x10e+6collissions_5st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 37.72 38.66 100 100 f1_052_2x10e+6collissions_6st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 36.78 37.72 100 100 f1_052_2x10e+6collissions_7st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 35.92 36.78 100 100 f1_052_2x10e+6collissions_8st_crystal_layer_10e+4measures.txt
+load 0.5200_2000000.txt
+f1 35.08 35.92 100 100 f1_052_2x10e+6collissions_9st_crystal_layer_10e+4measures.txt
