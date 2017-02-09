@@ -109,7 +109,7 @@ void paint(const char *filename) {
                 y = ceill(IMG_Y*cell_size);
                 z = ceill(IMG_Z*cell_size);
 
-
+                /*
                 if (g1 == -1 && y < yz_max/2 && y > yz_max/5.0 && z < yz_max/2 && z > yz_max/5.0) {
                     g1 = r;
                     Form1->Image1->Canvas->MoveTo(start_x + y, Form1->Image1->Height - start_y - z);
@@ -136,6 +136,7 @@ void paint(const char *filename) {
                     y2 = y;
                     z2 = z;
                 }
+                */
 
                 if (r != g1 && r != g2) {
                     Form1->Image1->Canvas->Pixels[ start_x + y ][ Form1->Image1->Height - start_y - z ] = Form2->Shape1->Brush->Color;

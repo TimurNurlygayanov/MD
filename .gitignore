@@ -1,0 +1,5 @@
+*.txt
+*.pdf
+*.pyc
+*ipch*
+*Debug*

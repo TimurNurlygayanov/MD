@@ -117,7 +117,7 @@ void paint(const char *filename) {
                     z1 = z;
                 }
 
-                if (g2 == -1 && y > yz_max/2 && y < yz_max - yz_max/5.0 && z < yz_max/2 && z > yz_max/5.0) {
+                if (g2 == -1 && y > yz_max/2 && y < yz_max - yz_max/5.0 && z > yz_max/2 && z < yz_max - yz_max/5.0) {
                     g2 = r;
                     Form1->Image1->Canvas->MoveTo(start_x + y, Form1->Image1->Height - start_y - z);
                     y2 = y;

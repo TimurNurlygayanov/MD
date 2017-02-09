@@ -1,18 +1,13 @@
-load 0.5200_2000000.txt
-f1 42.2 42.78 50 200 f1v2_052_2x10e+6collissions_1st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 41.3 42.2 100 100 f1_052_2x10e+6collissions_2st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 40.4 41.3 100 100 f1_052_2x10e+6collissions_3st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 39.5 40.4 100 100 f1_052_2x10e+6collissions_4st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 38.66 39.5 100 100 f1_052_2x10e+6collissions_5st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 37.72 38.66 100 100 f1_052_2x10e+6collissions_6st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 36.78 37.72 100 100 f1_052_2x10e+6collissions_7st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 35.92 36.78 100 100 f1_052_2x10e+6collissions_8st_crystal_layer_10e+4measures.txt
-load 0.5200_2000000.txt
-f1 35.08 35.92 100 100 f1_052_2x10e+6collissions_9st_crystal_layer_10e+4measures.txt
+load save20160412-05080-527e5.txt
+step 100
+f1 1.05 1.85 20 200 f1_X3_test.txt image_file_layer1.txt
+f1 1.05 1.85 20 200 f1_X3_test2.txt image_file_layer2.txt
+step 1000000
+f1 1.05 1.85 20 200 f1_X3_test3.txt image_file_layer3.txt
+f1 1.05 1.85 20 200 f1_X3_test4.txt image_file_layer4.txt
+f1 1.05 1.85 20 200 f1_X3_test5.txt image_file_layer5.txt
+f1 1.05 1.85 20 200 f1_X3_test6.txt image_file_layer6.txt
+f1 1.05 1.85 20 200 f1_X3_test7.txt image_file_layer7.txt
+f1 1.05 1.85 20 200 f1_X3_test8.txt image_file_layer8.txt
+f1 1.05 1.85 20 200 f1_X3_test9.txt image_file_layer9.txt
+f1 1.05 1.85 20 200 f1_X3_test10.txt image_file_layer10.txt

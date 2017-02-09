@@ -31,13 +31,16 @@ double particle_D2 = 4.0*particle_R*particle_R;
 double particle_R3 = particle_R*particle_R*particle_R;
 double x_diffuse = 3.0;
 
+bool temp_save;
+char temp_save_file[255];
+
 // параметры объёма, задаются в load()
 double A, dA, L, dL;
 
 // Глобальная переменная для подсчёта общей кинетической энергии всех частиц
 double global_E = 0.0;
 
-double dP_left_wall, dP_right_wall, dP_collissions_rate, dP_time;
+double dV_left_wall, dV_right_wall, N_collissions_left_wall, N_collissions_right_wall, dP_time;
 
 // индекс последнего элемента в очереди событий.
 long int last;
@@ -50,7 +53,8 @@ typedef struct Event_ {
 
 // очередь событий - оптимально 16384 элемента
 // (это должно быть число-степень двойки, большее чем максимальное число частиц)
-Event *time_queue = new Event[262144];
+//Event *time_queue = new Event[262144];
+Event *time_queue = new Event[16384];
 
 // объект "частица"
 // x, y, z - координаты частицы
@@ -69,7 +73,8 @@ typedef struct particle_ {
 
 // массив частиц, размер массива N + округление
 // в большую сторону к числу дающее степень двойки.
-particle *particles = new particle[262144];
+//particle *particles = new particle[262144];
+particle *particles = new particle[16384];
 
 // клетка. Объём системы разделён на множество клеток,
 // каждая клетка содержит в себе несколько виртуальных частиц
@@ -91,6 +96,8 @@ Box boxes_yz[100][100][1000];
 // выбранных частиц
 long int particles_for_check[100];
 long int particles_for_check_count = 0;
+
+double *angles = new double[200];
 
 /*
 Эта функция выводит на экран параметры текущей системы:
@@ -1036,6 +1043,7 @@ void load_information_about_one_particle(FILE *loading_file) {
 			if (particles[i].x[j] < boxes_yz[y_box][z_box][x_box].x1 ||
 				particles[i].x[j] > boxes_yz[y_box][z_box][x_box].x2) {
 				printf("\n %ld \n", long int((particles[i].x[j] + dL) / dL));
+				printf("%d %d %d", x_box, y_box, z_box);
 				throw "aaa";
 			}
 
@@ -1113,6 +1121,9 @@ void load_seed(std::string file_name) {
 		exit(1);
 	}
 
+	// считываем плотность
+	fscanf(loading_file, "%le", &a1);
+
 	// считываем количество частиц в системе
 	fscanf(loading_file, "%ld", &h);
 	NP = h;
@@ -1122,9 +1133,9 @@ void load_seed(std::string file_name) {
 	// считываем значение L 
 	fscanf(loading_file, "%le", &a1);
 	L = a1;
-	// считываем значение L 
-	fscanf(loading_file, "%le", &a1);
-	change_R(a1);
+	// считываем значение R 
+	//fscanf(loading_file, "%le", &a1);
+	//change_R(a1);
 
 	// EN: search for the appropriate values for dA, dL, K, K2
 	// RU: ищем подходящее значение для dA, dL, K, K2
@@ -1214,6 +1225,8 @@ void load_seed(std::string file_name) {
 
 	fclose(loading_file);
 
+	printf("DF");
+
 	/*
 	Инициализируем очередь событий пустыми событиями и устанавливаем
 	указатель конца списка на его начало.
@@ -1245,12 +1258,15 @@ void save(std::string file_name) {
 
 	FILE *save_file = fopen(file_name.c_str(), "w+");
 
+	double etta = (4.0 * PI * particle_R3 * NP) / (3.0 * A * A * (L - particle_Rx2));
+	fprintf(save_file, "%.15le\n", etta);
+
 	// RU: сохраняем информацию о количестве частиц и размерах системы
 	// EN: save information about count of particles and size of the system
 	fprintf(save_file, "%ld\n", NP);
 	fprintf(save_file, "%.15le\n", A);
 	fprintf(save_file, "%.15le\n", L);
-	fprintf(save_file, "%.15le\n", particle_R);
+	//fprintf(save_file, "%.15le\n", particle_R);
 
 	// RU: сохраняем координаты всех частиц и их скорости: x, y, z, vx, vy, vz
 	// EN: we need to save all coordinates of particles: x, y, z, vx, vy, vz
@@ -1288,14 +1304,15 @@ void save(std::string file_name) {
 NN - число частиц в ребре объёмо центрированного кристалла, на основе
 которого делается изначальный посев
 etta - начальная плотность, которую необходимо задать в системе
-labda - расстояние между узлами
+lamda - расстояние между узлами
 */
-void new_seed(long particles_count, double lamda, double etta) {
+void new_seed(long particles_count, double etta) {
 	long i = 0, j, j1, j2, j3;
 
 	// default 16x48
+	double lamda = 2.0*particle_R + 0.1*particle_R;
 	long Qyz = particles_count;  // число узлов по у и z
-	long Qx = 2*particles_count; // число узлов по x
+	long Qx = particles_count*4; // число узлов по x
 	double vx, vy, vz;
 	double delta_L;
 
@@ -1462,12 +1479,12 @@ void reform(long &im, long &jm, long &vp1, long &vp2) {
 				particles[im].vx = -particles[im].vx;
 
 				if (particles[im].x[0] < L / 2.0) {
-					dP_left_wall += 2.0*abs(particles[im].vx);
-					dP_collissions_rate += 1;
+					dV_left_wall += abs(particles[im].vx);
+					N_collissions_left_wall += 1;
 				}
 				else {
-					dP_right_wall += 2.0*abs(particles[im].vx);
-					dP_collissions_rate += 1;
+					dV_right_wall += abs(particles[im].vx);
+					N_collissions_right_wall += 1;
 				}
 
 				break;
@@ -1751,7 +1768,7 @@ void image(long steps, long accuracy, std::string file_name) {
 		step();  // далем одно соударение на частицу между замерами
 
 		// очистка экрана и вывод информации о прогрессе
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		printf("\r%76c\r", ' ');
 		printf("%ld / %ld", long(h + 1), steps);
 
 		/*
@@ -1810,7 +1827,8 @@ void function_g(long steps_count, double x1, double x2, std::string file_name) {
 
 		//check_particles();
 
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		// очистить строку
+		printf("\r%76c\r", ' ');
 		printf("%ld / %ld", w + 1, steps_count);
 
 		double t_global = get_maximum_particle_time();
@@ -1877,7 +1895,8 @@ void count_of_nearest_particles(int steps_count, double x1, double x2, std::stri
 	for (int w = 0; w < steps_count; w++) {
 		step();
 
-		printf("\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b");
+		// очистить строку
+		printf("\r%76c\r", ' ');
 		printf("%d / %d", w + 1, steps_count);
 
 		double t_global = get_maximum_particle_time();
@@ -1978,8 +1997,8 @@ void profile_medium(double x1, double x2, int dots_per_particle, long steps, std
 		for (u = 0; u < steps; u++) {
 			step();
 
-			for (m = 0; m < 50; m++)
-				printf("\b");
+			// очистить строку
+			printf("\r%76c\r", ' ');
 			printf("%ld / %ld", i*steps+u, steps*dots_per_particle);
 
 			t_global = get_maximum_particle_time();
@@ -2048,8 +2067,8 @@ void profile(double x1, double x2, long int dots_per_particle, long int steps, s
 
 	for (i = 0; i < dots_per_particle; ++i) {
 
-		for (j = 0; j < 50; j++)
-			printf("\b");
+		// очистить строку
+		printf("\r%76c\r", ' ');
 		printf("%ld / %ld", i, dots_per_particle);
 
 		/*
@@ -2091,186 +2110,395 @@ void profile(double x1, double x2, long int dots_per_particle, long int steps, s
 }
 
 
-void F1(double x1, double x2, long int n1, long int n2, std::string file_name) {
-	// Динамически создаём массив results_f1[12][12][24]
-	// куда будем складывать данные по ячейкам r, tetta, fi
-	long ***results_f1 = new long **[12];
-	for (int i = 0; i < 12; i++) {
-		results_f1[i] = new long *[12];
-		for (int j = 0; j < 12; j++) {
-			results_f1[i][j] = new long[24];
-		}
-	}
+void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 
-	// Динамически создаём двумерные массивы:
+	int m1 = 100;  // всего измерений на каждом шаге
+	int m2 = 20;  // дельта, по которой находится среднее положение центра частиц
+	int m3 = 10;    // количество итераций измерений
+	double t_global, dt;
+	particle p1;
+
+	FILE *f1_file = fopen(file_name.c_str(), "w+");
+	FILE *profile_file = fopen(file_name2.c_str(), "w+");
+
+	// Динамически создаём двумерные массивы (это необходимо делать динамически,
+	// так как они большого размера и мы не можем создать их в стеке,
+	// к тому же, размер массива зависит от значений переменной m1)
+	//
 	double **x = new double*[200];
 	double **y = new double*[200];
 	double **z = new double*[200];
 	for (int i = 0; i < 200; i++) {
-		x[i] = new double[n1+2];
-		y[i] = new double[n1+2];
-		z[i] = new double[n1+2];
+		x[i] = new double[m1 + 2];
+		y[i] = new double[m1 + 2];
+		z[i] = new double[m1 + 2];
 	}
 
-	double *middle_x = new double[200];
-	double *middle_y = new double[200];
-	double *middle_z = new double[200];
+	double *middle_x1 = new double[200];
+	double *middle_y1 = new double[200];
+	double *middle_z1 = new double[200];
+	double *middle_x2 = new double[200];
+	double *middle_y2 = new double[200];
+	double *middle_z2 = new double[200];
 
 	long *list_of_particles = new long[200];
+	//long *list_of_right_particles = new long[200];
+	long *list_of_particles_alfa = new long[50];
+	long *list_of_particles_betta = new long[50];
 
-	double r, tetta, fi, xf, yf, zf;
-	long particles_count = 0, w, m, w1, w2, w3;
+	long particles_count, particles_count_alfa, particles_count_betta, w, w1, w2;
 
-	for (w1 = 0; w1 < 12; w1++) {
-		for (w2 = 0; w2 < 12; w2++) {
-			for (w3 = 0; w3 < 24; w3++) {
-				results_f1[w1][w2][w3] = 0;
+	for (int iter = 0; iter < m3; iter++) {
+		save("new.txt");
+		load_seed("new.txt");
+
+		particles_count = 0;
+		particles_count_alfa = 0;
+		particles_count_betta = 0;
+
+		for (w1 = 0; w1 < 200; w1++) {
+			middle_x1[w1] = 0.0;
+			middle_y1[w1] = 0.0;
+			middle_z1[w1] = 0.0;
+			middle_x2[w1] = 0.0;
+			middle_y2[w1] = 0.0;
+			middle_z2[w1] = 0.0;
+
+			list_of_particles[w1] = -1;
+
+			for (w2 = 0; w2 < m1 + 1; w2++) {
+				x[w1][w2] = 0.0;
+				y[w1][w2] = 0.0;
+				z[w1][w2] = 0.0;
 			}
 		}
-	}
 
-	for (w1 = 0; w1 < 200; w1++) {
-		middle_x[w1] = 0.0;
-		middle_y[w1] = 0.0;
-		middle_z[w1] = 0.0;
-		for (w2 = 0; w2 < n1+1; w2++) {
-			x[w1][w2] = 0.0;
-			y[w1][w2] = 0.0;
-			z[w1][w2] = 0.0;
+		// не рассматриваем частицы находящиеся вблизи периодических
+		// граничных условий, а так же рассматриваем только частицы
+		// находящиеся в данном слое.
+		t_global = get_maximum_particle_time();
+		for (long i = 0; i < NP; i++) {
+			p1 = particles[i];
+			dt = t_global - p1.t;
+			p1.x[0] = p1.x[0] + p1.vx * dt;
+			p1.y[0] = p1.y[0] + p1.vy * dt;
+			p1.z[0] = p1.z[0] + p1.vz * dt;
+
+			if (p1.x[0] >= x1 && p1.x[0] <= x2 &&
+				p1.y[0] >= 6.0 * particle_R && p1.y[0] <= A - 6.0 * particle_R &&
+				p1.z[0] >= 6.0 * particle_R && p1.z[0] <= A - 6.0 * particle_R) {
+				list_of_particles[particles_count] = i;
+				particles_count++;
+			}
 		}
-	}
 
-	for (long i = 0; i < NP; i++) {
-		if (particles[i].x[0] >= x1 && particles[i].x[0] <= x2 &&
-			particles[i].y[0] >= 5.0 && particles[i].y[0] <= A-5.0 &&
-			particles[i].z[0] >= 5.0 && particles[i].z[0] <= A-5.0) {
-			list_of_particles[particles_count] = i;
-			particles_count += 1;
-		}
-	}
+		for (long i = 0; i < m1; i++) {
+			printf("\r%76c\r", ' ');
+			printf("%ld / %ld", i + 1, m1);
 
-	long j = 0;
-	FILE *file_plane_data = fopen((file_name + ".f1_plane_data").c_str(), "w+");
-	for (long i = 0; i < n2*n1; i++) {
+			step(); // делаем одно соударение на частицу между измерениями
 
-		for (int u = 0; u < 50; u++)
-			printf("\b");
-		printf("%ld / %ld", i+1, n2*n1);
-		for (int u = 0; u < 5; u++)
-			step();
+			t_global = get_maximum_particle_time();
+			for (int m = 0; m < particles_count; m++) {
+				w = list_of_particles[m];
 
-		// clear extra incorrect particles:
-		m = 0;
-		while (m < particles_count) {
-			w = list_of_particles[m];
-			if (particles[w].y[0] < 5.0 || particles[w].y[0] > A - 5.0 ||
-				particles[w].z[0] < 5.0 || particles[w].z[0] > A - 5.0) {
-					particles_count--;
-					list_of_particles[m] = list_of_particles[particles_count];
-					middle_x[m] = middle_x[particles_count];
-					middle_y[m] = middle_y[particles_count];
-					middle_z[m] = middle_z[particles_count];
+				// синхронизируем время частицы с временем системы
+				p1 = particles[w];
+				dt = t_global - p1.t;
+				p1.x[0] = p1.x[0] + p1.vx * dt;
+				p1.y[0] = p1.y[0] + p1.vy * dt;
+				p1.z[0] = p1.z[0] + p1.vz * dt;
 
-					for (long q = 0; q < n1+1; q++) {
-						x[m][q] = x[particles_count][q];
-						y[m][q] = y[particles_count][q];
-						z[m][q] = z[particles_count][q];
-					}
+				// суммируем значения координат центров узлов за первые m2 и за 
+				// последние m2 соударений
+				if (i < m2) {
+					middle_x1[m] += p1.x[0];
+					middle_y1[m] += p1.y[0];
+					middle_z1[m] += p1.z[0];
 				}
-			else {
-				x[m][j] = particles[w].x[0];
-				y[m][j] = particles[w].y[0];
-				z[m][j] = particles[w].z[0];
-				middle_x[m] += particles[w].x[0] / (n1+1);
-				middle_y[m] += particles[w].y[0] / (n1+1);
-				middle_z[m] += particles[w].z[0] / (n1+1);
+				else if (i >= m1 - m2) {
+					middle_x2[m] += p1.x[0];
+					middle_y2[m] += p1.y[0];
+					middle_z2[m] += p1.z[0];
+				}
 
-				m++;
+				// запоминаем все координаты всех частиц
+				x[m][i] = p1.x[0];
+				y[m][i] = p1.y[0];
+				z[m][i] = p1.z[0];
 			}
 		}
 
-		if (i >= n1) {
-			m = 0;
-			while (m < particles_count) {
-				w = 1;
-				// Delete all particles which locate in 6R distance
-				// from particles which are already in list (to avoid any
-				// negative feedback from neighboring particles)
-				for (long g = 0; g < m; g++) {
-					r = (middle_x[m] - middle_x[g])*(middle_x[m] - middle_x[g]) + \
-						(middle_y[m] - middle_y[g])*(middle_y[m] - middle_y[g]) + \
-						(middle_z[m] - middle_z[g])*(middle_z[m] - middle_z[g]);
+		// находим средние значения координат центров узлов за первые m2 и за 
+		// последние m2 соударений
+		for (int m = 0; m < particles_count; m++) {
+			middle_x1[m] /= double(m2);
+			middle_y1[m] /= double(m2);
+			middle_z1[m] /= double(m2);
+			middle_x2[m] /= double(m2);
+			middle_y2[m] /= double(m2);
+			middle_z2[m] /= double(m2);
+		}
 
-					if (r < 6.0 * particle_R) {
-						particles_count--;
-						list_of_particles[m] = list_of_particles[particles_count];
-						middle_x[m] = middle_x[particles_count];
-						middle_y[m] = middle_y[particles_count];
-						middle_z[m] = middle_z[particles_count];
+		long min_m, repeat;
+		double min_y = A, min_z = A, dy, dz, alfa, alfa2 = -1.0, betta, betta2 = -1.0;
 
-						for (int q = 0; q < n1; q++) {
-							x[m][q] = x[particles_count][q];
-							y[m][q] = y[particles_count][q];
-							z[m][q] = z[particles_count][q];
+		// начинаем поиск линии, по которой будем определять поворот 
+		// осей координат для исследуемого слоя
+		for (int m = 0; m < particles_count; m++)
+		{
+			if (((middle_y1[m] + middle_y2[m]) / 2.0 < min_y) &&
+				((middle_z1[m] + middle_z2[m]) / 2.0 < min_z))
+			{
+				min_y = middle_y1[m];
+				min_z = middle_z1[m];
+				min_m = m;
+			}
+		}
+
+		fprintf(profile_file, "SELECTED%d: ", iter);
+
+		list_of_particles_alfa[0] = min_m;
+		particles_count_alfa = 1;
+		fprintf(profile_file, "%d ", min_m);
+		repeat = 1;
+		while (repeat > 0)
+		{
+			repeat = -1;
+			for (int m = 0; repeat < 0 && m < particles_count; m++) {
+				if (m != min_m) {
+					dy = middle_y1[m] - middle_y1[min_m];
+					dz = middle_z1[m] - middle_z1[min_m];
+
+					// ищем частицу на расстоянии не дальше 3.2 радиусов
+					// так, чтобы линия, пересекающая центры узлов,
+					// образовывала острый угол с осью OY.
+					if ( (sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz > 0.0) )
+					{
+						alfa = atan2(dy, dz);
+
+						if (alfa2 < 0.0 || fabs(alfa - alfa2) < 0.5)
+						{
+							list_of_particles_alfa[particles_count_alfa] = m;
+							particles_count_alfa++;
+							min_m = m;
+							alfa2 = alfa;
+							repeat = 1;
+
+							fprintf(profile_file, "%d ", list_of_particles[min_m]);
 						}
-						w = 0;
-					}
-				}
-				m += w;
-			}
-		}
-
-		if (i < n1) {
-			j++;
-		}
-		else {
-			if (i < n2*n1 - n1 / 2.0) {
-				for (m = 0; m < particles_count; m++) {
-					xf = x[m][n1 / 2] - middle_x[m];
-					yf = y[m][n1 / 2] - middle_y[m];
-					zf = z[m][n1 / 2] - middle_z[m];
-
-					fprintf(file_plane_data, "%.5le %.5le %5le\n", xf, yf, zf);
-
-					r = sqrt(xf*xf + yf*yf + zf*zf);
-					fi = (PI + atan(yf / xf)) * 180.0 / PI;
-					tetta = (PI / 2.0 + acos(zf / r)) * 180.0 / PI;
-
-					w1 = r / 0.04;		// 0.04 == R / 12;
-					if (w1 > 11) w1 = 11; // обрабатываем крайние значения
-					w2 = tetta / 15;
-					if (w2 > 11) w2 = 11; // обрабатываем крайние значения
-					w3 = fi / 15;
-					if (w3 > 23) w3 = 23; // обрабатываем крайние значения
-
-					results_f1[w1][w2][w3] += 1;
-
-					middle_x[m] -= x[m][0] / (n1 + 1);
-					middle_y[m] -= y[m][0] / (n1 + 1);
-					middle_z[m] -= z[m][0] / (n1 + 1);
-
-					for (int h = 0; h < n1; h++) {
-						x[m][h] = x[m][h + 1];
-						y[m][h] = y[m][h + 1];
-						z[m][h] = z[m][h + 1];
 					}
 				}
 			}
 		}
-	}
 
-	FILE *file = fopen(file_name.c_str(), "w+");
-	fprintf(file, "12 12 24 %ld %ld\n", particles_count, n2);
-	for (w1 = 0; w1 < 12; w1++) {
-		for (w2 = 0; w2 < 12; w2++) {
-			for (w3 = 0; w3 < 24; w3++) {
-				fprintf(file, "%ld\n", results_f1[w1][w2][w3]);
+		min_m = list_of_particles_alfa[particles_count_alfa / 2];
+		list_of_particles_betta[0] = min_m;
+		particles_count_betta = 1;
+		fprintf(profile_file, "%d ", min_m);
+		repeat = 1;
+		while (repeat > 0)
+		{
+			repeat = -1;
+			for (int m = 0; repeat < 0 && m < particles_count; m++) {
+				if (m != min_m) {
+					dy = middle_y1[m] - middle_y1[min_m];
+					dz = middle_z1[m] - middle_z1[min_m];
+
+					// ищем частицу на расстоянии не дальше 3.2 радиусов
+					// так, чтобы линия, пересекающая центры узлов,
+					// образовывала острый угол с осью OY.
+					if ( (sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz < 0.0) )
+					{
+						betta = atan2(dy, dz);
+
+						if (betta2 < 0.0 || fabs(betta - betta2) < 0.5) {
+							list_of_particles_betta[particles_count_betta] = m;
+							particles_count_betta++;
+							min_m = m;
+							betta2 = betta;
+							repeat = 1;
+
+							fprintf(profile_file, "%d ", list_of_particles[min_m]);
+						}
+					}
+				}
+			}
+		}
+
+		min_m = list_of_particles_alfa[particles_count_alfa / 2];
+		repeat = 1;
+		while (repeat > 0)
+		{
+			repeat = -1;
+			for (int m = 0; repeat < 0 && m < particles_count; m++) {
+				if (m != min_m) {
+					dy = middle_y1[min_m] - middle_y1[m];
+					dz = middle_z1[min_m] - middle_z1[m];
+
+					// ищем частицу на расстоянии не дальше 3.2 радиусов
+					// так, чтобы линия, пересекающая центры узлов,
+					// образовывала острый угол с осью OY.
+					if ( (sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz < 0.0) )
+					{
+						betta = atan2(dy, dz);
+
+						if (betta2 < 0.0 || fabs(betta - betta2) < 0.5) {
+							list_of_particles_betta[particles_count_betta] = m;
+							particles_count_betta++;
+							min_m = m;
+							betta2 = betta;
+							repeat = 1;
+
+							fprintf(profile_file, "%d ", list_of_particles[min_m]);
+						}
+					}
+				}
+			}
+		}
+
+		double B_alfa1 = 0.0, B_alfa2 = 0.0, B_betta1 = 0.0, B_betta2 = 0.0;
+		double K_alfa1 = 0.0, K_alfa2 = 0.0, K_betta1 = 0.0, K_betta2 = 0.0;
+		double sum_y = 0.0, sum_z = 0.0, sum_yz = 0.0, sum_zz = 0.0;
+		double sum_y2 = 0.0, sum_z2 = 0.0, sum_yz2 = 0.0, sum_zz2 = 0.0;
+
+		// получаем угол поворота линии методом наименьших квадратов:
+		for (int m = 0; m < particles_count_alfa; m++) {
+			w = list_of_particles_alfa[m];
+
+			sum_y += middle_y1[w];
+			sum_z += middle_z1[w];
+			sum_yz += middle_y1[w] * middle_z1[w];
+			sum_zz += middle_z1[w] * middle_z1[w];
+
+			sum_y2 += middle_y2[w];
+			sum_z2 += middle_z2[w];
+			sum_yz2 += middle_y2[w] * middle_z2[w];
+			sum_zz2 += middle_z2[w] * middle_z2[w];
+		}
+
+		K_alfa1 = (particles_count_alfa*sum_yz - sum_y*sum_z) / (particles_count_alfa*sum_zz - sum_z*sum_z);
+		K_alfa2 = (particles_count_alfa*sum_yz2 - sum_y2*sum_z2) / (particles_count_alfa*sum_zz2 - sum_z2*sum_z2);
+
+		alfa = atan(K_alfa1);
+		alfa2 = atan(K_alfa1);
+
+		B_alfa1 = (sum_y - K_alfa1*sum_z) / particles_count_alfa;
+		B_alfa2 = (sum_y - K_alfa2*sum_z) / particles_count_alfa;
+
+		sum_y = 0.0; sum_z = 0.0; sum_yz = 0.0; sum_zz = 0.0;
+		sum_y2 = 0.0; sum_z2 = 0.0; sum_yz2 = 0.0; sum_zz2 = 0.0;
+
+		// получаем угол поворота линии методом наименьших квадратов:
+		for (int m = 0; m < particles_count_betta; m++) {
+			w = list_of_particles_betta[m];
+
+			sum_y += middle_y1[w];
+			sum_z += middle_z1[w];
+			sum_yz += middle_y1[w] * middle_z1[w];
+			sum_zz += middle_z1[w] * middle_z1[w];
+
+			sum_y2 += middle_y2[w];
+			sum_z2 += middle_z2[w];
+			sum_yz2 += middle_y2[w] * middle_z2[w];
+			sum_zz2 += middle_z2[w] * middle_z2[w];
+		}
+
+		K_betta1 = (particles_count_betta*sum_yz - sum_y*sum_z) / (particles_count_betta*sum_zz - sum_z*sum_z);
+		K_betta2 = (particles_count_betta*sum_yz2 - sum_y2*sum_z2) / (particles_count_betta*sum_zz2 - sum_z2*sum_z2);
+
+		B_betta1 = (sum_y - K_betta1*sum_z) / particles_count_betta;
+		B_betta2 = (sum_y - K_betta2*sum_z) / particles_count_betta;
+
+		double delta_alfa = (alfa2 - alfa) / (m1 - m2); // находим скорость вращения слоя
+
+		// Находим пересечение двух найденных осей кристалла
+		double y1 = K_alfa1*(B_betta1 - B_alfa1) / (K_alfa1 - K_betta1) + B_alfa1;
+		double y2 = K_alfa2*(B_betta2 - B_alfa2) / (K_alfa2 - K_betta2) + B_alfa2;
+		double z1 = (B_betta1 - B_alfa1) / (K_alfa1 - K_betta1);
+		double z2 = (B_betta2 - B_alfa2) / (K_alfa2 - K_betta2);
+
+		double delta_y = (y2 - y1) / (m1 - m2);
+		double delta_z = (z2 - z1) / (m1 - m2);
+
+		min_m = list_of_particles_alfa[particles_count_alfa / 2];
+		//middle_y1[min_m] = y1;
+		//middle_z1[min_m] = z1;
+
+		// Выбираем для рассмотрения только частицы которые находятся
+		// на расстоянии минимум 6 радиусов от других выбранных частиц
+		/*
+		bool flag = false;
+		for (int j = 0; j < particles_count; j++) {
+			flag = true;
+			int i = j + 1;
+			while (i < particles_count) {
+				double dy = middle_y1[i] - middle_y1[j];
+				double dz = middle_z1[i] - middle_z1[j];
+				if (sqrt(dy*dy + dz*dz) < 6.0*particle_R) {
+					for (m = i; m < particles_count; m++) {
+						list_of_particles[m] = list_of_particles[m + 1];
+
+						middle_x1[m] = middle_x1[m + 1];
+						middle_y1[m] = middle_y1[m + 1];
+						middle_z1[m] = middle_z1[m + 1];
+						middle_x2[m] = middle_x2[m + 1];
+						middle_y2[m] = middle_y2[m + 1];
+						middle_z2[m] = middle_z2[m + 1];
+
+						for (w2 = 0; w2 < m1 + 1; w2++) {
+							x[m][w2] = x[m + 1][w2];
+							y[m][w2] = y[m + 1][w2];
+							z[m][w2] = z[m + 1][w2];
+						}
+					}
+					particles_count--;
+				}
+				else i++;
+			}
+		}
+		*/
+
+		double new_delta_y = delta_y*cos(alfa) + delta_z*sin(alfa);
+		double new_delta_z = -delta_y*sin(alfa) + delta_z*cos(alfa);
+
+		for (int i = m2 / 2; i < m1 - m2 / 2; i++) {
+			for (int j = 0; j < particles_count; j++) {
+				w = list_of_particles[j];
+				int f = i - m2 / 2;
+				double x_mol = x[j][i] - (middle_x1[j] + middle_x2[j]) / 2.0;
+				double y_mol0 = (y[j][i] - middle_y1[j])*cos(alfa) + (z[j][i] - middle_z1[j])*sin(alfa);
+				double z_mol0 = -(y[j][i] - middle_y1[j])*sin(alfa) + (z[j][i] - middle_z1[j])*cos(alfa);
+
+				double y_mol = (y_mol0 - new_delta_y*f)*cos(delta_alfa*f) + (z_mol0 - new_delta_z*f)*sin(delta_alfa*f);
+				double z_mol = -(y_mol0 - new_delta_y*f)*sin(delta_alfa*f) + (z_mol0 - new_delta_z*f)*cos(delta_alfa*f);
+
+				fprintf(f1_file, "%d %.5le %.5le %.5le\n", w, x_mol, y_mol, z_mol);
+			}
+		}
+
+		for (int i = 0; i < m1; i += 10)
+		{
+			for (int j = 0; j < particles_count; j++) {
+				w = list_of_particles[j];
+
+				double middle_y = 0.0;
+				double middle_z = 0.0;
+
+				for (int k = i; k < i + 10; k++) {
+					middle_y += y[j][i] / 10.0;
+					middle_z += z[j][i] / 10.0;
+				}
+
+				fprintf(profile_file, "\n%d %.5le %.5le", w, middle_y, middle_z);
 			}
 		}
 	}
-	fclose(file);
-	fclose(file_plane_data);
-	
+		
+
+	fclose(f1_file);
+	fclose(profile_file);
+
 	for (int i = 0; i < 200; i++) {
 		delete[] x[i];
 		delete[] y[i];
@@ -2279,10 +2507,14 @@ void F1(double x1, double x2, long int n1, long int n2, std::string file_name) {
 	delete[] x;
 	delete[] y;
 	delete[] z;
-	delete[] middle_x;
-	delete[] middle_y;
-	delete[] middle_z;
+	delete[] middle_x1;
+	delete[] middle_y1;
+	delete[] middle_z1;
+	delete[] middle_x2;
+	delete[] middle_y2;
+	delete[] middle_z2;
 	delete[] list_of_particles;
+	delete[] list_of_particles_alfa;
 }
 
 
@@ -2292,9 +2524,13 @@ void F1(double x1, double x2, long int n1, long int n2, std::string file_name) {
 
 Аргументы:
 compress_to_etta - итоговая плотность
-delta_L - максимальный разрешённый шаг по L
-steps - количество соударений на одну частицу в системе между
+delta_max - максимальный разрешённый шаг по L
+KK1 - количество соударений на одну частицу в системе между
 маленькими сжатиями по плотности
+KK2 - количество сдвигов стенки, после которых необходимо провести
+дополнительно KK3 соударений
+KK3 - количество соударение на одну частицу в системе каждые KK2
+сдвигов стенки
 type - тип сжатия:
 0 - пододвигать только левую стенку
 1 - пододвигать только правую стенку
@@ -2487,66 +2723,70 @@ void compress(double compress_to_etta, double delta_max, long int KK1, long int 
 			}
 		}
 
+		if (temp_save == true) {
+			save(temp_save_file);
+		}
 
 		//Сохраняем состояние системы и снова загружаем его пересчитав новые
 		//параметры и проведя необходимую инициализацию
 		save("tmp");
 		load_seed("tmp");
 		
-		//После каждого смещения стенки делаем указанное количество соударений
-		//на частицу в системе
+		// После каждого смещения стенки делаем указанное количество соударений
+		// на частицу в системе
 		for (long int i = 0; i < KK1; i++) {
 			step();
 		}
 
 		compression_steps_done += 1;
 		if (compression_steps_done % KK2 == 0) {
-			printf("\r");
-			for (short b = 0; b < 74; b++)
-				printf(" ");
 
 			for (long int i = 0; i < KK3; i++) {
 				step();
 
-				for (int b = 0; b < 74; b++)
-					printf("\b");
-				printf("\rRelaxation: %ld / %ld, current etta=%.15le", i, KK3, etta);
+				// очистить строку
+				printf("\r%76c\r", ' ');
+
+				printf("Relaxation: %ld / %ld, current etta=%.15le ", i, KK3, etta);
 			}
-			for (short b = 0; b < 74; b++)
-				printf("\b");
 		}
 
 		// рассчитываем плотность после сжатия
 		etta = (4.0 * PI * particle_R3 * NP) / (3.0 * A * A * (L - particle_Rx2));
-		printf("\retta = %.15le, should be equal to %.15le", etta, compress_to_etta);
+
+		// очистить строку
+		printf("\r%76c\r", ' ');
+
+		printf("etta = %.15le, should be equal to %.15le ", etta, compress_to_etta);
 	}
 
 	printf("\n INFO: System density was sucessfully changed to %.15le \n", etta);
 }
 
 void measure_pressure(long int steps) {
-	dP_left_wall = 0.0;
-	dP_right_wall = 0.0;
-	dP_collissions_rate = 0.0;
+	dV_left_wall = 0.0;
+	dV_right_wall = 0.0;
+	N_collissions_left_wall = 0.0;
+	N_collissions_right_wall = 0.0;
 	dP_time = 0.0;
 
-	printf("\nMeasure pressure on two ideal walls...\n");
+	printf("\n Measure pressure on two ideal walls...\n");
 
 	for (long int w = 1; w <= steps; w++) {
-		for (int g = 0; g < 50; g++)
-			printf("\b");
+		// очистить строку
+		printf("\r%76c\r", ' ');
 		printf("%ld / %ld", w, steps);
 		step();
 	}
 
-	dP_collissions_rate = dP_collissions_rate / 2.0;
-	double accuracy = 100/sqrt(dP_collissions_rate);
-	printf("\n\n dP_left_wall = %.15le \n dP_right_wall = %.15le\n", dP_left_wall, dP_right_wall);
+	double m = 1.0;
+	double P_left_wall = (2.0 * m * dV_left_wall) / (dP_time * A * A);
+	double P_right_wall = (2.0 * m * dV_right_wall) / (dP_time * A * A);
+	double N_collissions = (N_collissions_left_wall + N_collissions_right_wall) / 2.0;
+	double accuracy = 1.0 / sqrtf(N_collissions);
 
-	dP_left_wall = dP_left_wall / dP_time;
-	dP_right_wall = dP_right_wall / dP_time;
-	printf(" P_left_wall = %.15le \n P_right_wall = %.15le\n", dP_left_wall, dP_right_wall);
-	printf("%ld collissions, accuracy = %f %% \n\n", long int(dP_collissions_rate), accuracy);
+	printf(" P_left_wall = %.15le \n P_right_wall = %.15le\n", P_left_wall, P_right_wall);
+	printf("%ld collissions, accuracy = %f %% \n\n", long int(N_collissions), accuracy);
 
 }
 
@@ -2560,7 +2800,7 @@ file_name - имя файла с описанием шагов эксперимента для программы.
 void init(std::string file_name) {
 	using namespace std;
 	clock_t start, end, result;
-	char command[255], parameter[255], tmp_str[255];
+	char command[255], parameter[255], tmp_str[255], parameter2[255];
 	long i, steps;
 	ifstream command_file(file_name.c_str());
 
@@ -2574,36 +2814,15 @@ void init(std::string file_name) {
 		// Если необходимо создать новый посев
 		if (str_command.compare("new") == 0) {
 			double etta;   // средняя плотность системы
-			double lamda;  // расстояние между центрами частиц
 			long int particles_count;
 
 			command_file >> particles_count;
-			command_file >> lamda;
 			command_file >> etta;
 			command_file.getline(tmp_str, 255, '\n');  // завершить считывание строки
 
-			new_seed(particles_count, lamda, etta);
+			new_seed(particles_count, etta);
 
 			print_system_parameters();
-
-			/*
-			float x, y, z;
-			ofstream myfile;
-			myfile.open("test_F1.save", ios::out | ios::app | ios::binary);
-			if (myfile.is_open()) {
-				for (int k = 0; k < 10002000; k++) {
-					for (int i = 0; i < NP; i++) {
-						x = particles[i].x[0];
-						y = particles[i].y[0];
-						z = particles[i].y[0];
-						myfile.write((char*)&x, sizeof(float));
-						myfile.write((char*)&y, sizeof(float));
-						myfile.write((char*)&z, sizeof(float));
-					}
-				}
-			}
-			myfile.close();
-			*/
 		}
 		// Если необходимо загрузить состояние системы из файла
 		if (str_command.compare("load") == 0) {
@@ -2633,8 +2852,10 @@ void init(std::string file_name) {
 
 			for (i = 0; i < steps; ++i) {
 				step();
-				for (int b = 0; b < 50; b++)
-					printf("\b");
+
+				// очистить строку
+				printf("\r%76c\r", ' ');
+
 				printf("%ld / %ld", long(i + 1), steps);
 
 				// если мы пишем файл с историей событий,
@@ -2744,7 +2965,11 @@ void init(std::string file_name) {
 			command_file >> n1;
 			command_file >> n2;
 			command_file >> parameter;
-			F1(x1, x2, n1, n2, parameter);
+			command_file >> parameter2;
+
+			printf("\n F1 started \n");
+
+			F1(x1, x2, parameter, parameter2);
 		}
 		// если необходимо сохранить состояние системы
 		if (str_command.compare("save") == 0) {
@@ -2752,7 +2977,7 @@ void init(std::string file_name) {
 			command_file.getline(tmp_str, 255, '\n');  // завершить считывание строки
 
 			save(parameter);
-			printf("\n INFO: particles coordinates saved to '%s' \n", parameter);
+			printf("\n INFO: coordinates of particles saved to '%s' \n", parameter);
 		}
 		if (str_command.compare("function_g") == 0) {
 			double x1, x2;
@@ -2782,6 +3007,15 @@ void init(std::string file_name) {
 			command_file.getline(tmp_str, 255, '\n');  // завершить считывание строки
 
 			measure_pressure(steps);
+		}
+		if (str_command.compare("enable_autosave_for_compress") == 0) {
+			temp_save = true;
+			command_file >> temp_save_file;
+			command_file.getline(tmp_str, 255, '\n');  // завершить считывание строки
+		}
+		if (str_command.compare("disable_autosave_for_compress") == 0) {
+			temp_save = false;
+			command_file.getline(tmp_str, 255, '\n');  // завершить считывание строки
 		}
 		// если необходимо изменить плотность системы
 		if (str_command.compare("compress") == 0) {
