@@ -1,4 +1,26 @@
 /*
+
+Copyright 2006-2017 Vladimir Veshnev, Aleksey Geraskin, Marina Nurlygayanova,
+Timur Nurlygayanov
+
+This file is part of MD program.
+
+MD is free software : you can redistribute it and / or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+MD is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with MD. If not, see <http://www.gnu.org/licenses/>
+
+*/
+
+/*
 ИМПОРТИРУЕМЫЕ МОДУЛИ
 */
 #include "stdafx.h"  // стандартная библиотека
@@ -2112,8 +2134,8 @@ void profile(double x1, double x2, long int dots_per_particle, long int steps, s
 
 void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 
-	int m1 = 100;  // всего измерений на каждом шаге
-	int m2 = 20;  // дельта, по которой находится среднее положение центра частиц
+	int m1 = 500;  // всего измерений на каждом шаге
+	int m2 = 200;  // дельта, по которой находится среднее положение центра частиц
 	int m3 = 10;    // количество итераций измерений
 	double t_global, dt;
 	particle p1;
@@ -2124,7 +2146,6 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 	// Динамически создаём двумерные массивы (это необходимо делать динамически,
 	// так как они большого размера и мы не можем создать их в стеке,
 	// к тому же, размер массива зависит от значений переменной m1)
-	//
 	double **x = new double*[200];
 	double **y = new double*[200];
 	double **z = new double*[200];
@@ -2142,20 +2163,22 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 	double *middle_z2 = new double[200];
 
 	long *list_of_particles = new long[200];
-	//long *list_of_right_particles = new long[200];
 	long *list_of_particles_alfa = new long[50];
 	long *list_of_particles_betta = new long[50];
 
 	long particles_count, particles_count_alfa, particles_count_betta, w, w1, w2;
 
 	for (int iter = 0; iter < m3; iter++) {
-		save("new.txt");
-		load_seed("new.txt");
+
+		// Сохраняем текущее состояние системы в файл и загружаемся из этого же файла
+		//save("new.txt");
+		//load_seed("new.txt");
 
 		particles_count = 0;
 		particles_count_alfa = 0;
 		particles_count_betta = 0;
 
+		// Заполняем все массивы нулями:
 		for (w1 = 0; w1 < 200; w1++) {
 			middle_x1[w1] = 0.0;
 			middle_y1[w1] = 0.0;
@@ -2173,8 +2196,8 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 			}
 		}
 
-		// не рассматриваем частицы находящиеся вблизи периодических
-		// граничных условий, а так же рассматриваем только частицы
+		// не рассматриваем частицы, находящиеся вблизи периодических
+		// граничных условий, а так же рассматриваем только частицы,
 		// находящиеся в данном слое.
 		t_global = get_maximum_particle_time();
 		for (long i = 0; i < NP; i++) {
@@ -2193,8 +2216,9 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 		}
 
 		for (long i = 0; i < m1; i++) {
+			// Выводим на экран текущий прогресс расчета:
 			printf("\r%76c\r", ' ');
-			printf("%ld / %ld", i + 1, m1);
+			printf("%ld / %ld", iter*m1 + i + 1, m1*m3);
 
 			step(); // делаем одно соударение на частицу между измерениями
 
@@ -2202,14 +2226,14 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 			for (int m = 0; m < particles_count; m++) {
 				w = list_of_particles[m];
 
-				// синхронизируем время частицы с временем системы
+				// Cинхронизируем время частицы с временем системы
 				p1 = particles[w];
 				dt = t_global - p1.t;
 				p1.x[0] = p1.x[0] + p1.vx * dt;
 				p1.y[0] = p1.y[0] + p1.vy * dt;
 				p1.z[0] = p1.z[0] + p1.vz * dt;
 
-				// суммируем значения координат центров узлов за первые m2 и за 
+				// Cуммируем значения координат центров узлов за первые m2 и за 
 				// последние m2 соударений
 				if (i < m2) {
 					middle_x1[m] += p1.x[0];
@@ -2222,7 +2246,7 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 					middle_z2[m] += p1.z[0];
 				}
 
-				// запоминаем все координаты всех частиц
+				// Запоминаем все координаты всех частиц
 				x[m][i] = p1.x[0];
 				y[m][i] = p1.y[0];
 				z[m][i] = p1.z[0];
@@ -2256,11 +2280,8 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 			}
 		}
 
-		fprintf(profile_file, "SELECTED%d: ", iter);
-
 		list_of_particles_alfa[0] = min_m;
 		particles_count_alfa = 1;
-		fprintf(profile_file, "%d ", min_m);
 		repeat = 1;
 		while (repeat > 0)
 		{
@@ -2357,12 +2378,17 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 			}
 		}
 
+		fprintf(profile_file, "\n");
+
 		double B_alfa1 = 0.0, B_alfa2 = 0.0, B_betta1 = 0.0, B_betta2 = 0.0;
 		double K_alfa1 = 0.0, K_alfa2 = 0.0, K_betta1 = 0.0, K_betta2 = 0.0;
 		double sum_y = 0.0, sum_z = 0.0, sum_yz = 0.0, sum_zz = 0.0;
 		double sum_y2 = 0.0, sum_z2 = 0.0, sum_yz2 = 0.0, sum_zz2 = 0.0;
 
-		// получаем угол поворота линии методом наименьших квадратов:
+		// получаем угол поворота линии методом наименьших квадратов
+		// для всех частиц в массиве list_of_particles_alfa (это одна из
+		// осей кристалла в данном слое, эта ось образует острый угол с осью OY
+		// и проходит через 10+ узлов в данном слое):
 		for (int m = 0; m < particles_count_alfa; m++) {
 			w = list_of_particles_alfa[m];
 
@@ -2377,7 +2403,11 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 			sum_zz2 += middle_z2[w] * middle_z2[w];
 		}
 
+		// K_alfa1 - это коэффициент в уравнении прямой (z = ky + b), рассчитанный на основании
+		// положения частиц в данном слое на протяжении первых m2 соударений:
 		K_alfa1 = (particles_count_alfa*sum_yz - sum_y*sum_z) / (particles_count_alfa*sum_zz - sum_z*sum_z);
+		// K_alfa1 - это коэффициент в уравнении прямой (z = ky + b), рассчитанный на основании
+		// положения частиц в данном слое на протяжении последних m2 соударений:
 		K_alfa2 = (particles_count_alfa*sum_yz2 - sum_y2*sum_z2) / (particles_count_alfa*sum_zz2 - sum_z2*sum_z2);
 
 		alfa = atan(K_alfa1);
@@ -2389,7 +2419,10 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 		sum_y = 0.0; sum_z = 0.0; sum_yz = 0.0; sum_zz = 0.0;
 		sum_y2 = 0.0; sum_z2 = 0.0; sum_yz2 = 0.0; sum_zz2 = 0.0;
 
-		// получаем угол поворота линии методом наименьших квадратов:
+		// получаем угол поворота второй линии методом наименьших квадратов
+		// (данная линия не совпадает с первой линией, но она пересекается с ней
+		// в точке, совпадающей с центром одного из узлов, через которые проходит
+		// первая линия):
 		for (int m = 0; m < particles_count_betta; m++) {
 			w = list_of_particles_betta[m];
 
@@ -2412,60 +2445,40 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 
 		double delta_alfa = (alfa2 - alfa) / (m1 - m2); // находим скорость вращения слоя
 
-		// Находим пересечение двух найденных осей кристалла
+		// Находим пересечение двух найденных осей кристалла в данном слое
+		// чтобы это сделать - решаем уравнение пересечения двух прямых, образованных
+		// выбранными на предыдущих шагах частиц:
+		// y1, z1 - координаты точки пересечения этих линий за первые 200 соударений,
+		// y2, z2 - координаты точки пересечения линий за последние 200 соударений.
 		double y1 = K_alfa1*(B_betta1 - B_alfa1) / (K_alfa1 - K_betta1) + B_alfa1;
 		double y2 = K_alfa2*(B_betta2 - B_alfa2) / (K_alfa2 - K_betta2) + B_alfa2;
 		double z1 = (B_betta1 - B_alfa1) / (K_alfa1 - K_betta1);
 		double z2 = (B_betta2 - B_alfa2) / (K_alfa2 - K_betta2);
 
+		// Рассчитываем смещение всего слоя кристалла:
 		double delta_y = (y2 - y1) / (m1 - m2);
 		double delta_z = (z2 - z1) / (m1 - m2);
 
-		min_m = list_of_particles_alfa[particles_count_alfa / 2];
-		//middle_y1[min_m] = y1;
-		//middle_z1[min_m] = z1;
-
-		// Выбираем для рассмотрения только частицы которые находятся
-		// на расстоянии минимум 6 радиусов от других выбранных частиц
-		/*
-		bool flag = false;
-		for (int j = 0; j < particles_count; j++) {
-			flag = true;
-			int i = j + 1;
-			while (i < particles_count) {
-				double dy = middle_y1[i] - middle_y1[j];
-				double dz = middle_z1[i] - middle_z1[j];
-				if (sqrt(dy*dy + dz*dz) < 6.0*particle_R) {
-					for (m = i; m < particles_count; m++) {
-						list_of_particles[m] = list_of_particles[m + 1];
-
-						middle_x1[m] = middle_x1[m + 1];
-						middle_y1[m] = middle_y1[m + 1];
-						middle_z1[m] = middle_z1[m + 1];
-						middle_x2[m] = middle_x2[m + 1];
-						middle_y2[m] = middle_y2[m + 1];
-						middle_z2[m] = middle_z2[m + 1];
-
-						for (w2 = 0; w2 < m1 + 1; w2++) {
-							x[m][w2] = x[m + 1][w2];
-							y[m][w2] = y[m + 1][w2];
-							z[m][w2] = z[m + 1][w2];
-						}
-					}
-					particles_count--;
-				}
-				else i++;
-			}
-		}
-		*/
-
+		// Учитываем так же поворот слоя:
 		double new_delta_y = delta_y*cos(alfa) + delta_z*sin(alfa);
 		double new_delta_z = -delta_y*sin(alfa) + delta_z*cos(alfa);
 
+		// Проходим по всем запомненным нами коодринатам с 100 соударения
+		// на частицу до 600 соударения, то есть берем для рассмотрения m1-m2 соударений:
 		for (int i = m2 / 2; i < m1 - m2 / 2; i++) {
+			// Для каждой частицы в данном слое (если частица прошла все условия отбора):
 			for (int j = 0; j < particles_count; j++) {
+
+				// Запрашиваем номер частиц в списке частиц данного слоя:
 				w = list_of_particles[j];
+
+				// Рассчитываем номер текущей итерации чтобы сделать поправку на поворот и
+				// смещение слоя кристалла:
 				int f = i - m2 / 2;
+
+				// Рассчитываем координаты частицы с учетом смещения слоя и среднего положения
+				// центра данной частицы (то есть рассчитываем текущее смещение частицы на данном шаге от
+				// среднего положения центра узла, который образован этой частицей):
 				double x_mol = x[j][i] - (middle_x1[j] + middle_x2[j]) / 2.0;
 				double y_mol0 = (y[j][i] - middle_y1[j])*cos(alfa) + (z[j][i] - middle_z1[j])*sin(alfa);
 				double z_mol0 = -(y[j][i] - middle_y1[j])*sin(alfa) + (z[j][i] - middle_z1[j])*cos(alfa);
@@ -2473,32 +2486,17 @@ void F1(double x1, double x2, std::string file_name, std::string file_name2) {
 				double y_mol = (y_mol0 - new_delta_y*f)*cos(delta_alfa*f) + (z_mol0 - new_delta_z*f)*sin(delta_alfa*f);
 				double z_mol = -(y_mol0 - new_delta_y*f)*sin(delta_alfa*f) + (z_mol0 - new_delta_z*f)*cos(delta_alfa*f);
 
+				// Записываем номер частицы и рассчитанное смещение в файл:
 				fprintf(f1_file, "%d %.5le %.5le %.5le\n", w, x_mol, y_mol, z_mol);
-			}
-		}
-
-		for (int i = 0; i < m1; i += 10)
-		{
-			for (int j = 0; j < particles_count; j++) {
-				w = list_of_particles[j];
-
-				double middle_y = 0.0;
-				double middle_z = 0.0;
-
-				for (int k = i; k < i + 10; k++) {
-					middle_y += y[j][i] / 10.0;
-					middle_z += z[j][i] / 10.0;
-				}
-
-				fprintf(profile_file, "\n%d %.5le %.5le", w, middle_y, middle_z);
 			}
 		}
 	}
 		
-
+	// Закрываем все файлы, которые мы редактировали:
 	fclose(f1_file);
 	fclose(profile_file);
 
+	// Удаляем из памяти все динамические массивы:
 	for (int i = 0; i < 200; i++) {
 		delete[] x[i];
 		delete[] y[i];

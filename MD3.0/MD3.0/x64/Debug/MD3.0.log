@@ -29,10 +29,10 @@ c:\md\md3.0\md3.0\md3.0.cpp(2121): warning C4996: 'fopen': This function or vari
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
 c:\md\md3.0\md3.0\md3.0.cpp(2122): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-c:\md\md3.0\md3.0\md3.0.cpp(2786): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
-c:\md\md3.0\md3.0\md3.0.cpp(2812): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
-c:\md\md3.0\md3.0\md3.0.cpp(3112): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\md\md3.0\md3.0\md3.0.cpp(2762): warning C4244: аргумент: преобразование "double" в "float", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0.cpp(2788): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+c:\md\md3.0\md3.0\md3.0.cpp(3088): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
-c:\md\md3.0\md3.0\md3.0.cpp(3122): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\md\md3.0\md3.0\md3.0.cpp(3098): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(205): note:  см. объявление "fopen"
   MD3.0.vcxproj -> C:\MD\MD3.0\x64\Debug\MD3.0.exe

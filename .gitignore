@@ -3,3 +3,9 @@
 *.pyc
 *ipch*
 *Debug*
+*.pch
+*.obj
+*log
+*.idb
+*.pdb
+MD3.0\MD3.0\x64*
