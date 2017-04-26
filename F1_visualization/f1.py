@@ -38,19 +38,29 @@ def read_data(file_name):
     global z
     
     x, y, z = [], [], []
+    r = None
     with open(file_name) as f:
         for line in f:
             i_m, x_m, y_m, z_m = line.split()
+
             x.append(float(x_m))
             y.append(float(y_m))
             z.append(float(z_m))
+
+            if abs(float(x_m)) > 1.0:
+                print "X > 1.0 : ", x_m
+            if abs(float(y_m)) > 1.0:
+                print "Y > 1.0 : ", y_m
+            if abs(float(z_m)) > 1.0:
+                print "Z > 1.0 : ", z_m
 
 
 def show_3d_particles():
     fig = plt.figure("3D")
 
-    ax = fig.add_subplot(111, projection='3d', adjustable='box')
-    ax.scatter(x, y, z)
+    ax = fig.add_subplot(111, projection='3d', adjustable='box',
+                         aspect='equal')
+    ax.scatter(x, y, z, alpha=0.5)
     ax.set_xlabel(u'X')
     ax.set_xlim([-1, 1])
     ax.set_xscale('linear')
@@ -192,22 +202,22 @@ for file in reversed(os.listdir(".")):
     if '.txt' in file:
         read_data(file)
         k += 1
-        short_name = file[:-14]
-        dw = 0.1
+        short_name = file[:-4]
+        dw = 0.3
         for w in arange(-dw/2.0, dw/2.0, dw):
-            show_2d_xy_particles(short_name, w, w+dw)
-            show_2d_xy_particles("test", w, w+dw, k)
+            # show_2d_xy_particles(short_name, w, w+dw)
+            # show_2d_xy_particles("test", w, w+dw, k)
             show_2d_yz_particles(short_name, w, w+dw)
             
             show_projection_by_slice(short_name, 'X', 'Y', w, w+dw)
             show_projection_by_slice(short_name, 'X', 'Z', w, w+dw)
             show_projection_by_slice(short_name, 'Y', 'X', w, w+dw)
             show_projection_by_slice(short_name, 'Y', 'Z', w, w+dw)
-            show_projection_by_slice(short_name, 'Z', 'X', w, w+dw)
-            show_projection_by_slice(short_name, 'Z', 'Y', w, w+dw)
+            # show_projection_by_slice(short_name, 'Z', 'X', w, w+dw)
+            # show_projection_by_slice(short_name, 'Z', 'Y', w, w+dw)
             
             # show_projection_by_slice(short_name, 'X', 'Y', w, w+dw, 'test')
             # show_projection_by_slice(short_name, 'Y', 'X', w, w+dw, 'test')
 
             show_3d_particles()
-            # plt.show()
+            plt.show()
