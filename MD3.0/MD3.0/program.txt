@@ -1,11 +1,5 @@
 load save20160412-05080-527e5.txt
 step 100
-image 2000 20 image_20160412-05080-527e5.txt
-step 1000000
-
-
-f1 1.05 1.85 20 f1_X3_test20x.txt
-f1 1.05 1.85 100 f1_X3_test100x.txt
-f1 1.05 1.85 200 f1_X3_test200x.txt
-f1 1.05 1.85 300 f1_X3_test300x.txt
-f1 1.05 1.85 500 f1_X3_test500x.txt
+f1 1.05 1.85 300 100 2 2 f1_X2_test.txt
+step 1000000000
+profile 1.05 1.85 600 2 profile_X2.txt

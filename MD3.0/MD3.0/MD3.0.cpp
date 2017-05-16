@@ -2216,20 +2216,26 @@ void profile(double x1, double x2, long int dots_per_particle, long int steps, s
 	load_seed("new.txt");
 }
 
+/*
+x1, x2 - X координаты двух плоскостей, ограничивающих слой кристалла
+m1 - количество измерений, которые буду сделаны в течении одной итерации
+m2 - количество измерений, которые делаются для нахождения среднего положения центра частицы
+m3 - количество итераций измерений
+m4 - количество соударений в среднем на одну частицу в системе, которые должны проиойти
+     между двумя ближайшими измерениями.
+*/
+void F1(double x1, double x2, int m1, int m2, int m3, int m4, std::string file_name) {
 
-void F1_old(double x1, double x2, int devision, std::string file_name) {
-
-	int m1 = 600;  // всего измерений на каждом шаге
-	int m2 = 100;  // дельта, по которой находится среднее положение центра частиц
-	int m3 = 2;    // количество итераций измерений
 	double t_global, dt;
 	particle p1;
 
 	FILE *f1_file = fopen(file_name.c_str(), "w+");
+	FILE *debug_file = fopen("debug.log", "w+");
 
 	// Динамически создаём двумерные массивы (это необходимо делать динамически,
 	// так как они большого размера и мы не можем создать их в стеке,
 	// к тому же, размер массива зависит от значений переменной m1)
+	// 200 - по количеству частиц в слое, с запасом (частиц будет 100+, но меньше 200)
 	double **x = new double*[200];
 	double **y = new double*[200];
 	double **z = new double*[200];
@@ -2295,6 +2301,8 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 			p1.y[0] = p1.y[0] + p1.vy * dt;
 			p1.z[0] = p1.z[0] + p1.vz * dt;
 
+			// Отбираем только частицы в данном слое такие, которые находятся на расстоянии
+			// больше 6 радиусов от периодических граничных условий:
 			if (p1.x[0] >= x1 && p1.x[0] <= x2 &&
 				p1.y[0] >= 6.0 * particle_R && p1.y[0] <= A - 6.0 * particle_R &&
 				p1.z[0] >= 6.0 * particle_R && p1.z[0] <= A - 6.0 * particle_R) {
@@ -2308,9 +2316,11 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 			printf("\r%76c\r", ' ');
 			printf("%ld / %ld", iter*m1 + i + 1, m1*m3);
 
-			step(); // делаем три соударения на частицу между измерениями
-			step(); // чтобы положения части были достаточно случайны.
-			step();
+			// Делаем несколько соударений на частицу между измерениями
+			// чтобы положения частиц были достаточно случайны.
+			for (int r = 0; r < m4; r++) {
+				step();
+			}
 
 			t_global = get_maximum_particle_time();
 			for (int m = 0; m < particles_count; m++) {
@@ -2359,6 +2369,10 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 
 		// Начинаем поиск линии, по которой будем определять поворот 
 		// осей координат для исследуемого слоя
+
+		// Для начала находим самую левую нижнюю частицу в слое, из числа тех,
+		// которые были отобраны для рассмотрения (не ближе чем 6 радиусов от
+		// периодических граничных условий):
 		for (int m = 0; m < particles_count; m++)
 		{
 			if (((middle_y1[m] + middle_y2[m]) / 2.0 < min_y) &&
@@ -2381,13 +2395,15 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 					dy = middle_y1[m] - middle_y1[min_m];
 					dz = middle_z1[m] - middle_z1[min_m];
 
-					// ищем частицу на расстоянии не дальше 3.2 радиусов
-					// так, чтобы линия, пересекающая центры узлов,
+					// Ищем ближайшую к данной частице частицу на расстоянии не дальше 3.2 радиусов
+					// так, чтобы линия, пересекающая центры их узлов,
 					// образовывала острый угол с осью OY.
 					if ( (sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz > 0.0) )
 					{
 						alfa = atan2(dy, dz);
 
+						// Если такая частица найдена и она лежит на той же прямой, что
+						// и все уже отобранные для этой линии ранее частицы, то записываем ее в список:
 						if (alfa2 < 0.0 || fabs(alfa - alfa2) < 0.5)
 						{
 							list_of_particles_alfa[particles_count_alfa] = m;
@@ -2413,7 +2429,7 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 					dy = middle_y1[m] - middle_y1[min_m];
 					dz = middle_z1[m] - middle_z1[min_m];
 
-					// ищем частицу на расстоянии не дальше 3.2 радиусов
+					// Ищем частицу на расстоянии не дальше 3.2 радиусов
 					// так, чтобы линия, пересекающая центры узлов,
 					// образовывала острый угол с осью OY.
 					if ( (sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz < 0.0) )
@@ -2432,8 +2448,8 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 			}
 		}
 
-        // Берем среднюю частицу в списке частиц вдоль одной из очей симметрии слоя
-		// и находоим для этой частицы другую ось симметрии, составляя список всех частиц,
+        // Берем среднюю частицу в списке частиц вдоль одной из осей симметрии слоя
+		// и находим для этой частицы другую ось симметрии, составляя список всех частиц,
 		// центры которых находятся вдоль этой линии:
 		min_m = list_of_particles_alfa[particles_count_alfa / 2];
 		repeat = 1;
@@ -2495,7 +2511,7 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 		K_alfa2 = (particles_count_alfa*sum_yz2 - sum_y2*sum_z2) / (particles_count_alfa*sum_zz2 - sum_z2*sum_z2);
 
 		alfa = atan(K_alfa1);
-		alfa2 = atan(K_alfa1);
+		alfa2 = atan(K_alfa2);
 
 		B_alfa1 = (sum_y - K_alfa1*sum_z) / particles_count_alfa;
 		B_alfa2 = (sum_y - K_alfa2*sum_z) / particles_count_alfa;
@@ -2503,7 +2519,7 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 		sum_y = 0.0; sum_z = 0.0; sum_yz = 0.0; sum_zz = 0.0;
 		sum_y2 = 0.0; sum_z2 = 0.0; sum_yz2 = 0.0; sum_zz2 = 0.0;
 
-		// получаем угол поворота второй линии методом наименьших квадратов
+		// Получаем угол поворота второй линии методом наименьших квадратов
 		// (данная линия не совпадает с первой линией, но она пересекается с ней
 		// в точке, совпадающей с центром одного из узлов, через которые проходит
 		// первая линия):
@@ -2527,8 +2543,10 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 		B_betta1 = (sum_y - K_betta1*sum_z) / particles_count_betta;
 		B_betta2 = (sum_y - K_betta2*sum_z) / particles_count_betta;
 
-		double delta_alfa = (alfa2 - alfa) / (m1 - m2); // находим скорость (в градусах за время в среднем между
-		                                                // двумя измерениями) вращения слоя
+		double delta_alfa = (alfa2 - alfa) / (m1 - m2); // Находим скорость вращения слоя (в градусах за время в среднем между
+		                                                // двумя измерениями)
+		fprintf(debug_file, "\n /////////////////////////////////////////////////////\n");
+		fprintf(debug_file, "\n delta alfa = %.5le\n", delta_alfa);
 
 		// Находим пересечение двух найденных осей кристалла в данном слое
 		// чтобы это сделать - решаем уравнение пересечения двух прямых, образованных
@@ -2540,15 +2558,33 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 		double z1 = (B_betta1 - B_alfa1) / (K_alfa1 - K_betta1);
 		double z2 = (B_betta2 - B_alfa2) / (K_alfa2 - K_betta2);
 
-		// Здесь Ошибка! Мы рассчитываем смещение слоя по смещению точки пересечения
-		// двух осей, при этом не учитывая вращение слоя (которое здесь уже содержится)
-		// Поворот слоя не надо добавлять, его надо вычитать из смещения точки пересечения осей
-		// вопрос - как это сделать?
+		fprintf(debug_file, "\n delta Y = %.5le \n delta Z = %.5le", y2 - y1, z2 - z1);
+
+		fprintf(debug_file, "\n Y1 = %.5le, Z1 = %.5le \n", y1, z1);
+		min_m = list_of_particles_alfa[particles_count_alfa / 2];
+		fprintf(debug_file, "\n min_m Y = %.5le, Z = %.5le \n", middle_y1[min_m], middle_z1[min_m]);
 
 		// Рассчитываем смещение всего слоя кристалла:
 		double delta_y = (y2 - y1) / (m1 - m2);
 		double delta_z = (z2 - z1) / (m1 - m2);
 
+		int k1 = 1;
+		int k2 = 1;
+		for (int j = 0; j < particles_count; j++) {
+
+			if (abs(middle_y2[j] - middle_y1[j]) > abs(y1 - y2)) {
+				w = list_of_particles[j];
+				fprintf(debug_file, "\n %d Particle %d, dY = %.5le", k1, w, middle_y2[j] - middle_y1[j]);
+				k1++;
+			}
+
+			if (abs(middle_z2[j] - middle_z1[j]) > abs(z1 - z2)) {
+				w = list_of_particles[j];
+				fprintf(debug_file, "\n %d Particle %d, dZ = %.5le", k2, w, middle_z2[j] - middle_z1[j]);
+				k2++;
+			}
+		}
+ 
 		// Проходим по всем запомненным нами коодринатам с m2/2 соударения
 		// на частицу до m1-m2/2 соударения, то есть берем для рассмотрения m1-m2 соударений:
 		for (int i = m2 / 2; i < m1 - m2 / 2; i++) {
@@ -2569,8 +2605,8 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 				double y_mol0 = (y[j][i] - middle_y1[j] - delta_y*f)*cos(alfa) + (z[j][i] - middle_z1[j] - delta_z*f)*sin(alfa);
 				double z_mol0 = -(y[j][i] - middle_y1[j] - delta_y*f)*sin(alfa) + (z[j][i] - middle_z1[j] - delta_z*f)*cos(alfa);
 
-				double y_mol = (y_mol0)*cos(delta_alfa*f) + (z_mol0)*sin(delta_alfa*f);
-				double z_mol = -(y_mol0)*sin(delta_alfa*f) + (z_mol0)*cos(delta_alfa*f);
+				double y_mol = y_mol0*cos(delta_alfa*f) + z_mol0*sin(delta_alfa*f);
+				double z_mol = -y_mol0*sin(delta_alfa*f) + z_mol0*cos(delta_alfa*f);
 
 				// Записываем номер частицы и рассчитанное смещение в файл:
 				fprintf(f1_file, "%d %.5le %.5le %.5le\n", w, x_mol, y_mol, z_mol);
@@ -2580,6 +2616,7 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 		
 	// Закрываем все файлы, которые мы редактировали:
 	fclose(f1_file);
+	fclose(debug_file);
 
 	// Удаляем из памяти все динамические массивы:
 	for (int i = 0; i < 200; i++) {
@@ -2596,237 +2633,6 @@ void F1_old(double x1, double x2, int devision, std::string file_name) {
 	delete[] middle_x2;
 	delete[] middle_y2;
 	delete[] middle_z2;
-	delete[] list_of_particles;
-	delete[] list_of_particles_alfa;
-}
-
-
-void F1(double x1, double x2, int devision, std::string file_name) {
-
-	int m1 = 600;		// всего измерений на каждом шаге
-	int m3 = 1000;		// количество итераций измерений
-	double t_global, dt;
-	particle p1;
-
-	FILE *f1_file = fopen(file_name.c_str(), "w+");
-
-	// Динамически создаём массивы (это необходимо делать динамически,
-	// так как они большого размера и мы не можем создать их в стеке
-	// 200 - по количеству частиц в слое, с запасом (частиц будет 100+, но меньше 200)
-	double *x = new double[200];
-	double *y = new double[200];
-	double *z = new double[200];
-
-	double *middle_x = new double[200];
-	double *middle_y = new double[200];
-	double *middle_z = new double[200];
-
-	// Список всех частиц в данном слое:
-	long *list_of_particles = new long[200];
-
-	// Список частиц, центры узлов которых проходят через одну из осей симметрии кристалла:
-	long *list_of_particles_alfa = new long[50];
-
-    // Число частиц, выбранных для рассмотрения:
-	long particles_count;
-	// Число частиц, центры узлов которых проходят через одну из осей симметрии кристалла:
-	long particles_count_alfa;
-	// Вспомогательные переменные для циклов:
-	long w, w1, w2;
-
-	for (int iter = 0; iter < m3; iter++) {
-
-		// Число частиц, которые будут выбраны для наблюдения в данном слое:
-		particles_count = 0;
-
-		// Число частиц, центры которых расположены вдоль одной из осей симметрии слоя:
-		particles_count_alfa = 0;
-
-		// Заполняем все массивы нулями:
-		for (int w = 0; w < 200; w++) {
-			middle_x[w] = 0.0;
-			middle_y[w] = 0.0;
-			middle_z[w] = 0.0;
-
-			list_of_particles[w] = -1;
-
-			x[w] = 0.0;
-			y[w] = 0.0;
-			z[w] = 0.0;
-		}
-
-		// Не рассматриваем частицы, находящиеся вблизи периодических
-		// граничных условий, а так же рассматриваем только частицы,
-		// находящиеся в данном слое.
-		// В этом цикле мы сначала перемещаем все частицы во время системы,
-		// а затем проверяем удовлетворяет ли текущее положение центра частицы критериям,
-		// чтобы найти все частицы, положение которых необходимо отслеживать:
-		t_global = get_maximum_particle_time();
-		for (long i = 0; i < NP; i++) {
-			p1 = particles[i];
-			dt = t_global - p1.t;
-			p1.x[0] = p1.x[0] + p1.vx * dt;
-			p1.y[0] = p1.y[0] + p1.vy * dt;
-			p1.z[0] = p1.z[0] + p1.vz * dt;
-
-			// Отбираем только частицы в данном слое такие, которые находятся на расстоянии
-			// больше 6 радиусов от периодических граничных условий:
-			if (p1.x[0] >= x1 && p1.x[0] <= x2 &&
-				p1.y[0] >= 6.0 * particle_R && p1.y[0] <= A - 6.0 * particle_R &&
-				p1.z[0] >= 6.0 * particle_R && p1.z[0] <= A - 6.0 * particle_R) {
-				list_of_particles[particles_count] = i;
-				particles_count++;
-			}
-		}
-
-		for (long i = 0; i < m1; i++) {
-			// Выводим на экран текущий прогресс расчета:
-			printf("\r%76c\r", ' ');
-			printf("%ld / %ld", iter*m1 + i + 1, m1*m3);
-
-			small_step(20);		// Делаем 1/20 соударения на частицу между измерениями,
-								// которые будут учитываться для рассчета положения центра узла кристалла
-
-			t_global = get_maximum_particle_time();
-			for (int m = 0; m < particles_count; m++) {
-				w = list_of_particles[m];
-
-				// Cинхронизируем время частицы с временем системы
-				p1 = particles[w];
-				dt = t_global - p1.t;
-				p1.x[0] = p1.x[0] + p1.vx * dt;
-				p1.y[0] = p1.y[0] + p1.vy * dt;
-				p1.z[0] = p1.z[0] + p1.vz * dt;
-
-				// Cуммируем значения координат центров узлов, чтобы найти
-				// среднее положение центра частицы за m1/20 соударений
-				// (при m1 = 600 мы вычисляем среднее положение центра данного узла
-				// за три соударения в среднем на частицу в системе):
-				middle_x[m] += p1.x[0];
-				middle_y[m] += p1.y[0];
-				middle_z[m] += p1.z[0];
-
-				// Запоминаем все координаты всех частиц один раз за цикл
-				// (один раз за 3 соударения на каждую частицу в системе):
-				if (i == int(m1 / 2)) {
-					x[m] = p1.x[0];
-					y[m] = p1.y[0];
-					z[m] = p1.z[0];
-				}
-			}
-		}
-
-		// Находим средние значения координат центров узлов
-		for (int m = 0; m < particles_count; m++) {
-			middle_x[m] /= double(m1);
-			middle_y[m] /= double(m1);
-			middle_z[m] /= double(m1);
-		}
-
-		long min_m, repeat;
-		double min_y = A, min_z = A, dy, dz, alfa, alfa2 = -1.0, betta, betta2 = -1.0;
-
-		// Начинаем поиск линии, по которой будем определять поворот 
-		// осей координат для исследуемого слоя
-
-		// Для начала находим самую левую нижнюю частицу в слое, из числа тех,
-		// которые были отобраны для рассмотрения (не ближе чем 6 радиусов от
-		// периодических граничных условий):
-		for (int m = 0; m < particles_count; m++)
-		{
-			if ((middle_y[m] < min_y) &&
-				(middle_z[m] < min_z))
-			{
-				min_y = middle_y[m];
-				min_z = middle_z[m];
-				min_m = m;
-			}
-		}
-
-		list_of_particles_alfa[0] = min_m;
-		particles_count_alfa = 1;
-		repeat = 1;
-		while (repeat > 0)
-		{
-			repeat = -1;
-			for (int m = 0; repeat < 0 && m < particles_count; m++) {
-				if (m != min_m) {
-					dy = middle_y[m] - middle_y[min_m];
-					dz = middle_z[m] - middle_z[min_m];
-
-					// Ищем ближайшую к данной частице частицу на расстоянии не дальше 3.2 радиусов
-					// так, чтобы линия, пересекающая центры их узлов,
-					// образовывала острый угол с осью OY.
-					if ((sqrt(dy*dy + dz*dz) < 3.2*particle_R) && (dy > 0.0 && dz > 0.0))
-					{
-						alfa = atan2(dy, dz);
-
-						// Если такая частица найдена и она лежит на той же прямой, что
-						// и все уже отобранные для этой линии ранее частицы, то записываем ее в список:
-						if (alfa2 < 0.0 || fabs(alfa - alfa2) < 0.5)
-						{
-							list_of_particles_alfa[particles_count_alfa] = m;
-							particles_count_alfa++;
-							min_m = m;
-							alfa2 = alfa;
-							repeat = 1;
-						}
-					}
-				}
-			}
-		}
-
-		double B_alfa = 0.0;
-		double K_alfa = 0.0;
-		double sum_y = 0.0, sum_z = 0.0, sum_yz = 0.0, sum_zz = 0.0;
-
-		// Получаем угол поворота линии методом наименьших квадратов
-		// для всех частиц в массиве list_of_particles_alfa (это одна из
-		// осей кристалла в данном слое, эта ось образует острый угол с осью OY
-		// и проходит через 10+ узлов в данном слое):
-		for (int m = 0; m < particles_count_alfa; m++) {
-			w = list_of_particles_alfa[m];
-
-			sum_y += middle_y[w];
-			sum_z += middle_z[w];
-			sum_yz += middle_y[w] * middle_z[w];
-			sum_zz += middle_z[w] * middle_z[w];
-		}
-
-		// K_alfa1 - это коэффициент в уравнении прямой (z = ky + b), рассчитанный на основании
-		// положения частиц в данном слое на протяжении m1 соударений:
-		K_alfa = (particles_count_alfa*sum_yz - sum_y*sum_z) / (particles_count_alfa*sum_zz - sum_z*sum_z);
-        // Угол поворота осей Y и Z кристалла относительно осей Y и Z системы:
-		alfa = atan(K_alfa);
-
-		// Для каждой частицы в данном слое (если частица прошла все условия отбора):
-		for (int j = 0; j < particles_count; j++) {
-
-			// Запрашиваем номер частиц в списке частиц данного слоя:
-			w = list_of_particles[j];
-
-			// Рассчитываем координаты частицы с учетом среднего положения
-			// центра данной частицы (то есть рассчитываем текущее смещение частицы на данном шаге от
-			// среднего положения центра узла, который образован этой частицей):
-			double x_mol = x[j] - middle_x[j];
-			double y_mol = (y[j] - middle_y[j])*cos(alfa) + (z[j] - middle_z[j])*sin(alfa);
-			double z_mol = -(y[j] - middle_y[j])*sin(alfa) + (z[j] - middle_z[j])*cos(alfa);
-
-			// Записываем номер частицы и рассчитанное смещение в файл:
-			fprintf(f1_file, "%d %.5le %.5le %.5le\n", w, x_mol, y_mol, z_mol);
-		}
-	}
-
-	// Закрываем все файлы, которые мы редактировали:
-	fclose(f1_file);
-
-	// Удаляем из памяти все динамические массивы:
-	delete[] x;
-	delete[] y;
-	delete[] z;
-	delete[] middle_x;
-	delete[] middle_y;
-	delete[] middle_z;
 	delete[] list_of_particles;
 	delete[] list_of_particles_alfa;
 }
@@ -3273,15 +3079,18 @@ void init(std::string file_name) {
 		}
 		if (str_command.compare("f1") == 0) {
 			double x1, x2;
-			int n1;
+			int n1, n2, n3, n4;
 			command_file >> x1;
 			command_file >> x2;
 			command_file >> n1;
+			command_file >> n2;
+			command_file >> n3;
+			command_file >> n4;
 			command_file >> parameter;
 
 			printf("\n F1 started \n");
 
-			F1(x1, x2, n1, parameter);
+			F1(x1, x2, n1, n2, n3, n4, parameter);
 		}
 		// если необходимо сохранить состояние системы
 		if (str_command.compare("save") == 0) {
